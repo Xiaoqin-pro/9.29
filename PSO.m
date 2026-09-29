@@ -1,12 +1,9 @@
-function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed,initialRoute)
-%PSO Standard particle swarm optimizer for UAV order sequencing.
+function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed)
+%PSO Random-key PSO for UAV order sequencing.
 %   Each particle is a random-key vector. Sorting the vector gives a route.
 
 if nargin < 5
     seed = 1;
-end
-if nargin < 6
-    initialRoute = [];
 end
 
 rng(seed);
@@ -32,16 +29,14 @@ particle = repmat(empty_particle,Particle_Number,1);
 GlobalBest.Cost = inf;
 for i = 1:Particle_Number
     particle(i).Position = rand(1,nVar);
-    if ~isempty(initialRoute) && i <= ceil(Particle_Number/2)
-        particle(i).Position = RouteToKeys(initialRoute,state.activeIDs);
-        particle(i).Position = particle(i).Position + 0.05*randn(1,nVar);
-        particle(i).Position = max(VarMin,min(VarMax,particle(i).Position));
-    end
     particle(i).Velocity = Vmin + (Vmax-Vmin).*rand(1,nVar);
-    [particle(i).Cost,particle(i).Detail] = Fitness(particle(i).Position,model,state);
+    [particle(i).Cost,particle(i).Detail] = Fitness( ...
+        particle(i).Position,model,state);
+
     particle(i).Best.Position = particle(i).Position;
     particle(i).Best.Cost = particle(i).Cost;
     particle(i).Best.Detail = particle(i).Detail;
+
     if particle(i).Best.Cost < GlobalBest.Cost
         GlobalBest = particle(i).Best;
     end
@@ -51,36 +46,35 @@ BestCost = zeros(maxgen,1);
 for it = 1:maxgen
     for i = 1:Particle_Number
         particle(i).Velocity = w*particle(i).Velocity ...
-            + c1*rand(1,nVar).*(particle(i).Best.Position-particle(i).Position) ...
-            + c2*rand(1,nVar).*(GlobalBest.Position-particle(i).Position);
+            + c1*rand(1,nVar).*(particle(i).Best.Position ...
+            - particle(i).Position) ...
+            + c2*rand(1,nVar).*(GlobalBest.Position ...
+            - particle(i).Position);
         particle(i).Velocity = max(Vmin,min(Vmax,particle(i).Velocity));
-        particle(i).Position = particle(i).Position + particle(i).Velocity;
-        particle(i).Position = max(VarMin,min(VarMax,particle(i).Position));
-        [particle(i).Cost,particle(i).Detail] = Fitness(particle(i).Position,model,state);
+
+        particle(i).Position = particle(i).Position ...
+            + particle(i).Velocity;
+        particle(i).Position = max(VarMin,min(VarMax, ...
+            particle(i).Position));
+
+        [particle(i).Cost,particle(i).Detail] = Fitness( ...
+            particle(i).Position,model,state);
 
         if particle(i).Cost < particle(i).Best.Cost
             particle(i).Best.Position = particle(i).Position;
             particle(i).Best.Cost = particle(i).Cost;
             particle(i).Best.Detail = particle(i).Detail;
         end
+
         if particle(i).Best.Cost < GlobalBest.Cost
             GlobalBest = particle(i).Best;
         end
     end
+
     BestCost(it) = GlobalBest.Cost;
     w = w*wdamp;
 end
 
 BestSol = GlobalBest;
 BestSol.Route = BestSol.Detail.route;
-end
-
-function position = RouteToKeys(route,activeIDs)
-position = rand(1,length(activeIDs));
-for k = 1:length(route)
-    index = find(activeIDs == route(k),1);
-    if ~isempty(index)
-        position(index) = k/(length(route)+1);
-    end
-end
 end

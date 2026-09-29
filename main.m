@@ -2,10 +2,7 @@ clc
 clear
 close all
 
-%% 3-D UAV dynamic order routing demo
-% The program keeps the simple style of the teacher's PSO example:
-% create model -> run PSO -> calculate fitness -> plot results.
-
+%% Dynamic 3-D UAV routing baseline
 root = fileparts(mfilename('fullpath'));
 if ~exist(fullfile(root,'results'),'dir')
     mkdir(fullfile(root,'results'));
@@ -13,12 +10,16 @@ end
 
 %% Problem parameters
 cfg.mapSize = [100 100];
-cfg.nInitialOrders = 8;
-cfg.nFutureOrders = 4;
+cfg.nInitialOrders = 14;
+cfg.nFutureOrders = 6;
+cfg.timeWindowLevel = 2;
+cfg.serviceTime = 3;
+cfg.includeCancel = false;
 cfg.seed = 20260929;
 cfg.safetySamples = 30;
 model = CreateModel(cfg);
 
+%% Initial state
 state.time = 0;
 state.position = model.depot;
 state.activeIDs = model.activeIDs;
@@ -26,51 +27,51 @@ state.servedIDs = [];
 state.cancelledIDs = [];
 state.fixedIDs = [];
 
-%% Initial planning
+%% Initial PSO planning
 Particle_Number = 20;
 maxgen = 100;
 [Best0,T0] = PSO(model,state,maxgen,Particle_Number,1);
 
-%% Execute the old route until the first dynamic event
+%% Execute to the first new-order event
 [eventState,remainingRoute] = ExecuteUntilEvent( ...
     model,state,Best0.Route,model.events(1).time);
-[model,eventState,applied] = DynamicEvent(model,eventState,model.events(1));
+[model,eventState,applied] = DynamicEvent( ...
+    model,eventState,model.events(1));
 if ~applied
     error('The first dynamic event was not applied.');
 end
 
-%% Replanning after the event
-% Restart-PSO does not use the old route.
-[RestartBest,TRestart] = PSO(model,eventState,maxgen,Particle_Number,2);
+%% Restart-PSO after the event
+[Best1,T1] = PSO(model,eventState,maxgen,Particle_Number,2);
 
-% Warm-start PSO uses the old route as one source of initial particles.
-[WarmBest,TWarm] = Warm_PSO(model,eventState,maxgen,Particle_Number,3,remainingRoute);
-
-% EAT-PSO reconstructs the population from historical, insertion and random routes.
-[EATBest,TEAT] = EAT_PSO(model,eventState,maxgen,Particle_Number,4,remainingRoute);
-
-%% Save and display results
+%% Save baseline results
 save(fullfile(root,'results','main_result.mat'), ...
     'model','state','Best0','T0','eventState','remainingRoute', ...
-    'RestartBest','TRestart','WarmBest','TWarm','EATBest','TEAT');
+    'Best1','T1');
 
-PlotSolution(EATBest,model,eventState, ...
-    fullfile(root,'results','EAT_PSO_route_3D.png'));
+PlotSolution(Best1,model,eventState, ...
+    fullfile(root,'results','baseline_route_3D.png'));
 
 figure('Color','w');
-plot(TRestart,'LineWidth',1.5); hold on
-plot(TWarm,'LineWidth',1.5);
-plot(TEAT,'LineWidth',1.8);
+plot(T0,'LineWidth',1.5); hold on
+plot(T1,'LineWidth',1.8);
 grid on
 xlabel('The Number of Iterations','fontsize',12);
 ylabel('The Function Value','fontsize',12);
-legend('Restart-PSO','Warm-start PSO','EAT-PSO','Location','best');
-title('Dynamic UAV replanning convergence');
-exportgraphics(gcf,fullfile(root,'results','replanning_convergence.png'),'Resolution',150);
+legend('Initial PSO','Post-event Restart-PSO','Location','best');
+title('Dynamic 3-D UAV routing baseline');
+exportgraphics(gcf,fullfile(root,'results', ...
+    'baseline_replanning_convergence.png'),'Resolution',150);
 
 fprintf('Initial cost:       %.3f\n',Best0.Cost);
-fprintf('Restart-PSO cost:   %.3f\n',RestartBest.Cost);
-fprintf('Warm-start cost:    %.3f\n',WarmBest.Cost);
-fprintf('EAT-PSO cost:       %.3f\n',EATBest.Cost);
-fprintf('EAT-PSO late time:  %.3f\n',EATBest.Detail.totalLate);
-fprintf('EAT-PSO feasible:   %d\n',EATBest.Detail.feasible);
+fprintf('Initial distance:   %.3f\n',Best0.Detail.distance);
+fprintf('Initial late:       %.3f\n',Best0.Detail.totalLate);
+fprintf('Event time:         %.3f\n',eventState.time);
+fprintf('Event position:     [%.3f %.3f %.3f]\n', ...
+    eventState.position(1),eventState.position(2),eventState.position(3));
+fprintf('Added order:        %d\n',model.events(1).orderIDs);
+fprintf('Post-event orders:  %d\n',length(eventState.activeIDs));
+fprintf('Post-event cost:    %.3f\n',Best1.Cost);
+fprintf('Post-event distance:%.3f\n',Best1.Detail.distance);
+fprintf('Post-event late:    %.3f\n',Best1.Detail.totalLate);
+fprintf('Post-event feasible: %d\n',Best1.Detail.feasible);

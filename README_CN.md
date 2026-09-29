@@ -1,33 +1,46 @@
-# 9.29：三维动态无人机路径规划重建版
+# 9.29：三维动态无人机路径规划基础模型
 
-这是在老师给出的简单 PSO 代码风格基础上重新整理的版本。
+本仓库使用老师胎儿心电项目中的简单 MATLAB 风格，建立三维动态无人机订单路径规划底座。
 
-## 研究路线
+## 当前研究内容
 
-1. **单目标二维底座**：客户访问顺序由 Random-key PSO 优化，时间窗通过评价函数处理。
-2. **三维无人机验证**：使用 RC101 的标准订单平面位置，加入 Gaussian 地形、局部订单高度、圆柱体建筑、飞行距离和安全高度约束。
-3. **动态订单**：加入新增订单和取消订单，在事件发生后重新规划。
-4. **算法论文主线**：对比 Restart-PSO、Warm-start PSO 和 EAT-PSO；EAT-PSO 用历史路线、事件新增订单插入路线和随机个体重构种群。
+1. RC101 订单二维位置；
+2. Gaussian 三维地形；
+3. 订单局部地形高度；
+4. 圆柱体建筑障碍物；
+5. 直线、左右绕行和上方绕行航迹；
+6. 时间窗和订单服务时间；
+7. 动态新增订单；
+8. Random-key PSO 基础算法。
 
-## 代码风格
-
-代码保持老师示例的扁平结构：
+当前版本只保留一个优化算法：
 
 ```text
-main.m          主程序
-PSO.m           基础粒子群
-Warm_PSO.m      基于旧路线的 Warm-start PSO
-EAT_PSO.m       事件感知种群重构 PSO
-CreateModel.m   生成 RC101 订单、Gaussian 地形、障碍物和事件
-test_path.m     独立测试五类三维航段
-Fitness.m       统一评价函数
-DynamicEvent.m  应用新增/取消订单
-ExecuteUntilEvent.m  执行旧路线到事件时刻
-Plan3DPath.m   生成直线、左右绕行和上方绕行候选航迹
-PlotSolution.m  绘制三维路线
+PSO：优化订单访问顺序
+Fitness：评价整条路线
+Plan3DPath：生成相邻节点之间的三维航迹
+ExecuteUntilEvent：执行路线到动态事件
+DynamicEvent：应用新增或取消订单
 ```
 
-不使用复杂的多层工程结构，先保证模型、评价函数、PSO和实验结果都能直接读懂、直接运行。
+后续在统一的问题模型和评价函数基础上研究动态优化算法。
+
+## 代码结构
+
+```text
+main.m                  动态三维 PSO baseline
+PSO.m                   Random-key PSO
+CreateModel.m           RC101、地形、障碍物、订单和事件
+Fitness.m               距离、时间窗和安全约束评价
+Plan3DPath.m            三维候选航迹规划
+ExecuteUntilEvent.m     执行旧路线到事件时刻
+DynamicEvent.m          应用动态订单事件
+PlotSolution.m          绘制三维场景和路线
+test_path.m             五类独立航段测试
+RunStaticBaseline.m     静态时间窗难度校准
+data/rc101.txt          RC101 订单二维数据
+results/                运行结果
+```
 
 ## 运行
 
@@ -38,16 +51,23 @@ RunStaticBaseline
 main
 ```
 
-结果写入 `results` 文件夹：
+`main.m` 当前运行：
 
-- `main_result.mat`
-- `EAT_PSO_route_3D.png`
-- `replanning_convergence.png`
+```text
+14 个初始订单
++ 6 个未来订单
++ Level 2 时间窗
++ serviceTime = 3
++ 第一个新增订单事件
++ 事件后 Restart-PSO
+```
 
-## 当前算法含义
+主程序输出：
 
-- **Restart-PSO**：事件后完全随机初始化。
-- **Warm-start PSO**：事件前路线作为部分初始粒子。
-- **EAT-PSO**：事件后使用三类信息重构种群：历史路线、对新增订单的插入路线、随机移民。
+```text
+results/main_result.mat
+results/baseline_route_3D.png
+results/baseline_replanning_convergence.png
+```
 
-当前版本先固定底层三维模型和路径评价。CreateModel 默认支持 20 个静态 RC101 订单，UAV 服务时间为 3；main.m 为了演示动态订单，使用 8 个初始订单和 4 个未来订单。先用 RunStaticBaseline 对三档时间窗进行 10 个随机种子校准，再恢复正式动态实验，不把所有机制一次性堆进代码。
+当前基础算法只做随机初始化和标准 PSO 更新。后续算法改进将在这个干净 baseline 上单独增加。
