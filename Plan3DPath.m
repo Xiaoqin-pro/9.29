@@ -24,12 +24,13 @@ end
 
 leftXY = [obs.x obs.y] + R*side;
 rightXY = [obs.x obs.y] - R*side;
-midXY = (from(1:2)+to(1:2))/2;
 overZ = max([from(3),to(3),obs.zMax+model.obstacleSafety+5]);
+P1 = [from(1:2) overZ];
+P2 = [to(1:2) overZ];
 
 pathList{end+1} = [from;leftXY max(from(3),to(3));to];
 pathList{end+1} = [from;rightXY max(from(3),to(3));to];
-pathList{end+1} = [from;midXY overZ;to];
+pathList{end+1} = [from;P1;P2;to];
 
 best = [];
 bestKey = [inf inf];
