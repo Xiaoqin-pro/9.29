@@ -24,7 +24,8 @@ end
 
 leftXY = [obs.x obs.y] + R*side;
 rightXY = [obs.x obs.y] - R*side;
-overZ = max([from(3),to(3),obs.zMax+model.obstacleSafety+5]);
+terrainZ = max(model.terrainZ(:)) + model.minClearance + 1;
+overZ = max([from(3),to(3),obs.zMax+model.obstacleSafety+5,terrainZ]);
 P1 = [from(1:2) overZ];
 P2 = [to(1:2) overZ];
 
