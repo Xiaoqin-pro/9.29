@@ -15,6 +15,7 @@ if ~isfield(cfg,'safetySamples'), cfg.safetySamples = 30; end
 if ~isfield(cfg,'timeWindowLevel'), cfg.timeWindowLevel = 2; end
 if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 3; end
 if ~isfield(cfg,'includeCancel'), cfg.includeCancel = true; end
+if ~isfield(cfg,'eventTime'), cfg.eventTime = 35; end
 
 rng(cfg.seed);
 model.mapSize = cfg.mapSize;
@@ -47,7 +48,8 @@ n = cfg.nInitialOrders + cfg.nFutureOrders;
 if n > size(customers,1)
     error('The selected RC101 data has fewer customers than requested.');
 end
-customers = customers(1:n,:);
+index = round(linspace(1,size(customers,1),n));
+customers = customers(index,:);
 model.depotXY = depot(1,2:3);
 model.depot = [model.depotXY ...
     interp2(model.X,model.Y,model.terrainZ,model.depotXY(1),model.depotXY(2)) ...
@@ -58,7 +60,7 @@ obstacleData = [58 15 5 14; ...
                 72 20 5 16; ...
                 82 40 6 20; ...
                 66 55 5 18; ...
-                58 78 6 16; ...
+                70 90 6 16; ...
                 82 72 6 20; ...
                 25 60 4 14; ...
                 34 25 4 12];
@@ -83,6 +85,7 @@ end
 %% Build time windows around a feasible nearest-neighbor route
 xy = reshape([orders.xy],2,[])';
 model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
+model.selectedCustomerIDs = customers(:,1)';
 windowBefore = [50 25 15];
 windowAfter = [70 40 25];
 level = min(max(cfg.timeWindowLevel,1),3);
@@ -125,7 +128,7 @@ model.futureIDs = cfg.nInitialOrders+1:n;
 %% Dynamic events
 model.events = struct('time',{},'type',{},'orderIDs',{});
 if cfg.nFutureOrders >= 1
-    model.events(end+1) = struct('time',35,'type','add', ...
+    model.events(end+1) = struct('time',cfg.eventTime,'type','add', ...
         'orderIDs',cfg.nInitialOrders+1);
 end
 if cfg.includeCancel && cfg.nInitialOrders >= 3

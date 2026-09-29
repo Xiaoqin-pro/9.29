@@ -4,7 +4,7 @@
 
 ## 当前研究内容
 
-1. RC101 订单二维位置；
+1. RC101 订单二维位置（从完整 100 客户中均匀抽取）；
 2. Gaussian 三维地形；
 3. 订单局部地形高度；
 4. 圆柱体建筑障碍物；
@@ -38,6 +38,7 @@ DynamicEvent.m          应用动态订单事件
 PlotSolution.m          绘制三维场景和路线
 test_path.m             五类独立航段测试
 RunStaticBaseline.m     静态时间窗难度校准
+RunDynamicBaseline.m    动态事件时刻难度校准
 data/rc101.txt          RC101 订单二维数据
 results/                运行结果
 ```
@@ -58,6 +59,7 @@ main
 + 6 个未来订单
 + Level 2 时间窗
 + serviceTime = 3
++ eventTime = 35
 + 第一个新增订单事件
 + 事件后 Restart-PSO
 ```
@@ -70,4 +72,4 @@ results/baseline_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
-当前基础算法只做随机初始化和标准 PSO 更新。后续算法改进将在这个干净 baseline 上单独增加。
+动态校准结果为：eventTime=15/25/35 时，事件后活动订单数约为 15/14/12，Restart-PSO 可行率为 0.80/0.70/0.60。当前默认使用 eventTime=35，使事件后仍保留约 12 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
