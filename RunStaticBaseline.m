@@ -2,67 +2,52 @@ clc
 clear
 close all
 
-%% Static 20-order baseline diagnosis
+%% Static 20-order time-window calibration
 root = fileparts(mfilename('fullpath'));
 Particle_Number = 20;
 maxgen = 100;
-seed = 1;
+runs = 10;
 
-% A: Level 1, random initialization
-cfg.nInitialOrders = 20;
-cfg.nFutureOrders = 0;
-cfg.timeWindowLevel = 1;
-cfg.serviceTime = 10;
-cfg.seed = 20260929;
-modelA = CreateModel(cfg);
-stateA = InitialState(modelA);
-[bestA,curveA] = PSO(modelA,stateA,maxgen,Particle_Number,seed);
+% Results: level, seed, cost, distance, late, feasible
+results = zeros(3,runs,6);
 
-% B: Level 2, reference-route initialization
-cfg.timeWindowLevel = 2;
-modelB = CreateModel(cfg);
-stateB = InitialState(modelB);
-[bestB,curveB] = PSO(modelB,stateB,maxgen,Particle_Number,seed, ...
-    modelB.referenceRoute);
+for level = 1:3
+    cfg.nInitialOrders = 20;
+    cfg.nFutureOrders = 0;
+    cfg.timeWindowLevel = level;
+    cfg.serviceTime = 3;
+    cfg.seed = 20260929;
+    model = CreateModel(cfg);
+    state = InitialState(model);
 
-% C: Level 2, UAV service time = 3
-cfg.serviceTime = 3;
-modelC = CreateModel(cfg);
-stateC = InitialState(modelC);
-[bestC,curveC] = PSO(modelC,stateC,maxgen,Particle_Number,seed);
+    for j = 1:runs
+        [best,curve] = PSO(model,state,maxgen,Particle_Number,j); %#ok<ASGLU>
+        results(level,j,:) = [level,j,best.Cost, ...
+            best.Detail.distance,best.Detail.totalLate, ...
+            best.Detail.feasible];
+    end
 
-results = [ ...
-    1 bestA.Cost bestA.Detail.distance bestA.Detail.totalLate ...
-        bestA.Detail.terrainViolation bestA.Detail.obstacleViolation bestA.Detail.feasible; ...
-    2 bestB.Cost bestB.Detail.distance bestB.Detail.totalLate ...
-        bestB.Detail.terrainViolation bestB.Detail.obstacleViolation bestB.Detail.feasible; ...
-    3 bestC.Cost bestC.Detail.distance bestC.Detail.totalLate ...
-        bestC.Detail.terrainViolation bestC.Detail.obstacleViolation bestC.Detail.feasible];
+    feasibleRate = mean(results(level,:,6));
+    meanLate = mean(results(level,:,5));
+    meanDistance = mean(results(level,:,4));
+    fprintf('Level %d: feasible rate=%.2f, mean late=%.3f, mean distance=%.3f\n', ...
+        level,feasibleRate,meanLate,meanDistance);
+end
 
-fprintf('Case A: Level 1, random, service=10\n');
-PrintResult(bestA);
-fprintf('Case B: Level 2, reference initialization, service=10\n');
-PrintResult(bestB);
-fprintf('Case C: Level 2, random, service=3\n');
-PrintResult(bestC);
-
+flatResults = reshape(results,[],6);
 outDir = fullfile(root,'results');
-save(fullfile(outDir,'static_baseline_diagnostic.mat'), ...
-    'results','modelA','modelB','modelC','bestA','bestB','bestC', ...
-    'curveA','curveB','curveC');
-writematrix(results,fullfile(outDir,'static_baseline_diagnostic.csv'));
+save(fullfile(outDir,'static_timewindow_calibration.mat'), ...
+    'results','Particle_Number','maxgen','runs');
+writematrix(flatResults,fullfile(outDir,'static_timewindow_calibration.csv'));
 
 figure('Color','w');
-plot(curveA,'LineWidth',1.4); hold on
-plot(curveB,'LineWidth',1.4);
-plot(curveC,'LineWidth',1.4);
+bar(1:3,[mean(results(1,:,6));mean(results(2,:,6));mean(results(3,:,6))]);
 grid on
-xlabel('The Number of Iterations','fontsize',12);
-ylabel('The Function Value','fontsize',12);
-legend('Level 1 random','Level 2 reference','Level 2 service=3', ...
-    'Location','best');
-title('Static 20-order baseline diagnosis');
-exportgraphics(gcf,fullfile(outDir,'static_baseline_diagnostic.png'),'Resolution',150);
+xlabel('Time-window level','fontsize',12);
+ylabel('Feasible rate','fontsize',12);
+title('Static 20-order time-window calibration');
+xticks(1:3);
+exportgraphics(gcf,fullfile(outDir,'static_timewindow_calibration.png'),'Resolution',150);
 
 function state = InitialState(model)
 state.time = 0;
@@ -71,11 +56,4 @@ state.activeIDs = model.activeIDs;
 state.servedIDs = [];
 state.cancelledIDs = [];
 state.fixedIDs = [];
-end
-
-function PrintResult(best)
-fprintf('  cost=%.3f distance=%.3f late=%.3f terrain=%.3f obstacle=%.3f feasible=%d\n', ...
-    best.Cost,best.Detail.distance,best.Detail.totalLate, ...
-    best.Detail.terrainViolation,best.Detail.obstacleViolation, ...
-    best.Detail.feasible);
 end

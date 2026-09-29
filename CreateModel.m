@@ -13,7 +13,7 @@ if ~isfield(cfg,'nFutureOrders'), cfg.nFutureOrders = 0; end
 if ~isfield(cfg,'seed'), cfg.seed = 20260929; end
 if ~isfield(cfg,'safetySamples'), cfg.safetySamples = 30; end
 if ~isfield(cfg,'timeWindowLevel'), cfg.timeWindowLevel = 2; end
-if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 10; end
+if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 3; end
 if ~isfield(cfg,'includeCancel'), cfg.includeCancel = true; end
 
 rng(cfg.seed);
@@ -83,10 +83,12 @@ end
 %% Build time windows around a feasible nearest-neighbor route
 xy = reshape([orders.xy],2,[])';
 model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
-windowBefore = [25 15 8];
-windowAfter = [35 25 12];
+windowBefore = [50 25 15];
+windowAfter = [70 40 25];
 level = min(max(cfg.timeWindowLevel,1),3);
 model.timeWindowLevel = level;
+model.windowBefore = windowBefore;
+model.windowAfter = windowAfter;
 current = model.depot;
 currentTime = 0;
 referenceStart = zeros(1,n);
