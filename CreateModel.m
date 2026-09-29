@@ -13,6 +13,7 @@ if ~isfield(cfg,'nFutureOrders'), cfg.nFutureOrders = 0; end
 if ~isfield(cfg,'seed'), cfg.seed = 20260929; end
 if ~isfield(cfg,'safetySamples'), cfg.safetySamples = 30; end
 if ~isfield(cfg,'timeWindowLevel'), cfg.timeWindowLevel = 2; end
+if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 10; end
 if ~isfield(cfg,'includeCancel'), cfg.includeCancel = true; end
 
 rng(cfg.seed);
@@ -21,6 +22,7 @@ model.safetySamples = cfg.safetySamples;
 model.speed = 6;
 model.minClearance = 4;
 model.serviceHeight = 6;
+model.serviceTime = cfg.serviceTime;
 model.obstacleSafety = 2;
 model.maxHeight = 40;
 model.dataFile = cfg.dataFile;
@@ -75,10 +77,7 @@ for i = 1:n
     orders(i).xy = xy;
     orders(i).xyz = [xy ground+model.serviceHeight];
     orders(i).demand = customers(i,4);
-    orders(i).service = customers(i,7);
-    if orders(i).service <= 0
-        orders(i).service = 10;
-    end
+    orders(i).service = model.serviceTime;
 end
 
 %% Build time windows around a feasible nearest-neighbor route
