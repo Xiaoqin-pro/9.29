@@ -1,0 +1,105 @@
+function [BestSol,BestCost] = EAT_PSO(model,state,maxgen,Particle_Number,seed,previousRoute)
+%EAT_PSO Event-aware multi-source population reconstruction PSO.
+%   The initial population is built from:
+%   1) historical route transfer;
+%   2) insertion routes for new orders;
+%   3) random immigrants.
+
+rng(seed);
+nVar = length(state.activeIDs);
+VarMin = zeros(1,nVar);
+VarMax = ones(1,nVar);
+Vmax = 0.20*(VarMax-VarMin);
+Vmin = -Vmax;
+w = 0.9;
+wdamp = 0.99;
+c1 = 2.0;
+c2 = 2.0;
+
+oldRoute = previousRoute;
+oldRoute = oldRoute(ismember(oldRoute,state.activeIDs));
+newIDs = setdiff(state.activeIDs,oldRoute,'stable');
+
+empty_particle.Position = [];
+empty_particle.Velocity = [];
+empty_particle.Cost = [];
+empty_particle.Detail = [];
+empty_particle.Best.Position = [];
+empty_particle.Best.Cost = [];
+empty_particle.Best.Detail = [];
+particle = repmat(empty_particle,Particle_Number,1);
+GlobalBest.Cost = inf;
+
+for i = 1:Particle_Number
+    if i <= floor(Particle_Number/3) && ~isempty(oldRoute)
+        route = oldRoute;
+        route = route(randperm(length(route)));
+        route = InsertNewOrders(route,newIDs);
+        position = RouteToKeys(route,state.activeIDs);
+    elseif i <= floor(2*Particle_Number/3)
+        route = oldRoute;
+        route = InsertNewOrders(route,newIDs);
+        position = RouteToKeys(route,state.activeIDs);
+    else
+        position = rand(1,nVar);
+    end
+
+    particle(i).Position = position;
+    particle(i).Velocity = Vmin + (Vmax-Vmin).*rand(1,nVar);
+    [particle(i).Cost,particle(i).Detail] = Fitness(particle(i).Position,model,state);
+    particle(i).Best.Position = particle(i).Position;
+    particle(i).Best.Cost = particle(i).Cost;
+    particle(i).Best.Detail = particle(i).Detail;
+    if particle(i).Best.Cost < GlobalBest.Cost
+        GlobalBest = particle(i).Best;
+    end
+end
+
+BestCost = zeros(maxgen,1);
+for it = 1:maxgen
+    for i = 1:Particle_Number
+        particle(i).Velocity = w*particle(i).Velocity ...
+            + c1*rand(1,nVar).*(particle(i).Best.Position-particle(i).Position) ...
+            + c2*rand(1,nVar).*(GlobalBest.Position-particle(i).Position);
+        particle(i).Velocity = max(Vmin,min(Vmax,particle(i).Velocity));
+        particle(i).Position = particle(i).Position + particle(i).Velocity;
+        particle(i).Position = max(VarMin,min(VarMax,particle(i).Position));
+        [particle(i).Cost,particle(i).Detail] = Fitness(particle(i).Position,model,state);
+
+        if particle(i).Cost < particle(i).Best.Cost
+            particle(i).Best.Position = particle(i).Position;
+            particle(i).Best.Cost = particle(i).Cost;
+            particle(i).Best.Detail = particle(i).Detail;
+        end
+        if particle(i).Best.Cost < GlobalBest.Cost
+            GlobalBest = particle(i).Best;
+        end
+    end
+    BestCost(it) = GlobalBest.Cost;
+    w = w*wdamp;
+end
+
+BestSol = GlobalBest;
+BestSol.Route = BestSol.Detail.route;
+end
+
+function route = InsertNewOrders(route,newIDs)
+for i = 1:length(newIDs)
+    if isempty(route)
+        position = 1;
+    else
+        position = randi(length(route)+1);
+    end
+    route = [route(1:position-1),newIDs(i),route(position:end)]; %#ok<AGROW>
+end
+end
+
+function position = RouteToKeys(route,activeIDs)
+position = rand(1,length(activeIDs));
+for k = 1:length(route)
+    index = find(activeIDs == route(k),1);
+    if ~isempty(index)
+        position(index) = k/(length(route)+1);
+    end
+end
+end
