@@ -72,4 +72,4 @@ results/baseline_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
-动态校准结果为：eventTime=15/25/35 时，事件后活动订单数约为 15/14/12，Restart-PSO 可行率为 0.80/0.70/0.60。当前默认使用 eventTime=35，使事件后仍保留约 12 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
+动态校准结果为：eventTime=15/25/35 时，事件后活动订单数为 14/13/11，Restart-PSO 可行率为 0.30/0.30/0.40。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。

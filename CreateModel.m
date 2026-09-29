@@ -84,7 +84,8 @@ end
 
 %% Build time windows around a feasible nearest-neighbor route
 xy = reshape([orders.xy],2,[])';
-model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
+initialXY = xy(1:cfg.nInitialOrders,:);
+model.referenceRoute = NearestNeighborRoute(model.depotXY,initialXY);
 model.selectedCustomerIDs = customers(:,1)';
 windowBefore = [50 25 15];
 windowAfter = [70 40 25];
@@ -95,7 +96,7 @@ model.windowAfter = windowAfter;
 current = model.depot;
 currentTime = 0;
 referenceStart = zeros(1,n);
-for k = 1:n
+for k = 1:cfg.nInitialOrders
     id = model.referenceRoute(k);
     path = Plan3DPath(current,orders(id).xyz,model);
     currentTime = currentTime + path.distance/model.speed;
@@ -115,9 +116,10 @@ for i = 1:cfg.nInitialOrders
     orders(i).status = 'active';
 end
 for i = cfg.nInitialOrders+1:n
-    orders(i).release = 35 + 25*mod(i-cfg.nInitialOrders-1,2);
-    orders(i).ready = max(orders(i).ready,orders(i).release);
-    orders(i).due = max(orders(i).due,orders(i).ready+windowAfter(level));
+    k = i-cfg.nInitialOrders;
+    orders(i).release = cfg.eventTime + 25*(k-1);
+    orders(i).ready = orders(i).release;
+    orders(i).due = orders(i).release+windowAfter(level);
 end
 
 model.orders = orders;
@@ -135,7 +137,7 @@ if cfg.includeCancel && cfg.nInitialOrders >= 3
     model.events(end+1) = struct('time',70,'type','cancel','orderIDs',3);
 end
 if cfg.nFutureOrders >= 2
-    model.events(end+1) = struct('time',85,'type','add', ...
+    model.events(end+1) = struct('time',cfg.eventTime+25,'type','add', ...
         'orderIDs',cfg.nInitialOrders+2);
 end
 end

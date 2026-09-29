@@ -15,6 +15,7 @@ cfg.nFutureOrders = 6;
 cfg.timeWindowLevel = 2;
 cfg.serviceTime = 3;
 cfg.includeCancel = false;
+cfg.eventTime = 35;
 cfg.seed = 20260929;
 cfg.safetySamples = 30;
 model = CreateModel(cfg);
