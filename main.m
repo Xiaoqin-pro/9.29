@@ -75,4 +75,38 @@ fprintf('Post-event orders:  %d\n',length(eventState.activeIDs));
 fprintf('Post-event cost:    %.3f\n',Best1.Cost);
 fprintf('Post-event distance:%.3f\n',Best1.Detail.distance);
 fprintf('Post-event late:    %.3f\n',Best1.Detail.totalLate);
+nDetour0 = 0;
+nTerrain0 = 0;
+nObstacle0 = 0;
+for i = 1:length(Best0.Detail.paths)
+    if size(Best0.Detail.paths{i}.points,1) > 2
+        nDetour0 = nDetour0 + 1;
+    end
+    if Best0.Detail.paths{i}.directTerrainViolation > 0
+        nTerrain0 = nTerrain0 + 1;
+    end
+    if Best0.Detail.paths{i}.directObstacleViolation > 0
+        nObstacle0 = nObstacle0 + 1;
+    end
+end
+nDetour1 = 0;
+nTerrain1 = 0;
+nObstacle1 = 0;
+for i = 1:length(Best1.Detail.paths)
+    if size(Best1.Detail.paths{i}.points,1) > 2
+        nDetour1 = nDetour1 + 1;
+    end
+    if Best1.Detail.paths{i}.directTerrainViolation > 0
+        nTerrain1 = nTerrain1 + 1;
+    end
+    if Best1.Detail.paths{i}.directObstacleViolation > 0
+        nObstacle1 = nObstacle1 + 1;
+    end
+end
 fprintf('Post-event feasible: %d\n',Best1.Detail.feasible);
+fprintf('Initial detour legs: %d\n',nDetour0);
+fprintf('Initial terrain-blocked direct legs: %d\n',nTerrain0);
+fprintf('Initial obstacle-blocked direct legs: %d\n',nObstacle0);
+fprintf('Post-event detour legs: %d\n',nDetour1);
+fprintf('Post-event terrain-blocked direct legs: %d\n',nTerrain1);
+fprintf('Post-event obstacle-blocked direct legs: %d\n',nObstacle1);

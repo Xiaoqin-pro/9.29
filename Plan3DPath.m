@@ -10,6 +10,9 @@ direct = EvaluatePath(pathList{1},model);
 if direct.isFeasible
     path = direct;
     path.points = pathList{1};
+    path.usedDetour = false;
+    path.directTerrainViolation = direct.terrainViolation;
+    path.directObstacleViolation = direct.obstacleViolation;
     return
 end
 
@@ -47,6 +50,9 @@ for i = 1:length(pathList)
 end
 
 path = best;
+path.usedDetour = true;
+path.directTerrainViolation = direct.terrainViolation;
+path.directObstacleViolation = direct.obstacleViolation;
 end
 
 function result = EvaluatePath(points,model)
