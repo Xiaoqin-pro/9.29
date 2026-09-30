@@ -29,7 +29,6 @@ state.position = model.depot;
 state.activeIDs = model.activeIDs;
 state.servedIDs = [];
 state.cancelledIDs = [];
-state.fixedIDs = [];
 
 %% Initial PSO planning
 Particle_Number = 20;

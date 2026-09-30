@@ -4,7 +4,6 @@ function [state,remainingRoute] = ExecuteUntilEvent(model,state,route,eventTime)
 remainingRoute = route;
 current = state.position;
 currentTime = state.time;
-state.fixedIDs = [];
 
 for k = 1:length(route)
     id = route(k);
@@ -23,7 +22,6 @@ for k = 1:length(route)
             ratio = max(0,min(1,ratio));
             state.position = point1 + ratio*(point2-point1);
             state.time = eventTime;
-            state.fixedIDs = id;
             remainingRoute = route(k:end);
             return
         end
@@ -37,7 +35,6 @@ for k = 1:length(route)
     if currentTime + wait >= eventTime
         state.position = current;
         state.time = eventTime;
-        state.fixedIDs = id;
         remainingRoute = route(k:end);
         return
     end
@@ -47,7 +44,6 @@ for k = 1:length(route)
     if serviceEnd >= eventTime
         state.position = current;
         state.time = eventTime;
-        state.fixedIDs = id;
         remainingRoute = route(k:end);
         return
     end

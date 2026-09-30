@@ -18,7 +18,7 @@ end
 if strcmp(event.type,'cancel')
     for i = 1:length(ids)
         id = ids(i);
-        if ismember(id,state.activeIDs) && ~ismember(id,state.fixedIDs)
+        if ismember(id,state.activeIDs)
             state.activeIDs = state.activeIDs(state.activeIDs ~= id);
             state.cancelledIDs = [state.cancelledIDs id];
             model.orders(id).status = 'cancelled';
