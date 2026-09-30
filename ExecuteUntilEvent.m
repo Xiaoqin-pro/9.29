@@ -3,11 +3,12 @@ function [state,remainingRoute] = ExecuteUntilEvent(model,state,route,eventTime)
 
 current = state.position;
 currentTime = state.time;
+direction = state.direction;
 
 for k = 1:length(route)
     id = route(k);
     target = model.orders(id).xyz;
-    path = Plan3DPath(current,target,model);
+    path = Plan3DPath(current,target,model,direction);
 
     % Fly along the same path that Fitness uses.
     for j = 1:size(path.points,1)-1
@@ -16,10 +17,11 @@ for k = 1:length(route)
         distance = norm(point2-point1);
         travelTime = distance/model.speed;
 
-        if currentTime + travelTime >= eventTime
-            ratio = (eventTime-currentTime)/max(travelTime,eps);
-            ratio = max(0,min(1,ratio));
+        if eventTime < currentTime + travelTime
+            ratio = (eventTime-currentTime)/travelTime;
             state.position = point1 + ratio*(point2-point1);
+            direction = point2-point1;
+            state.direction = direction/norm(direction);
             state.time = eventTime;
             remainingRoute = route(k:end);
             return
@@ -31,8 +33,9 @@ for k = 1:length(route)
 
     % The UAV may wait for the order or stay during service.
     wait = max(0,model.orders(id).ready-currentTime);
-    if currentTime + wait >= eventTime
+    if eventTime < currentTime + wait
         state.position = current;
+        state.direction = [];
         state.time = eventTime;
         remainingRoute = route(k:end);
         return
@@ -40,19 +43,22 @@ for k = 1:length(route)
     currentTime = currentTime + wait;
 
     serviceEnd = currentTime + model.orders(id).service;
-    if serviceEnd >= eventTime
+    if eventTime < serviceEnd
         state.position = current;
+        state.direction = [];
         state.time = eventTime;
         remainingRoute = route(k:end);
         return
     end
 
     currentTime = serviceEnd;
+    direction = [];
     state.servedIDs = [state.servedIDs id];
     state.activeIDs = state.activeIDs(state.activeIDs ~= id);
 end
 
 state.position = current;
+state.direction = [];
 state.time = currentTime;
 remainingRoute = [];
 end

@@ -10,6 +10,9 @@ model.minClearance = 4;
 model.serviceHeight = 6;
 model.serviceTime = cfg.serviceTime;
 model.obstacleSafety = 2;
+model.maxClimbAngle = cfg.maxClimbAngle;
+model.maxTurnAngle = cfg.maxTurnAngle;
+model.smoothWeight = cfg.smoothWeight;
 
 %% Gaussian terrain
 x = linspace(0,cfg.mapSize(1),51);
@@ -79,7 +82,7 @@ currentTime = 0;
 referenceStart = zeros(1,n);
 for k = 1:cfg.nInitialOrders
     id = model.referenceRoute(k);
-    path = Plan3DPath(current,orders(id).xyz,model);
+    path = Plan3DPath(current,orders(id).xyz,model,[]);
     currentTime = currentTime + path.distance/model.speed;
     referenceStart(id) = currentTime;
     currentTime = currentTime + orders(id).service;

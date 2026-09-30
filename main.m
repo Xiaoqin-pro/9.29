@@ -22,6 +22,9 @@ cfg.windowAfter = [70 45 25];
 cfg.futureWindow = [70 45 25];
 cfg.seed = 20260929;
 cfg.safetySamples = 30;
+cfg.maxClimbAngle = 25;
+cfg.maxTurnAngle = 120;
+cfg.smoothWeight = 2;
 model = CreateModel(cfg);
 
 %% Initial state
@@ -30,6 +33,7 @@ state.position = model.depot;
 state.activeIDs = model.activeIDs;
 state.servedIDs = [];
 state.cancelledIDs = [];
+state.direction = [];
 
 %% Initial PSO planning
 Particle_Number = 20;
@@ -67,6 +71,7 @@ exportgraphics(gcf,fullfile(root,'results', ...
 fprintf('Initial cost:       %.3f\n',Best0.Cost);
 fprintf('Initial distance:   %.3f\n',Best0.Detail.distance);
 fprintf('Initial late:       %.3f\n',Best0.Detail.totalLate);
+fprintf('Initial feasible:   %d\n',Best0.Detail.feasible);
 fprintf('Event time:         %.3f\n',eventState.time);
 fprintf('Event position:     [%.3f %.3f %.3f]\n', ...
     eventState.position(1),eventState.position(2),eventState.position(3));
@@ -75,6 +80,14 @@ fprintf('Post-event orders:  %d\n',length(eventState.activeIDs));
 fprintf('Post-event cost:    %.3f\n',Best1.Cost);
 fprintf('Post-event distance:%.3f\n',Best1.Detail.distance);
 fprintf('Post-event late:    %.3f\n',Best1.Detail.totalLate);
+fprintf('Initial max climb angle: %.3f deg\n',Best0.Detail.maxClimbAngle);
+fprintf('Initial max turn angle:  %.3f deg\n',Best0.Detail.maxTurnAngle);
+fprintf('Initial smoothness:       %.3f\n',Best0.Detail.totalSmoothness);
+fprintf('Initial angle violation:  %.3f\n',Best0.Detail.totalAngleViolation);
+fprintf('Post-event max climb angle: %.3f deg\n',Best1.Detail.maxClimbAngle);
+fprintf('Post-event max turn angle:  %.3f deg\n',Best1.Detail.maxTurnAngle);
+fprintf('Post-event smoothness:       %.3f\n',Best1.Detail.totalSmoothness);
+fprintf('Post-event angle violation:  %.3f\n',Best1.Detail.totalAngleViolation);
 nDetour0 = 0;
 nTerrain0 = 0;
 nObstacle0 = 0;
