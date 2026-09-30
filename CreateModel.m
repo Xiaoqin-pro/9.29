@@ -137,7 +137,7 @@ data = zeros(0,7);
 for i = 1:length(lines{1})
     values = sscanf(lines{1}{i},'%f');
     if length(values) >= 7
-        data(end+1,:) = values(1:7)'; %#ok<AGROW>
+        data(end+1,:) = values(1:7)';
     end
 end
 end
