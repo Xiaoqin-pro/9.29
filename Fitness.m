@@ -1,8 +1,7 @@
 function [cost,detail] = Fitness(position,model,state)
 %FITNESS Evaluate a complete UAV route.
 
-[~,order] = sort(position);
-route = state.activeIDs(order);
+route = position;
 
 current = state.position;
 currentTime = state.time;

@@ -35,7 +35,7 @@ state.servedIDs = [];
 state.cancelledIDs = [];
 state.direction = [];
 
-%% Initial PSO planning
+%% Initial insertion-PSO planning
 Particle_Number = 20;
 maxgen = 100;
 [Best0,T0] = PSO(model,state,maxgen,Particle_Number,1);
@@ -46,7 +46,7 @@ maxgen = 100;
 [model,eventState] = DynamicEvent( ...
     model,eventState,model.events(1));
 
-%% Standard PSO after the event
+%% Insertion-PSO after the event
 [Best1,T1] = PSO(model,eventState,maxgen,Particle_Number,2);
 
 %% Save baseline results
@@ -63,8 +63,8 @@ plot(T1,'LineWidth',1.8);
 grid on
 xlabel('The Number of Iterations','fontsize',12);
 ylabel('The Function Value','fontsize',12);
-legend('Initial standard PSO','Post-event standard PSO','Location','best');
-title('Dynamic 3-D UAV routing baseline');
+legend('Initial insertion-PSO','Post-event insertion-PSO','Location','best');
+title('Dynamic 3-D UAV insertion-PSO baseline');
 exportgraphics(gcf,fullfile(root,'results', ...
     'baseline_replanning_convergence.png'),'Resolution',150);
 
