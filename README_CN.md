@@ -9,7 +9,7 @@
 3. 订单局部地形高度；
 4. 圆柱体建筑障碍物；
 5. 直线、左右绕行和上方绕行航迹；
-6. 时间窗和订单服务时间；
+6. 硬时间窗和订单服务时间；
 7. 动态新增订单；
 8. Random-key PSO 基础算法。
 
@@ -31,7 +31,7 @@ DynamicEvent：应用新增或取消订单
 main.m                  动态三维 PSO baseline
 PSO.m                   Random-key PSO
 CreateModel.m           RC101、地形、障碍物、订单和事件
-Fitness.m               距离、时间窗和安全约束评价
+Fitness.m               距离、硬时间窗和安全约束评价
 Plan3DPath.m            三维候选航迹规划
 ExecuteUntilEvent.m     执行旧路线到事件时刻
 DynamicEvent.m          应用动态订单事件
@@ -39,7 +39,8 @@ PlotSolution.m          绘制三维场景和路线
 test_path.m             五类独立航段测试
 RunStaticBaseline.m     静态时间窗难度校准
 RunDynamicBaseline.m    动态事件时刻难度校准
-RunTimeWindowCalibration.m Level-2 时间窗校准（含 futureWindow）
+RunTimeWindowCalibration.m Level-2 时间窗候选校准
+RunFinalBaseline.m       固定 30/45/45 baseline 重复验证
 data/rc101.txt          RC101 订单二维数据
 results/                运行结果
 ```
@@ -73,4 +74,4 @@ results/baseline_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
-当前地形峰值已适度增强，障碍物仍保持 8 个并向配送区域内部调整。30 个随机种子的 Level-2 校准比较了 25/40、30/45、35/45 和 35/50 四组候选，最终固定为：initial windowBefore=30、windowAfter=45，futureWindow=45。对应 Static 20-order / Initial 14-order / Post-event Restart 的可行率为 0.33 / 0.87 / 0.73。主程序还输出绕障航段数、直线受地形阻挡航段数和直线受障碍物阻挡航段数。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
+当前地形峰值已适度增强，障碍物仍保持 8 个并向配送区域内部调整。30 个随机种子的 Level-2 候选校准后，最终固定为：initial windowBefore=30、windowAfter=45，futureWindow=45。主程序还输出绕障航段数、直线受地形阻挡航段数和直线受障碍物阻挡航段数。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前时间窗采用硬约束：提前到达允许等待，超过 due 的路线视为不可行，并使用固定大罚值保证不可行解不会优于可行解。30 次最终 baseline 重复结果为：Static=0.43、Initial=0.77、Post-event=0.73。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。

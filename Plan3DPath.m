@@ -16,24 +16,32 @@ if direct.isFeasible
     return
 end
 
-obs = model.obstacles(direct.blockedObstacle);
-R = obs.r + model.obstacleSafety + 3;
-move = to(1:2)-from(1:2);
-if norm(move) < eps
-    side = [1 0];
-else
-    side = [-move(2) move(1)]/norm(move);
+terrainZ = max(model.terrainZ(:)) + model.minClearance + 1;
+
+% Only an obstacle-blocked direct path needs left/right candidates.
+if direct.obstacleViolation > 1e-8
+    obs = model.obstacles(direct.blockedObstacle);
+    R = obs.r + model.obstacleSafety + 3;
+    move = to(1:2)-from(1:2);
+    if norm(move) < eps
+        side = [1 0];
+    else
+        side = [-move(2) move(1)]/norm(move);
+    end
+    leftXY = [obs.x obs.y] + R*side;
+    rightXY = [obs.x obs.y] - R*side;
+    pathList{end+1} = [from;leftXY max(from(3),to(3));to];
+    pathList{end+1} = [from;rightXY max(from(3),to(3));to];
 end
 
-leftXY = [obs.x obs.y] + R*side;
-rightXY = [obs.x obs.y] - R*side;
-terrainZ = max(model.terrainZ(:)) + model.minClearance + 1;
-overZ = max([from(3),to(3),obs.zMax+model.obstacleSafety+5,terrainZ]);
+% The over candidate is also used for terrain-only blocked paths.
+if direct.obstacleViolation > 1e-8
+    overZ = max([from(3),to(3),obs.zMax+model.obstacleSafety+5,terrainZ]);
+else
+    overZ = max([from(3),to(3),terrainZ]);
+end
 P1 = [from(1:2) overZ];
 P2 = [to(1:2) overZ];
-
-pathList{end+1} = [from;leftXY max(from(3),to(3));to];
-pathList{end+1} = [from;rightXY max(from(3),to(3));to];
 pathList{end+1} = [from;P1;P2;to];
 
 best = [];

@@ -48,8 +48,17 @@ terrainViolation = terrainViolation + path.terrainViolation;
 obstacleViolation = obstacleViolation + path.obstacleViolation;
 allPoints = [allPoints;path.points(2:end,:)]; %#ok<AGROW>
 
-cost = totalDistance + 0.05*totalWaiting + 50*totalLate ...
-    + 10000*terrainViolation + 10000*obstacleViolation;
+cost = totalDistance + 0.05*totalWaiting;
+
+if totalLate > 1e-8
+    cost = cost + 100000 + 1000*totalLate;
+end
+if terrainViolation > 1e-8
+    cost = cost + 100000 + 10000*terrainViolation;
+end
+if obstacleViolation > 1e-8
+    cost = cost + 100000 + 10000*obstacleViolation;
+end
 
 detail.route = route;
 detail.records = records;
