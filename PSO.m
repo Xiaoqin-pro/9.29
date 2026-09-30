@@ -2,10 +2,6 @@ function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed)
 %PSO Standard PSO for UAV order sequencing.
 %   Each customer has a continuous key. Sorting the keys gives a route.
 
-if nargin < 5
-    seed = 1;
-end
-
 rng(seed);
 nVar = length(state.activeIDs);
 VarMin = zeros(1,nVar);

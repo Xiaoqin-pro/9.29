@@ -9,6 +9,7 @@ if ~exist(fullfile(root,'results'),'dir')
 end
 
 %% Problem parameters
+cfg.dataFile = fullfile(root,'data','rc101.txt');
 cfg.mapSize = [100 100];
 cfg.nInitialOrders = 14;
 cfg.nFutureOrders = 6;
@@ -38,11 +39,8 @@ maxgen = 100;
 %% Execute to the first new-order event
 [eventState,remainingRoute] = ExecuteUntilEvent( ...
     model,state,Best0.Route,model.events(1).time);
-[model,eventState,applied] = DynamicEvent( ...
+[model,eventState] = DynamicEvent( ...
     model,eventState,model.events(1));
-if ~applied
-    error('The first dynamic event was not applied.');
-end
 
 %% Standard PSO after the event
 [Best1,T1] = PSO(model,eventState,maxgen,Particle_Number,2);

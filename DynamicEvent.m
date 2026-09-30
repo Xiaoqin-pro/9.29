@@ -1,7 +1,6 @@
-function [model,state,applied] = DynamicEvent(model,state,event)
+function [model,state] = DynamicEvent(model,state,event)
 %DYNAMICEVENT Apply one add or cancel order event.
 
-applied = false;
 ids = event.orderIDs;
 
 if strcmp(event.type,'add')
@@ -12,7 +11,6 @@ if strcmp(event.type,'add')
             model.orders(id).status = 'active';
         end
     end
-    applied = true;
 end
 
 if strcmp(event.type,'cancel')
@@ -22,7 +20,6 @@ if strcmp(event.type,'cancel')
             state.activeIDs = state.activeIDs(state.activeIDs ~= id);
             state.cancelledIDs = [state.cancelledIDs id];
             model.orders(id).status = 'cancelled';
-            applied = true;
         end
     end
 end

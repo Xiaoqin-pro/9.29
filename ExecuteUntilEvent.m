@@ -1,7 +1,6 @@
 function [state,remainingRoute] = ExecuteUntilEvent(model,state,route,eventTime)
 %EXECUTEUNTILEVENT Execute the committed 3-D route until an event.
 
-remainingRoute = route;
 current = state.position;
 currentTime = state.time;
 
@@ -49,7 +48,7 @@ for k = 1:length(route)
     end
 
     currentTime = serviceEnd;
-    state.servedIDs = [state.servedIDs id]; %#ok<AGROW>
+    state.servedIDs = [state.servedIDs id];
     state.activeIDs = state.activeIDs(state.activeIDs ~= id);
 end
 

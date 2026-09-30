@@ -3,9 +3,6 @@ function [cost,detail] = Fitness(position,model,state)
 
 [~,order] = sort(position);
 route = state.activeIDs(order);
-if isempty(position)
-    route = [];
-end
 
 current = state.position;
 currentTime = state.time;
@@ -38,7 +35,7 @@ for k = 1:length(route)
 
     currentTime = serviceStart + model.orders(id).service;
     current = target;
-    allPoints = [allPoints;path.points(2:end,:)]; %#ok<AGROW>
+    allPoints = [allPoints;path.points(2:end,:)];
 end
 
 path = Plan3DPath(current,model.depot,model);
@@ -46,7 +43,7 @@ paths{end} = path;
 totalDistance = totalDistance + path.distance;
 terrainViolation = terrainViolation + path.terrainViolation;
 obstacleViolation = obstacleViolation + path.obstacleViolation;
-allPoints = [allPoints;path.points(2:end,:)]; %#ok<AGROW>
+allPoints = [allPoints;path.points(2:end,:)];
 
 cost = totalDistance + 0.05*totalWaiting;
 

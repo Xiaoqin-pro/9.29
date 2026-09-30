@@ -2,24 +2,6 @@ function model = CreateModel(cfg)
 %CREATEMODEL Create the 3-D UAV benchmark model.
 %   Solomon RC101 XY + Gaussian terrain + cylindrical buildings.
 
-if nargin == 0
-    cfg = struct();
-end
-root = fileparts(mfilename('fullpath'));
-if ~isfield(cfg,'dataFile'), cfg.dataFile = fullfile(root,'data','rc101.txt'); end
-if ~isfield(cfg,'mapSize'), cfg.mapSize = [100 100]; end
-if ~isfield(cfg,'nInitialOrders'), cfg.nInitialOrders = 20; end
-if ~isfield(cfg,'nFutureOrders'), cfg.nFutureOrders = 0; end
-if ~isfield(cfg,'seed'), cfg.seed = 20260929; end
-if ~isfield(cfg,'safetySamples'), cfg.safetySamples = 30; end
-if ~isfield(cfg,'timeWindowLevel'), cfg.timeWindowLevel = 2; end
-if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 3; end
-if ~isfield(cfg,'includeCancel'), cfg.includeCancel = true; end
-if ~isfield(cfg,'eventTime'), cfg.eventTime = 35; end
-if ~isfield(cfg,'windowBefore'), cfg.windowBefore = [50 30 15]; end
-if ~isfield(cfg,'windowAfter'), cfg.windowAfter = [70 45 25]; end
-if ~isfield(cfg,'futureWindow'), cfg.futureWindow = cfg.windowAfter; end
-
 rng(cfg.seed);
 model.mapSize = cfg.mapSize;
 model.safetySamples = cfg.safetySamples;
@@ -28,7 +10,6 @@ model.minClearance = 4;
 model.serviceHeight = 6;
 model.serviceTime = cfg.serviceTime;
 model.obstacleSafety = 2;
-model.dataFile = cfg.dataFile;
 
 %% Gaussian terrain
 x = linspace(0,cfg.mapSize(1),51);
@@ -41,15 +22,12 @@ model.terrainZ = 1 ...
     + 0.6*sin(model.X/18).*cos(model.Y/22);
 model.terrainZ = max(model.terrainZ,0);
 
-%% Read the standard Solomon XY and time-window records
+%% Read the Solomon customer coordinates
 raw = ReadRC101(cfg.dataFile);
 depot = raw(raw(:,1)==0,:);
 customers = raw(raw(:,1)>0,:);
 customers = sortrows(customers,1);
 n = cfg.nInitialOrders + cfg.nFutureOrders;
-if n > size(customers,1)
-    error('The selected RC101 data has fewer customers than requested.');
-end
 index = round(linspace(1,size(customers,1),n));
 customers = customers(index,:);
 model.depotXY = depot(1,2:3);
@@ -72,7 +50,7 @@ end
 
 %% Orders with local terrain height
 orders = repmat(struct('id',0,'xy',zeros(1,2),'xyz',zeros(1,3), ...
-    'demand',0,'release',0,'ready',0,'due',0, ...
+    'release',0,'ready',0,'due',0, ...
     'service',0,'status','future'),1,n);
 for i = 1:n
     xy = customers(i,2:3);
@@ -80,7 +58,6 @@ for i = 1:n
     orders(i).id = i;
     orders(i).xy = xy;
     orders(i).xyz = [xy ground+model.serviceHeight];
-    orders(i).demand = customers(i,4);
     orders(i).service = model.serviceTime;
 end
 
@@ -92,7 +69,7 @@ model.selectedCustomerIDs = customers(:,1)';
 windowBefore = cfg.windowBefore;
 windowAfter = cfg.windowAfter;
 futureWindow = cfg.futureWindow;
-level = min(max(cfg.timeWindowLevel,1),3);
+level = cfg.timeWindowLevel;
 model.timeWindowLevel = level;
 model.windowBefore = windowBefore;
 model.windowAfter = windowAfter;
@@ -110,7 +87,7 @@ for k = 1:cfg.nInitialOrders
 end
 
 model.referenceStart = referenceStart;
-for i = 1:n
+for i = 1:cfg.nInitialOrders
     orders(i).ready = max(0,referenceStart(i)-windowBefore(level));
     orders(i).due = referenceStart(i)+windowAfter(level);
 end
