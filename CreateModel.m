@@ -28,7 +28,6 @@ model.minClearance = 4;
 model.serviceHeight = 6;
 model.serviceTime = cfg.serviceTime;
 model.obstacleSafety = 2;
-model.maxHeight = 40;
 model.dataFile = cfg.dataFile;
 
 %% Gaussian terrain

@@ -1,72 +1,75 @@
 # 9.29：三维动态无人机路径规划基础模型
 
-本仓库使用老师胎儿心电项目中的简单 MATLAB 风格，建立三维动态无人机订单路径规划底座。
+这是在老师胎儿心电项目的简单 MATLAB 风格基础上建立的三维无人机订单路径规划底座。
 
-## 当前研究内容
+## 当前问题模型
 
-1. RC101 订单二维位置（从完整 100 客户中均匀抽取）；
-2. Gaussian 三维地形；
-3. 订单局部地形高度；
-4. 圆柱体建筑障碍物；
-5. 直线、左右绕行和上方绕行航迹；
-6. 硬时间窗和订单服务时间；
-7. 动态新增订单；
-8. Random-key PSO 基础算法。
+- 单架无人机、单仓库；
+- 从 Solomon RC101 的 100 个客户中固定抽取 20 个二维位置；
+- Gaussian 三维地形；
+- 8 个圆柱体建筑障碍物；
+- 订单高度为当地地形高度加服务高度；
+- 单目标订单访问顺序优化；
+- 硬时间窗：提前到达可以等待，超过 `due` 的路线不可行；
+- 一个动态新增订单事件；
+- 当前只使用标准 PSO 作为基础算法。
 
-当前版本只保留一个优化算法：
+RC101 只提供订单二维空间位置，三维高度、地形、障碍物、服务时间和动态时间窗由当前 UAV 模型定义。当前问题更接近带时间窗的动态单无人机订单排序与三维航迹评价，不包含容量和电量约束。
+
+## 标准 PSO 的编码方式
+
+PSO 本身是普通连续粒子群算法。每个客户对应一个连续位置值，按照位置值从小到大排序，排序结果就是订单访问顺序：
 
 ```text
-PSO：优化订单访问顺序
-Fitness：评价整条路线
-Plan3DPath：生成相邻节点之间的三维航迹
-ExecuteUntilEvent：执行路线到动态事件
-DynamicEvent：应用新增或取消订单
+连续粒子位置
+    ↓ 排序
+订单访问序列
+    ↓
+三维航迹与时间窗评价
 ```
 
-后续在统一的问题模型和评价函数基础上研究动态优化算法。
-
-## 代码结构
+这种表示方法通常称为 random-key encoding，但当前算法名称只称为：
 
 ```text
-main.m                  动态三维 PSO baseline
-PSO.m                   Random-key PSO
-CreateModel.m           RC101、地形、障碍物、订单和事件
-Fitness.m               距离、硬时间窗和安全约束评价
-Plan3DPath.m            三维候选航迹规划
-ExecuteUntilEvent.m     执行旧路线到事件时刻
-DynamicEvent.m          应用动态订单事件
-PlotSolution.m          绘制三维场景和路线
-test_path.m             五类独立航段测试
-RunStaticBaseline.m     静态时间窗难度校准
-RunDynamicBaseline.m    动态事件时刻难度校准
-RunTimeWindowCalibration.m Level-2 时间窗候选校准
-RunFinalBaseline.m       固定 30/45/45 baseline 重复验证
-data/rc101.txt          RC101 订单二维数据
-results/                运行结果
+Standard PSO
+```
+
+动态事件发生后，重新调用同一个 `PSO.m`，不保留旧种群信息。这只是动态执行策略，不是另一种 PSO 算法。
+
+## 文件结构
+
+```text
+main.m                  一键运行入口
+PSO.m                   标准 PSO 与排序编码
+CreateModel.m           RC101、地形、圆柱障碍、订单和事件
+Fitness.m               三维距离、硬时间窗和安全约束评价
+Plan3DPath.m            直线、左右绕行和上方绕行
+ExecuteUntilEvent.m     沿实际三维航迹执行到事件时刻
+DynamicEvent.m          应用动态新增/取消订单
+PlotSolution.m          绘制三维地形、障碍物和路线
+data/rc101.txt          RC101 二维客户数据
+results/                main.m 生成的结果
 ```
 
 ## 运行
 
 ```matlab
 cd('D:\111\Desktop\噜噜\9.29');
-test_path
-RunStaticBaseline
 main
 ```
 
-`main.m` 当前运行：
+当前主程序固定使用：
 
 ```text
 14 个初始订单
-+ 6 个未来订单
-+ Level 2 时间窗
-+ serviceTime = 3
-+ eventTime = 35
-+ 第一个新增订单事件
-+ 事件后 Restart-PSO
+6 个预留未来订单
+Level 2 时间窗：initial before=30，after=45，future=45
+serviceTime = 3
+eventTime = 35
+事件后重新调用标准 PSO
 ```
 
-主程序输出：
+主程序结果：
 
 ```text
 results/main_result.mat
@@ -74,4 +77,4 @@ results/baseline_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
-当前地形峰值已适度增强，障碍物仍保持 8 个并向配送区域内部调整。30 个随机种子的 Level-2 候选校准后，最终固定为：initial windowBefore=30、windowAfter=45，futureWindow=45。主程序还输出绕障航段数、直线受地形阻挡航段数和直线受障碍物阻挡航段数。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前时间窗采用硬约束：提前到达允许等待，超过 due 的路线视为不可行，并使用固定大罚值保证不可行解不会优于可行解。30 次最终 baseline 重复结果为：Static=0.43、Initial=0.77、Post-event=0.73。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
+当前版本的目标是让老师先检查：问题定义、三维航迹评价、动态执行语义和标准 PSO 底座。后续算法改进不放在这个基础版本中。

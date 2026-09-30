@@ -45,7 +45,7 @@ if ~applied
     error('The first dynamic event was not applied.');
 end
 
-%% Restart-PSO after the event
+%% Standard PSO after the event
 [Best1,T1] = PSO(model,eventState,maxgen,Particle_Number,2);
 
 %% Save baseline results
@@ -62,7 +62,7 @@ plot(T1,'LineWidth',1.8);
 grid on
 xlabel('The Number of Iterations','fontsize',12);
 ylabel('The Function Value','fontsize',12);
-legend('Initial PSO','Post-event Restart-PSO','Location','best');
+legend('Initial standard PSO','Post-event standard PSO','Location','best');
 title('Dynamic 3-D UAV routing baseline');
 exportgraphics(gcf,fullfile(root,'results', ...
     'baseline_replanning_convergence.png'),'Resolution',150);
