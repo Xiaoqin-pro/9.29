@@ -16,6 +16,9 @@ if ~isfield(cfg,'timeWindowLevel'), cfg.timeWindowLevel = 2; end
 if ~isfield(cfg,'serviceTime'), cfg.serviceTime = 3; end
 if ~isfield(cfg,'includeCancel'), cfg.includeCancel = true; end
 if ~isfield(cfg,'eventTime'), cfg.eventTime = 35; end
+if ~isfield(cfg,'windowBefore'), cfg.windowBefore = [50 30 15]; end
+if ~isfield(cfg,'windowAfter'), cfg.windowAfter = [70 45 25]; end
+if ~isfield(cfg,'futureWindow'), cfg.futureWindow = cfg.windowAfter; end
 
 rng(cfg.seed);
 model.mapSize = cfg.mapSize;
@@ -87,12 +90,14 @@ xy = reshape([orders.xy],2,[])';
 initialXY = xy(1:cfg.nInitialOrders,:);
 model.referenceRoute = NearestNeighborRoute(model.depotXY,initialXY);
 model.selectedCustomerIDs = customers(:,1)';
-windowBefore = [50 25 15];
-windowAfter = [70 40 25];
+windowBefore = cfg.windowBefore;
+windowAfter = cfg.windowAfter;
+futureWindow = cfg.futureWindow;
 level = min(max(cfg.timeWindowLevel,1),3);
 model.timeWindowLevel = level;
 model.windowBefore = windowBefore;
 model.windowAfter = windowAfter;
+model.futureWindow = futureWindow;
 current = model.depot;
 currentTime = 0;
 referenceStart = zeros(1,n);
@@ -119,7 +124,7 @@ for i = cfg.nInitialOrders+1:n
     k = i-cfg.nInitialOrders;
     orders(i).release = cfg.eventTime + 25*(k-1);
     orders(i).ready = orders(i).release;
-    orders(i).due = orders(i).release+windowAfter(level);
+    orders(i).due = orders(i).release+futureWindow(level);
 end
 
 model.orders = orders;

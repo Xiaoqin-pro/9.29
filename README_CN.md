@@ -39,6 +39,7 @@ PlotSolution.m          绘制三维场景和路线
 test_path.m             五类独立航段测试
 RunStaticBaseline.m     静态时间窗难度校准
 RunDynamicBaseline.m    动态事件时刻难度校准
+RunTimeWindowCalibration.m Level-2 时间窗校准（含 futureWindow）
 data/rc101.txt          RC101 订单二维数据
 results/                运行结果
 ```
@@ -72,4 +73,4 @@ results/baseline_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
-当前地形峰值已适度增强，障碍物仍保持 8 个并向配送区域内部调整。动态校准结果为：eventTime=15/25/35 时，事件后活动订单数为 14/13/11，Restart-PSO 可行率为 0.20/0.10/0.60。主程序还输出绕障航段数、直线受地形阻挡航段数和直线受障碍物阻挡航段数。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
+当前地形峰值已适度增强，障碍物仍保持 8 个并向配送区域内部调整。30 个随机种子的 Level-2 校准比较了 25/40、30/45、35/45 和 35/50 四组候选，最终固定为：initial windowBefore=30、windowAfter=45，futureWindow=45。对应 Static 20-order / Initial 14-order / Post-event Restart 的可行率为 0.33 / 0.87 / 0.73。主程序还输出绕障航段数、直线受地形阻挡航段数和直线受障碍物阻挡航段数。当前默认使用 eventTime=35，使事件后仍保留约 11 个活动订单。当前基础算法只做随机初始化和标准 PSO 更新，后续算法改进将在这个干净 baseline 上单独增加。
