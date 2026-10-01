@@ -88,13 +88,15 @@ smoothWeight = 2
 每个事件后重新调用插入式离散 PSO
 ```
 
-主程序保存初始状态、每次事件状态和最终状态。
+主程序保存初始状态、每次事件状态和最终状态；三维图分别保存初始路线、第一次事件后路线和最终事件后路线。
 
 主程序结果：
 
 ```text
 results/main_result.mat
 results/baseline_route_3D.png
+results/event01_route_3D.png
+results/final_route_3D.png
 results/baseline_replanning_convergence.png
 ```
 
