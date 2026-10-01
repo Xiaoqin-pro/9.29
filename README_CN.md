@@ -60,6 +60,7 @@ ExecuteUntilEvent.m     沿实际三维航迹执行到事件时刻
 DynamicEvent.m          应用动态新增/取消订单
                         事件后允许立即改航
 PlotSolution.m          绘制三维地形、障碍物和路线
+PlotAllOrders.m         全部订单的空间参考路线总览
 data/rc101.txt          RC101 二维客户数据
 results/                main.m 生成的结果
 ```
@@ -97,8 +98,11 @@ results/main_result.mat
 results/baseline_route_3D.png
 results/event01_route_3D.png
 results/final_route_3D.png
+results/all_orders_route_3D.png
 results/baseline_replanning_convergence.png
 ```
+
+`all_orders_route_3D.png` 显示全部20个订单，包括未来订单和最终取消的订单。黄色表示初始订单，绿色表示未来订单；连线由全订单最近邻顺序与现有三维航段规划器生成。它只是空间参考总览，不是PSO结果、实际执行历史或满足动态释放/硬时间窗的配送方案。若存在几何不可行航段，会以红色虚线标出。参考路线及各航段指标保存在 `main_result.mat` 的 `allOrdersOverview` 中，动态规划不会读取这些信息。
 
 动态事件发生时，程序记录无人机当前的真实三维位置和已完成订单；新增订单进入 active，取消订单从 active 删除，已完成订单不再激活，未来订单被取消后不会再次 add。事件后所有未完成订单立即重新参与插入式离散 PSO 排序，旧路线不具有强制性。若事件发生在服务过程中，当前未完成服务按之后重新完成一次完整服务处理。
 

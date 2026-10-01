@@ -81,6 +81,9 @@ PlotSolution(eventResults(1).Best,model,eventResults(1).state, ...
     fullfile(root,'results','event01_route_3D.png'));
 PlotSolution(Best1,model,state, ...
     fullfile(root,'results','final_route_3D.png'));
+allOrdersOverview = PlotAllOrders(model,initialState.activeIDs, ...
+    fullfile(root,'results','all_orders_route_3D.png'));
+save(fullfile(root,'results','main_result.mat'),'allOrdersOverview','-append');
 
 figure('Color','w');
 plot(T0,'LineWidth',1.5); hold on
