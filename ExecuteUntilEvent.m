@@ -1,4 +1,4 @@
-function [state,remainingRoute] = ExecuteUntilEvent(model,state,route,eventTime)
+function [model,state,remainingRoute] = ExecuteUntilEvent(model,state,route,eventTime)
 %EXECUTEUNTILEVENT Execute the committed 3-D route until an event.
 
 current = state.position;
@@ -17,7 +17,7 @@ for k = 1:length(route)
         distance = norm(point2-point1);
         travelTime = distance/model.speed;
 
-        if eventTime < currentTime + travelTime
+        if eventTime <= currentTime + travelTime
             ratio = (eventTime-currentTime)/travelTime;
             state.position = point1 + ratio*(point2-point1);
             direction = point2-point1;
@@ -54,11 +54,31 @@ for k = 1:length(route)
     currentTime = serviceEnd;
     direction = [];
     state.servedIDs = [state.servedIDs id];
+    model.orders(id).status = 'served';
     state.activeIDs = state.activeIDs(state.activeIDs ~= id);
 end
 
-state.position = current;
+% Return to the depot if all committed orders finish before the event.
+path = Plan3DPath(current,model.depot,model,direction);
+for j = 1:size(path.points,1)-1
+    point1 = path.points(j,:);
+    point2 = path.points(j+1,:);
+    distance = norm(point2-point1);
+    travelTime = distance/model.speed;
+    if eventTime <= currentTime + travelTime
+        ratio = (eventTime-currentTime)/travelTime;
+        state.position = point1+ratio*(point2-point1);
+        state.direction = (point2-point1)/norm(point2-point1);
+        state.time = eventTime;
+        remainingRoute = [];
+        return
+    end
+    currentTime = currentTime+travelTime;
+    current = point2;
+end
+
+state.position = model.depot;
 state.direction = [];
-state.time = currentTime;
+state.time = eventTime;
 remainingRoute = [];
 end

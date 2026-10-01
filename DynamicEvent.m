@@ -6,7 +6,7 @@ ids = event.orderIDs;
 if strcmp(event.type,'add')
     for i = 1:length(ids)
         id = ids(i);
-        if ~ismember(id,state.activeIDs) && ~ismember(id,state.servedIDs)
+        if strcmp(model.orders(id).status,'future')
             state.activeIDs = [state.activeIDs id];
             model.orders(id).status = 'active';
         end
@@ -16,8 +16,11 @@ end
 if strcmp(event.type,'cancel')
     for i = 1:length(ids)
         id = ids(i);
-        if ismember(id,state.activeIDs)
+        if strcmp(model.orders(id).status,'active')
             state.activeIDs = state.activeIDs(state.activeIDs ~= id);
+            state.cancelledIDs = [state.cancelledIDs id];
+            model.orders(id).status = 'cancelled';
+        elseif strcmp(model.orders(id).status,'future')
             state.cancelledIDs = [state.cancelledIDs id];
             model.orders(id).status = 'cancelled';
         end

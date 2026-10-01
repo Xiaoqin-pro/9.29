@@ -112,17 +112,28 @@ model.activeIDs = 1:cfg.nInitialOrders;
 model.futureIDs = cfg.nInitialOrders+1:n;
 
 %% Dynamic events
+% Every future order has one add event. Cancel events are fixed in cfg.
+eventTimes = [];
+eventTypes = {};
+eventIDs = [];
+for i = cfg.nInitialOrders+1:n
+    eventTimes(end+1) = orders(i).release;
+    eventTypes{end+1} = 'add';
+    eventIDs(end+1) = i;
+end
+if cfg.includeCancel
+    for i = 1:length(cfg.cancelTimes)
+        eventTimes(end+1) = cfg.cancelTimes(i);
+        eventTypes{end+1} = 'cancel';
+        eventIDs(end+1) = cfg.cancelIDs(i);
+    end
+end
+[~,order] = sort(eventTimes);
 model.events = struct('time',{},'type',{},'orderIDs',{});
-if cfg.nFutureOrders >= 1
-    model.events(end+1) = struct('time',cfg.eventTime,'type','add', ...
-        'orderIDs',cfg.nInitialOrders+1);
-end
-if cfg.includeCancel && cfg.nInitialOrders >= 3
-    model.events(end+1) = struct('time',70,'type','cancel','orderIDs',3);
-end
-if cfg.nFutureOrders >= 2
-    model.events(end+1) = struct('time',cfg.eventTime+25,'type','add', ...
-        'orderIDs',cfg.nInitialOrders+2);
+for i = 1:length(order)
+    k = order(i);
+    model.events(i) = struct('time',eventTimes(k), ...
+        'type',eventTypes{k},'orderIDs',eventIDs(k));
 end
 end
 
