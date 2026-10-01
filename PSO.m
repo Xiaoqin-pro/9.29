@@ -1,12 +1,13 @@
 function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed)
 %PSO Insertion-based discrete PSO for UAV order sequencing.
 %   Each particle is an order permutation.
+%   Operation probabilities provide stochastic exploration and learning.
 
 rng(seed);
 nVar = length(state.activeIDs);
 pRandom = 0.5;
-pPersonal = 0.5;
-pGlobal = 0.8;
+pPbest = 0.5;
+pGbest = 0.8;
 
 empty_particle.Position = [];
 empty_particle.Cost = [];
@@ -39,10 +40,10 @@ for it = 1:maxgen
         if rand < pRandom
             position = RandomInsert(position);
         end
-        if rand < pPersonal
+        if rand < pPbest
             position = LearnInsert(position,particle(i).Best.Position);
         end
-        if rand < pGlobal
+        if rand < pGbest
             position = LearnInsert(position,GlobalBest.Position);
         end
 
