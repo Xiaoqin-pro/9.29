@@ -1,5 +1,17 @@
-function PlotSolution(BestSol,model,state,filePath)
-%PLOTSOLUTION Plot the terrain, cylindrical buildings and UAV route.
+function overview = PlotSolution(BestSol,model,state,filePath,mode)
+%PLOTSOLUTION Plot a route snapshot or the all-order reference overview.
+
+overview = [];
+if strcmp(mode,'all')
+    initialIDs = state.activeIDs;
+    BestSol.Position = AllOrdersRoute(model);
+    state.time = 0;
+    state.position = model.depot;
+    state.activeIDs = 1:model.nOrders;
+    state.servedIDs = [];
+    state.cancelledIDs = [];
+    state.direction = [];
+end
 
 [~,detail] = Fitness(BestSol.Position,model,state);
 figure('Color','w');
@@ -43,6 +55,45 @@ for i = 1:length(state.activeIDs)
     text(p(1)+1,p(2)+1,p(3)+1,sprintf('C%d',id));
 end
 
+if strcmp(mode,'all')
+    initialXYZ = reshape([model.orders(initialIDs).xyz],3,[])';
+    futureIDs = setdiff(1:model.nOrders,initialIDs);
+    futureXYZ = reshape([model.orders(futureIDs).xyz],3,[])';
+    scatter3(initialXYZ(:,1),initialXYZ(:,2),initialXYZ(:,3),45, ...
+        [0.95 0.75 0.1],'filled','DisplayName','Initial orders');
+    scatter3(futureXYZ(:,1),futureXYZ(:,2),futureXYZ(:,3),55, ...
+        [0.1 0.7 0.3],'filled','DisplayName','Future orders (including cancelled)');
+    geometryFeasible = cellfun(@(p) p.isFeasible,detail.paths);
+    for k = find(~geometryFeasible)'
+        points = detail.paths{k}.points;
+        plot3(points(:,1),points(:,2),points(:,3),'r--', ...
+            'LineWidth',2,'HandleVisibility','off');
+    end
+    set(findobj(gca,'DisplayName','UAV route'), ...
+        'DisplayName','Nearest-neighbor reference');
+    title(sprintf('All %d orders: reference overview (not executed)',model.nOrders));
+    overview.route = BestSol.Position;
+    overview.points = detail.points;
+    overview.paths = detail.paths;
+    overview.distance = detail.distance;
+    overview.geometryFeasible = geometryFeasible;
+    fprintf('All-order overview: %d orders, distance=%.3f, infeasible legs=%d\n', ...
+        model.nOrders,detail.distance,sum(~geometryFeasible));
+end
+
 legend('Location','best');
 exportgraphics(gcf,filePath,'Resolution',150);
+end
+
+function route = AllOrdersRoute(model)
+xy = reshape([model.orders.xy],2,[])';
+remaining = 1:model.nOrders;
+route = zeros(1,model.nOrders);
+current = model.depot(1:2);
+for k = 1:model.nOrders
+    [~,index] = min(sum((xy(remaining,:)-current).^2,2));
+    route(k) = remaining(index);
+    current = xy(route(k),:);
+    remaining(index) = [];
+end
 end
