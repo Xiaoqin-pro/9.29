@@ -4,7 +4,9 @@ function overview = PlotSolution(BestSol,model,state,filePath,mode)
 overview = [];
 if strcmp(mode,'all')
     BestSol.Route = AllOrdersRoute(model);
-    BestSol.Control = zeros(model.nOrders+1,model.nControlPoints,2);
+    K = model.nControlPoints;
+    BestSol.Control = zeros(model.nOrders+1,K,3);
+    BestSol.Control(:,:,1) = repmat((1:K)/(K+1),model.nOrders+1,1);
     state.time = 0;
     state.position = model.depot;
     state.activeIDs = 1:model.nOrders;

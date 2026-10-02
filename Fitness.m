@@ -70,7 +70,6 @@ end
 if obstacleViolation > 1e-8
     cost = cost + 100000 + 10000*obstacleViolation;
 end
-
 if mapViolation > 1e-8
     cost = cost + 100000 + 10000*mapViolation;
 end
@@ -154,7 +153,7 @@ angle = atan2d(abs(first(1)*second(2)-first(2)*second(1)),dot(first,second));
 end
 
 function paths = DecodeControlPoints(route,control,model,startPoint)
-%DECODECONTROLPOINTS Convert local side/height offsets to XYZ polylines.
+%DECODECONTROLPOINTS Convert local lambda/d/h controls to XYZ polylines.
 
 nLegs = length(route)+1;
 K = model.nControlPoints;
@@ -180,11 +179,13 @@ for i = 1:nLegs
     points(1,:) = current;
     points(end,:) = target;
     for k = 1:K
-        base = current+k/(K+1)*move;
+        lambda = control(i,k,1);
+        d = control(i,k,2);
+        h = control(i,k,3);
+        base = current+lambda*move;
         points(k+1,:) = base;
-        points(k+1,1:2) = base(1:2) ...
-            + control(i,k,1)*side;
-        points(k+1,3) = base(3)+control(i,k,2);
+        points(k+1,1:2) = base(1:2)+d*side;
+        points(k+1,3) = base(3)+h;
     end
     paths{i} = points;
     current = target;

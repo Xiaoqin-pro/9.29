@@ -13,6 +13,8 @@ cfg.dataFile = fullfile(root,'data','rc101.txt');
 cfg.mapSize = [100 100];
 cfg.nOrders = 20;
 cfg.nControlPoints = 2;
+cfg.minControlRatio = 0.05;
+cfg.maxControlRatio = 0.95;
 cfg.maxSideOffset = 30;
 cfg.maxHeightOffset = 25;
 cfg.serviceTime = 3;
@@ -30,7 +32,9 @@ state.position = model.depot;
 state.activeIDs = model.activeIDs;
 
 %% Reference route and PSO planning
-referenceControl = zeros(model.nOrders+1,model.nControlPoints,2);
+K = model.nControlPoints;
+referenceControl = zeros(model.nOrders+1,K,3);
+referenceControl(:,:,1) = repmat((1:K)/(K+1),model.nOrders+1,1);
 [referenceCost,referenceDetail] = Fitness( ...
     model.referenceRoute,referenceControl,model,state);
 Particle_Number = 20;
@@ -55,7 +59,7 @@ plot(T,'LineWidth',1.8);
 grid on
 xlabel('The Number of Iterations','fontsize',12);
 ylabel('The Function Value','fontsize',12);
-title('Static 3-D UAV insertion-PSO baseline');
+title('Static 3-D UAV local-control hybrid PSO');
 exportgraphics(gcf,fullfile(root,'results', ...
     'baseline_convergence.png'),'Resolution',150);
 
