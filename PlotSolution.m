@@ -4,11 +4,10 @@ function overview = PlotSolution(BestSol,model,state,filePath,mode)
 overview = [];
 if strcmp(mode,'all')
     BestSol.Route = AllOrdersRoute(model);
-    BestSol.Control = InitialControlPoints(BestSol.Route,model,model.depot);
+    BestSol.Control = zeros(model.nOrders+1,model.nControlPoints,2);
     state.time = 0;
     state.position = model.depot;
     state.activeIDs = 1:model.nOrders;
-    state.direction = [];
 end
 
 [~,detail] = Fitness(BestSol.Route,BestSol.Control,model,state);
@@ -91,4 +90,3 @@ for k = 1:model.nOrders
     remaining(index) = [];
 end
 end
-

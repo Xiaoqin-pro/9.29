@@ -15,10 +15,8 @@ cfg.nOrders = 20;
 cfg.nControlPoints = 2;
 cfg.maxSideOffset = 30;
 cfg.maxHeightOffset = 25;
-cfg.timeWindowLevel = 2;
 cfg.serviceTime = 3;
-cfg.windowBefore = [50 30 15];
-cfg.windowAfter = [70 45 25];
+cfg.twScale = 1.0;
 cfg.seed = 20260929;
 cfg.safetySamples = 30;
 cfg.maxClimbAngle = 25;
@@ -30,18 +28,18 @@ model = CreateModel(cfg);
 state.time = 0;
 state.position = model.depot;
 state.activeIDs = model.activeIDs;
-state.direction = [];
 
-%% Reference route and insertion-PSO planning
+%% Reference route and PSO planning
+referenceControl = zeros(model.nOrders+1,model.nControlPoints,2);
 [referenceCost,referenceDetail] = Fitness( ...
-    model.referenceRoute,model.referenceControl,model,state);
+    model.referenceRoute,referenceControl,model,state);
 Particle_Number = 20;
 maxgen = 100;
 [Best,T] = PSO(model,state,maxgen,Particle_Number,1);
 
 %% Save and plot the static result
 Reference.Route = model.referenceRoute;
-Reference.Control = model.referenceControl;
+Reference.Control = referenceControl;
 Reference.Cost = referenceCost;
 Reference.Detail = referenceDetail;
 save(fullfile(root,'results','main_result.mat'), ...
@@ -64,7 +62,7 @@ exportgraphics(gcf,fullfile(root,'results', ...
 fprintf('Reference cost:      %.3f\n',Reference.Cost);
 fprintf('Reference feasible:  %d\n',Reference.Detail.feasible);
 fprintf('Cost:                %.3f\n',Best.Cost);
-fprintf('Improvement:         %.3f\n',Reference.Cost-Best.Cost);
+fprintf('Reference distance:  %.3f\n',Reference.Detail.distance);
 fprintf('Route changed:       %d\n',~isequal(Best.Route,Reference.Route));
 fprintf('Control change:      %.3f\n',norm(Best.Control(:)-Reference.Control(:)));
 idx = find(T<Reference.Cost-1e-8,1);

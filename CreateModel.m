@@ -1,6 +1,6 @@
 function model = CreateModel(cfg)
 %CREATEMODEL Create the static 3-D UAV time-window model.
-%   Solomon RC101 XY + Gaussian terrain + cylindrical buildings.
+%   Solomon RC101 coordinates/time windows + Gaussian terrain + cylinders.
 
 rng(cfg.seed);
 model.mapSize = cfg.mapSize;
@@ -16,6 +16,7 @@ model.smoothWeight = cfg.smoothWeight;
 model.nControlPoints = cfg.nControlPoints;
 model.maxSideOffset = cfg.maxSideOffset;
 model.maxHeightOffset = cfg.maxHeightOffset;
+model.twScale = cfg.twScale;
 
 %% Gaussian terrain
 x = linspace(0,cfg.mapSize(1),51);
@@ -28,7 +29,7 @@ model.terrainZ = 1 ...
     + 0.6*sin(model.X/18).*cos(model.Y/22);
 model.terrainZ = max(model.terrainZ,0);
 
-%% Read and select RC101 customer coordinates
+%% Read RC101 coordinates and time windows
 raw = ReadRC101(cfg.dataFile);
 depot = raw(raw(:,1)==0,:);
 customers = sortrows(raw(raw(:,1)>0,:),1);
@@ -38,9 +39,9 @@ customers = customers(index,:);
 model.depotXY = depot(1,2:3);
 model.depot = [model.depotXY ...
     interp2(model.X,model.Y,model.terrainZ, ...
-    model.depotXY(1),model.depotXY(2)) + model.serviceHeight];
+    model.depotXY(1),model.depotXY(2))+model.serviceHeight];
 
-%% Fixed cylindrical buildings
+%% Cylindrical buildings
 obstacleData = [50 20 5 14; ...
                 72 20 5 16; ...
                 82 40 6 20; ...
@@ -53,62 +54,31 @@ for i = 1:size(obstacleData,1)
     model.obstacles(i) = MakeObstacle(obstacleData(i,:),model);
 end
 
-%% Orders with local terrain height
+%% Orders
 orders = repmat(struct('id',0,'xy',zeros(1,2),'xyz',zeros(1,3), ...
-    'ready',0,'due',0,'service',0),1,cfg.nOrders);
+    'ready',0,'due',0,'service',model.serviceTime),1,cfg.nOrders);
 for i = 1:cfg.nOrders
     xy = customers(i,2:3);
     ground = interp2(model.X,model.Y,model.terrainZ,xy(1),xy(2));
+    center = (customers(i,5)+customers(i,6))/2;
+    halfWidth = (customers(i,6)-customers(i,5))/2;
     orders(i).id = i;
     orders(i).xy = xy;
     orders(i).xyz = [xy ground+model.serviceHeight];
-    orders(i).service = model.serviceTime;
-end
-
-%% Build hard time windows around a reference route
-xy = reshape([orders.xy],2,[])';
-model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
-model.orders = orders;
-model.selectedCustomerIDs = customers(:,1)';
-model.timeWindowLevel = cfg.timeWindowLevel;
-model.windowBefore = cfg.windowBefore;
-model.windowAfter = cfg.windowAfter;
-
-referenceControl = InitialControlPoints( ...
-    model.referenceRoute,model,model.depot);
-model.referenceControl = referenceControl;
-model.referencePaths = DecodeControlPoints(...
-    model.referenceRoute,referenceControl,model,model.depot);
-current = model.depot;
-currentTime = 0;
-referenceStart = zeros(1,cfg.nOrders);
-for k = 1:cfg.nOrders
-    id = model.referenceRoute(k);
-    points = model.referencePaths{k};
-    currentTime = currentTime + ...
-        sum(vecnorm(diff(points,1,1),2,2))/model.speed;
-    referenceStart(id) = currentTime;
-    currentTime = currentTime + orders(id).service;
-    current = orders(id).xyz;
-end
-
-model.referenceStart = referenceStart;
-level = cfg.timeWindowLevel;
-for i = 1:cfg.nOrders
-    orders(i).ready = max(0,referenceStart(i)-cfg.windowBefore(level));
-    orders(i).due = referenceStart(i)+cfg.windowAfter(level);
+    orders(i).ready = max(0,center-model.twScale*halfWidth);
+    orders(i).due = center+model.twScale*halfWidth;
 end
 
 model.orders = orders;
 model.nOrders = cfg.nOrders;
 model.activeIDs = 1:cfg.nOrders;
+model.selectedCustomerIDs = customers(:,1)';
+model.referenceRoute = NearestNeighborRoute(model.depotXY, ...
+    reshape([orders.xy],2,[])');
 end
 
 function data = ReadRC101(filePath)
 fid = fopen(filePath,'r');
-if fid < 0
-    error('Cannot open RC101 data file: %s',filePath);
-end
 lines = textscan(fid,'%s','Delimiter','\n','Whitespace','');
 fclose(fid);
 data = zeros(0,7);
@@ -138,4 +108,3 @@ for i = 1:size(xy,1)
     remaining(index) = [];
 end
 end
-
