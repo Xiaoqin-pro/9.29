@@ -13,6 +13,8 @@ model.obstacleSafety = 2;
 model.maxClimbAngle = cfg.maxClimbAngle;
 model.maxTurnAngle = cfg.maxTurnAngle;
 model.smoothWeight = cfg.smoothWeight;
+model.nControlPoints = cfg.nControlPoints;
+model.maxControlHeight = cfg.maxControlHeight;
 
 %% Gaussian terrain
 x = linspace(0,cfg.mapSize(1),51);
@@ -25,7 +27,7 @@ model.terrainZ = 1 ...
     + 0.6*sin(model.X/18).*cos(model.Y/22);
 model.terrainZ = max(model.terrainZ,0);
 
-%% Read and select the RC101 customer coordinates
+%% Read and select RC101 customer coordinates
 raw = ReadRC101(cfg.dataFile);
 depot = raw(raw(:,1)==0,:);
 customers = sortrows(raw(raw(:,1)>0,:),1);
@@ -62,27 +64,34 @@ for i = 1:cfg.nOrders
     orders(i).service = model.serviceTime;
 end
 
-%% Build hard time windows around a feasible nearest-neighbor route
+%% Build hard time windows around a reference route
 xy = reshape([orders.xy],2,[])';
 model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
+model.orders = orders;
 model.selectedCustomerIDs = customers(:,1)';
-level = cfg.timeWindowLevel;
-model.timeWindowLevel = level;
+model.timeWindowLevel = cfg.timeWindowLevel;
 model.windowBefore = cfg.windowBefore;
 model.windowAfter = cfg.windowAfter;
+
+referenceControl = InitialControlPoints( ...
+    model.referenceRoute,model,model.depot);
+model.referenceControl = referenceControl;
 current = model.depot;
 currentTime = 0;
 referenceStart = zeros(1,cfg.nOrders);
 for k = 1:cfg.nOrders
     id = model.referenceRoute(k);
-    path = Plan3DPath(current,orders(id).xyz,model,[]);
-    currentTime = currentTime + path.distance/model.speed;
+    legControl = squeeze(referenceControl(k,:,:));
+    points = [current;legControl;orders(id).xyz];
+    currentTime = currentTime + ...
+        sum(vecnorm(diff(points,1,1),2,2))/model.speed;
     referenceStart(id) = currentTime;
     currentTime = currentTime + orders(id).service;
     current = orders(id).xyz;
 end
 
 model.referenceStart = referenceStart;
+level = cfg.timeWindowLevel;
 for i = 1:cfg.nOrders
     orders(i).ready = max(0,referenceStart(i)-cfg.windowBefore(level));
     orders(i).due = referenceStart(i)+cfg.windowAfter(level);

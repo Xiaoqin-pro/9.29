@@ -3,14 +3,15 @@ function overview = PlotSolution(BestSol,model,state,filePath,mode)
 
 overview = [];
 if strcmp(mode,'all')
-    BestSol.Position = AllOrdersRoute(model);
+    BestSol.Route = AllOrdersRoute(model);
+    BestSol.Control = InitialControlPoints(BestSol.Route,model,model.depot);
     state.time = 0;
     state.position = model.depot;
     state.activeIDs = 1:model.nOrders;
     state.direction = [];
 end
 
-[~,detail] = Fitness(BestSol.Position,model,state);
+[~,detail] = Fitness(BestSol.Route,BestSol.Control,model,state);
 figure('Color','w');
 surf(model.X,model.Y,model.terrainZ, ...
     'EdgeColor','none','FaceAlpha',0.65,'DisplayName','Terrain');
@@ -65,7 +66,7 @@ if strcmp(mode,'all')
     set(findobj(gca,'DisplayName','UAV route'), ...
         'DisplayName','Nearest-neighbor reference');
     title(sprintf('All %d orders: reference overview (not executed)',model.nOrders));
-    overview.route = BestSol.Position;
+    overview.route = BestSol.Route;
     overview.points = detail.points;
     overview.paths = detail.paths;
     overview.distance = detail.distance;
@@ -90,3 +91,4 @@ for k = 1:model.nOrders
     remaining(index) = [];
 end
 end
+

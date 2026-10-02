@@ -42,8 +42,8 @@ PSO 仍然保留粒子、个体最优、全局最优和迭代更新结构，只�
 main.m                  静态三维时间窗主程序
 PSO.m                   插入式离散 PSO
 CreateModel.m           RC101、地形、圆柱障碍、订单和时间窗
-Fitness.m               三维距离、硬时间窗和安全约束评价
-Plan3DPath.m            直线、双航点左右绕行和缓坡越障
+Fitness.m               控制点折线、三维距离、硬时间窗和安全约束评价
+InitialControlPoints.m  生成初始控制点
 PlotSolution.m          路线快照与全部订单空间参考总览
 data/rc101.txt          RC101 二维客户数据
 results/                main.m 生成的结果
@@ -76,6 +76,6 @@ results/all_orders_route_3D.png
 results/baseline_convergence.png
 ```
 
-`baseline_route_3D.png` 是 PSO 得到的静态规划路线；`all_orders_route_3D.png` 是全部20个静态订单的最近邻参考路线总览，不是 PSO 结果，也不是实际执行历史。
+`baseline_route_3D.png` 是 PSO 得到的静态控制点规划路线；`all_orders_route_3D.png` 是全部20个静态订单的最近邻参考路线总览，不是 PSO 结果，也不是实际执行历史。
 
-当前版本的目标是先让老师检查：静态问题定义、三维航迹评价、硬时间窗、控制约束和插入式离散 PSO 底座。动态订单和事件重规划后续另行研究。
+当前版本的控制点粒子使用 K=2 个控制点。每个粒子包含订单排列和所有航段控制点；第一个粒子使用最近邻参考路线及其初始化控制点，其余粒子随机排列并生成初始化控制点。Fitness 直接评价控制点折线，不再使用规则式 Plan3DPath。当前版本的目标是先让老师检查：静态问题定义、控制点折线评价、硬时间窗、控制约束和混合离散-连续 PSO 底座。动态订单和事件重规划后续另行研究。

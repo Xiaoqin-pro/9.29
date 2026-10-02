@@ -12,6 +12,7 @@ end
 cfg.dataFile = fullfile(root,'data','rc101.txt');
 cfg.mapSize = [100 100];
 cfg.nOrders = 20;
+cfg.nControlPoints = 2;
 cfg.timeWindowLevel = 2;
 cfg.serviceTime = 3;
 cfg.windowBefore = [50 30 15];
@@ -21,6 +22,7 @@ cfg.safetySamples = 30;
 cfg.maxClimbAngle = 25;
 cfg.maxTurnAngle = 120;
 cfg.smoothWeight = 2;
+cfg.maxControlHeight = 35;
 model = CreateModel(cfg);
 
 %% Initial state

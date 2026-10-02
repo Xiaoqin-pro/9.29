@@ -1,7 +1,5 @@
-function [cost,detail] = Fitness(position,model,state)
-%FITNESS Evaluate a complete UAV route.
-
-route = position;
+function [cost,detail] = Fitness(route,control,model,state)
+%FITNESS Evaluate order sequence and optimized control points.
 
 current = state.position;
 currentTime = state.time;
@@ -22,7 +20,9 @@ paths = cell(length(route)+1,1);
 for k = 1:length(route)
     id = route(k);
     target = model.orders(id).xyz;
-    path = Plan3DPath(current,target,model,direction);
+    legControl = squeeze(control(k,:,:));
+    points = [current;legControl;target];
+    path = EvaluatePolyline(points,model,direction);
     travelTime = path.distance/model.speed;
     arrival = currentTime + travelTime;
     wait = max(0,model.orders(id).ready-arrival);
@@ -47,7 +47,9 @@ for k = 1:length(route)
     allPoints = [allPoints;path.points(2:end,:)];
 end
 
-path = Plan3DPath(current,model.depot,model,direction);
+legControl = squeeze(control(end,:,:));
+points = [current;legControl;model.depot];
+path = EvaluatePolyline(points,model,direction);
 paths{end} = path;
 totalDistance = totalDistance + path.distance;
 terrainViolation = terrainViolation + path.terrainViolation;
@@ -75,6 +77,7 @@ if obstacleViolation > 1e-8
 end
 
 detail.route = route;
+detail.control = control;
 detail.records = records;
 detail.paths = paths;
 detail.points = allPoints;
@@ -91,4 +94,62 @@ detail.feasible = terrainViolation < 1e-8 ...
     && obstacleViolation < 1e-8 ...
     && totalAngleViolation < 1e-8 && totalLate < 1e-8;
 detail.finishTime = currentTime + path.distance/model.speed;
+end
+
+function result = EvaluatePolyline(points,model,initialDirection)
+segments = diff(points,1,1);
+horizontal = vecnorm(segments(:,1:2),2,2);
+pitch = atan2d(segments(:,3),horizontal);
+turn = zeros(max(0,size(segments,1)-1),1);
+for i = 1:length(turn)
+    turn(i) = TurnAngle(segments(i,:),segments(i+1,:));
+end
+if ~isempty(initialDirection) && ~isempty(segments)
+    turn = [TurnAngle(initialDirection,segments(1,:));turn];
+    pitchHistory = [atan2d(initialDirection(3),norm(initialDirection(1:2)));pitch];
+else
+    pitchHistory = pitch;
+end
+angleViolation = sum(max(0,abs(pitch)-model.maxClimbAngle)) ...
+    + sum(max(0,turn-model.maxTurnAngle));
+smoothness = sum((turn/model.maxTurnAngle).^2) ...
+    + sum((diff(pitchHistory)/model.maxClimbAngle).^2);
+
+terrainViolation = 0;
+obstacleViolation = 0;
+for i = 1:size(segments,1)
+    t = linspace(0,1,model.safetySamples)';
+    samples = points(i,:)+t.*segments(i,:);
+    ground = interp2(model.X,model.Y,model.terrainZ, ...
+        samples(:,1),samples(:,2),'linear');
+    terrainViolation = terrainViolation ...
+        + mean(max(0,model.minClearance-(samples(:,3)-ground)));
+    for j = 1:length(model.obstacles)
+        obs = model.obstacles(j);
+        insideXY = hypot(samples(:,1)-obs.x,samples(:,2)-obs.y) ...
+            <= obs.r+model.obstacleSafety;
+        insideZ = samples(:,3)>=obs.zMin-model.obstacleSafety ...
+            & samples(:,3)<=obs.zMax+model.obstacleSafety;
+        amount = max(0,obs.zMax+model.obstacleSafety-samples(:,3));
+        inside = insideXY & insideZ;
+        obstacleViolation = obstacleViolation+sum(amount(inside));
+    end
+end
+
+result.points = points;
+result.distance = sum(vecnorm(segments,2,2));
+result.terrainViolation = terrainViolation;
+result.obstacleViolation = obstacleViolation;
+result.angleViolation = angleViolation;
+result.totalViolation = terrainViolation+obstacleViolation+angleViolation;
+result.maxClimbAngle = max([0;abs(pitch)]);
+result.maxTurnAngle = max([0;turn]);
+result.smoothness = smoothness;
+result.isFeasible = result.totalViolation<1e-8;
+end
+
+function angle = TurnAngle(first,second)
+first = first(1:2);
+second = second(1:2);
+angle = atan2d(abs(first(1)*second(2)-first(2)*second(1)),dot(first,second));
 end
