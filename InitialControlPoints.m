@@ -1,9 +1,9 @@
 function control = InitialControlPoints(route,model,startPoint)
-%INITIALCONTROLPOINTS Create route-aware sloped initial control points.
+%INITIALCONTROLPOINTS Create local side/height initial control offsets.
 
 nLegs = length(route)+1;
 K = model.nControlPoints;
-control = zeros(nLegs,K,3);
+control = zeros(nLegs,K,2);
 current = startPoint;
 
 for i = 1:nLegs
@@ -13,66 +13,42 @@ for i = 1:nLegs
         target = model.depot;
     end
 
-    points = [current;target];
-    blocked = BlockedObstacles(points,model);
-    obstacle = 0;
+    blocked = BlockedObstacles(current,target,model);
     if ~isempty(blocked)
-        obstacle = blocked(1);
-    end
-    terrainBlocked = TerrainBlocked(points,model);
-
-    if obstacle > 0
-        obs = model.obstacles(obstacle);
         move = target(1:2)-current(1:2);
-        lengthXY = norm(move);
-        if lengthXY < eps
-            forward = [1 0];
+        horizontal = norm(move);
+        if horizontal < eps
+            side = [1 0];
         else
-            forward = move/lengthXY;
+            side = [-move(2) move(1)]/horizontal;
         end
-        side = [-forward(2) forward(1)];
-        obstacles = model.obstacles(blocked);
-        centers = [[obstacles.x]' [obstacles.y]'];
-        radii = [obstacles.r]'+model.obstacleSafety+3;
-        along = (centers-current(1:2))*forward';
+        centers = [[model.obstacles(blocked).x]' ...
+            [model.obstacles(blocked).y]'];
+        radius = [model.obstacles(blocked).r]' ...
+            + model.obstacleSafety + 3;
         across = (centers-current(1:2))*side';
-        entry = min(along-radii);
-        exit = max(along+radii);
-        overZ = max([current(3),target(3), ...
-            max([obstacles.zMax])+model.obstacleSafety+1, ...
-            max(model.terrainZ(:))+model.minClearance+1]);
-        points = [];
-        bestObstacle = inf;
-        for sign = [1 -1]
-            offset = sign*max(abs(across)+radii);
-            p1 = current(1:2)+entry*forward+offset*side;
-            p2 = current(1:2)+exit*forward+offset*side;
-            candidate = [current;p1 overZ;p2 overZ;target];
-            candidate = LimitControlAngles(candidate,model.maxClimbAngle);
-            obstacle = ObstacleViolation(candidate,model);
-            if obstacle < bestObstacle
-                points = candidate;
-                bestObstacle = obstacle;
-            end
+        offset = min(model.maxSideOffset,max(abs(across)+radius)+10);
+        control(i,:,1) = offset;
+        pointsA = OffsetPoints(current,target,squeeze(control(i,:,:)),model);
+        control(i,:,1) = -offset;
+        pointsB = OffsetPoints(current,target,squeeze(control(i,:,:)),model);
+        if ObstacleViolation(pointsA,model) <= ...
+                ObstacleViolation(pointsB,model)
+            control(i,:,1) = offset;
         end
-    elseif terrainBlocked
-        overZ = max([current(3),target(3), ...
-            max(model.terrainZ(:))+model.minClearance+1]);
-        points = SlopedPath(points,current(3),target(3), ...
-            overZ,model.maxClimbAngle);
+        control(i,:,2) = 0;
+    elseif TerrainBlocked(current,target,model)
+        control(i,:,2) = min(model.maxHeightOffset, ...
+            max(model.terrainZ(:))+model.minClearance+1 ...
+            - mean([current(3),target(3)]));
     end
-
-    controlPoints = SampleControlPoints(points,K);
-    controlPoints = LimitControlAngles( ...
-        [current;controlPoints;target],model.maxClimbAngle);
-    control(i,:,:) = controlPoints(2:end-1,:);
     current = target;
 end
 end
 
-function ids = BlockedObstacles(points,model)
-t = linspace(0,1,25)';
-samples = points(1,:)+t.*(points(2,:)-points(1,:));
+function ids = BlockedObstacles(from,to,model)
+t = linspace(0,1,30)';
+samples = from+t.*(to-from);
 ids = [];
 for j = 1:length(model.obstacles)
     obs = model.obstacles(j);
@@ -86,19 +62,31 @@ for j = 1:length(model.obstacles)
 end
 end
 
-function yes = TerrainBlocked(points,model)
-t = linspace(0,1,25)';
-samples = points(1,:)+t.*(points(2,:)-points(1,:));
-ground = interp2(model.X,model.Y,model.terrainZ, ...
-    samples(:,1),samples(:,2),'linear');
-yes = any(samples(:,3)-ground < model.minClearance);
-end
 
+
+function points = OffsetPoints(from,to,row,model)
+move = to-from;
+horizontal = norm(move(1:2));
+if horizontal < eps
+    side = [1 0];
+else
+    side = [-move(2) move(1)]/horizontal;
+end
+points = zeros(size(row,1)+2,3);
+points(1,:) = from;
+points(end,:) = to;
+for k = 1:size(row,1)
+    base = from+k/(size(row,1)+1)*move;
+    points(k+1,:) = base;
+    points(k+1,1:2) = base(1:2)+row(k,1)*side;
+    points(k+1,3) = base(3)+row(k,2);
+end
+end
 
 function value = ObstacleViolation(points,model)
 value = 0;
 for i = 1:size(points,1)-1
-    t = linspace(0,1,25)';
+    t = linspace(0,1,30)';
     samples = points(i,:)+t.*(points(i+1,:)-points(i,:));
     for j = 1:length(model.obstacles)
         obs = model.obstacles(j);
@@ -112,51 +100,11 @@ for i = 1:size(points,1)-1
 end
 end
 
-function points = SlopedPath(points,startZ,endZ,overZ,maxAngle)
-span = [0;cumsum(vecnorm(diff(points,1,1),2,2))];
-slope = tand(maxAngle);
-peakZ = min(overZ,(startZ+endZ+slope*span(end))/2);
-s = unique([span; ...
-    (peakZ-startZ)/slope; ...
-    span(end)-(peakZ-endZ)/slope]);
-s = s(s>=0 & s<=span(end));
-keep = [true;diff(span)>1e-10];
-xy = interp1(span(keep),points(keep,1:2),s);
-z = min([startZ+slope*s, ...
-    endZ+slope*(span(end)-s), ...
-    overZ*ones(size(s))],[],2);
-z(1) = startZ;
-z(end) = endZ;
-points = [xy z];
-end
-
-
-function points = LimitControlAngles(points,maxAngle)
-slope = tand(maxAngle);
-K = size(points,1)-2;
-for pass = 1:2
-    for i = 1:K
-        horizontal = norm(points(i+1,1:2)-points(i,1:2));
-        dz = points(i+1,3)-points(i,3);
-        limit = slope*horizontal;
-        points(i+1,3) = points(i,3)+max(-limit,min(limit,dz));
-    end
-    for i = K+2:-1:3
-        horizontal = norm(points(i,1:2)-points(i-1,1:2));
-        dz = points(i-1,3)-points(i,3);
-        limit = slope*horizontal;
-        points(i-1,3) = points(i,3)+max(-limit,min(limit,dz));
-    end
-end
-end
-
-function control = SampleControlPoints(points,K)
-if K == 2 && size(points,1) == 4
-    control = points(2:3,:);
-    return
-end
-span = [0;cumsum(vecnorm(diff(points,1,1),2,2))];
-s = (1:K)'/(K+1)*span(end);
-control = interp1(span,points,s);
+function yes = TerrainBlocked(from,to,model)
+t = linspace(0,1,30)';
+samples = from+t.*(to-from);
+ground = interp2(model.X,model.Y,model.terrainZ, ...
+    samples(:,1),samples(:,2),'linear');
+yes = any(samples(:,3)-ground < model.minClearance);
 end
 

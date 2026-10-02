@@ -14,15 +14,13 @@ maxTurnAngle = 0;
 terrainViolation = 0;
 obstacleViolation = 0;
 allPoints = current;
+paths = DecodeControlPoints(route,control,model,current);
 records = zeros(length(route),5);
-paths = cell(length(route)+1,1);
 
 for k = 1:length(route)
     id = route(k);
     target = model.orders(id).xyz;
-    legControl = squeeze(control(k,:,:));
-    points = [current;legControl;target];
-    path = EvaluatePolyline(points,model,direction);
+    path = EvaluatePolyline(paths{k},model,direction);
     travelTime = path.distance/model.speed;
     arrival = currentTime + travelTime;
     wait = max(0,model.orders(id).ready-arrival);
@@ -47,9 +45,7 @@ for k = 1:length(route)
     allPoints = [allPoints;path.points(2:end,:)];
 end
 
-legControl = squeeze(control(end,:,:));
-points = [current;legControl;model.depot];
-path = EvaluatePolyline(points,model,direction);
+path = EvaluatePolyline(paths{end},model,direction);
 paths{end} = path;
 totalDistance = totalDistance + path.distance;
 terrainViolation = terrainViolation + path.terrainViolation;

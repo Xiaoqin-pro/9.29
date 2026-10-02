@@ -14,7 +14,8 @@ model.maxClimbAngle = cfg.maxClimbAngle;
 model.maxTurnAngle = cfg.maxTurnAngle;
 model.smoothWeight = cfg.smoothWeight;
 model.nControlPoints = cfg.nControlPoints;
-model.maxControlHeight = cfg.maxControlHeight;
+model.maxSideOffset = cfg.maxSideOffset;
+model.maxHeightOffset = cfg.maxHeightOffset;
 
 %% Gaussian terrain
 x = linspace(0,cfg.mapSize(1),51);
@@ -76,13 +77,14 @@ model.windowAfter = cfg.windowAfter;
 referenceControl = InitialControlPoints( ...
     model.referenceRoute,model,model.depot);
 model.referenceControl = referenceControl;
+model.referencePaths = DecodeControlPoints(...
+    model.referenceRoute,referenceControl,model,model.depot);
 current = model.depot;
 currentTime = 0;
 referenceStart = zeros(1,cfg.nOrders);
 for k = 1:cfg.nOrders
     id = model.referenceRoute(k);
-    legControl = squeeze(referenceControl(k,:,:));
-    points = [current;legControl;orders(id).xyz];
+    points = model.referencePaths{k};
     currentTime = currentTime + ...
         sum(vecnorm(diff(points,1,1),2,2))/model.speed;
     referenceStart(id) = currentTime;
@@ -136,3 +138,4 @@ for i = 1:size(xy,1)
     remaining(index) = [];
 end
 end
+

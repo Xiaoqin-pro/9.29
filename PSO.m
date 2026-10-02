@@ -34,6 +34,8 @@ for i = 1:Particle_Number
             particle(i).Route,model,state.position);
     end
     particle(i).Velocity = randn(size(particle(i).Control));
+    particle(i).Velocity(:,:,1) = 2*particle(i).Velocity(:,:,1);
+    particle(i).Velocity(:,:,2) = particle(i).Velocity(:,:,2);
     [particle(i).Cost,particle(i).Detail] = Fitness( ...
         particle(i).Route,particle(i).Control,model,state);
 
@@ -69,10 +71,10 @@ for it = 1:maxgen
         particle(i).Control = particle(i).Control+particle(i).Velocity;
         particle(i).Control(:,:,1) = max(0,min(model.mapSize(1), ...
             particle(i).Control(:,:,1)));
-        particle(i).Control(:,:,2) = max(0,min(model.mapSize(2), ...
-            particle(i).Control(:,:,2)));
-        particle(i).Control(:,:,3) = max(0,min(model.maxControlHeight, ...
-            particle(i).Control(:,:,3)));
+        particle(i).Control(:,:,1) = max(-model.maxSideOffset, ...
+            min(model.maxSideOffset,particle(i).Control(:,:,1)));
+        particle(i).Control(:,:,2) = max(-model.maxHeightOffset, ...
+            min(model.maxHeightOffset,particle(i).Control(:,:,2)));
 
         [particle(i).Cost,particle(i).Detail] = Fitness( ...
             route,particle(i).Control,model,state);
