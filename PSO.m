@@ -6,6 +6,7 @@ nVar = length(state.activeIDs);
 pRandom = 0.5;
 pPbest = 0.5;
 pGbest = 0.8;
+pControlRandom = 0.1;
 w = 0.7;
 wdamp = 0.995;
 c1 = 1.5;
@@ -57,6 +58,7 @@ for it = 1:maxgen
         if rand < pPbest
             route = LearnInsert(route,particle(i).Best.Route);
         end
+        pGbest = 0.3+0.5*it/maxgen;
         if rand < pGbest
             route = LearnInsert(route,GlobalBest.Route);
         end
@@ -71,6 +73,21 @@ for it = 1:maxgen
             min(model.maxSideOffset,particle(i).Control(:,:,1)));
         particle(i).Control(:,:,2) = max(-model.maxHeightOffset, ...
             min(model.maxHeightOffset,particle(i).Control(:,:,2)));
+
+        if rand < pControlRandom
+            leg = randi(size(particle(i).Control,1));
+            point = randi(size(particle(i).Control,2));
+            particle(i).Control(leg,point,1) = ...
+                particle(i).Control(leg,point,1)+2*randn;
+            particle(i).Control(leg,point,2) = ...
+                particle(i).Control(leg,point,2)+randn;
+            particle(i).Control(leg,point,1) = ...
+                max(-model.maxSideOffset,min(model.maxSideOffset, ...
+                particle(i).Control(leg,point,1)));
+            particle(i).Control(leg,point,2) = ...
+                max(-model.maxHeightOffset,min(model.maxHeightOffset, ...
+                particle(i).Control(leg,point,2)));
+        end
 
         [particle(i).Cost,particle(i).Detail] = Fitness( ...
             route,particle(i).Control,model,state);
@@ -106,6 +123,12 @@ function route = LearnInsert(route,guide)
 index = randi(length(guide));
 customer = guide(index);
 route(route==customer) = [];
-to = min(index,length(route)+1);
+
+if index == 1
+    to = 1;
+else
+    predecessor = guide(index-1);
+    to = find(route==predecessor,1)+1;
+end
 route = [route(1:to-1),customer,route(to:end)];
 end

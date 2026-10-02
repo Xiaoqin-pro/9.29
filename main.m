@@ -65,6 +65,11 @@ fprintf('Reference cost:      %.3f\n',Reference.Cost);
 fprintf('Reference feasible:  %d\n',Reference.Detail.feasible);
 fprintf('Cost:                %.3f\n',Best.Cost);
 fprintf('Improvement:         %.3f\n',Reference.Cost-Best.Cost);
+fprintf('Route changed:       %d\n',~isequal(Best.Route,Reference.Route));
+fprintf('Control change:      %.3f\n',norm(Best.Control(:)-Reference.Control(:)));
+idx = find(T<Reference.Cost-1e-8,1);
+if isempty(idx), idx = 0; end
+fprintf('First improvement:   %d\n',idx);
 fprintf('Distance:            %.3f\n',Best.Detail.distance);
 fprintf('Late:                %.3f\n',Best.Detail.totalLate);
 fprintf('Waiting:             %.3f\n',Best.Detail.totalWaiting);
