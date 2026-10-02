@@ -3,7 +3,6 @@ function [cost,detail] = Fitness(route,control,model,state)
 
 current = state.position;
 currentTime = state.time;
-direction = state.direction;
 totalDistance = 0;
 totalLate = 0;
 totalWaiting = 0;
@@ -13,14 +12,14 @@ maxClimbAngle = 0;
 maxTurnAngle = 0;
 terrainViolation = 0;
 obstacleViolation = 0;
+mapViolation = 0;
 allPoints = current;
 paths = DecodeControlPoints(route,control,model,current);
 records = zeros(length(route),5);
 
 for k = 1:length(route)
     id = route(k);
-    target = model.orders(id).xyz;
-    path = EvaluatePolyline(paths{k},model,direction);
+    path = EvaluatePolyline(paths{k},model);
     travelTime = path.distance/model.speed;
     arrival = currentTime + travelTime;
     wait = max(0,model.orders(id).ready-arrival);
@@ -36,20 +35,20 @@ for k = 1:length(route)
     totalLate = totalLate + late;
     terrainViolation = terrainViolation + path.terrainViolation;
     obstacleViolation = obstacleViolation + path.obstacleViolation;
+    mapViolation = mapViolation + path.mapViolation;
     records(k,:) = [id arrival serviceStart late wait];
     paths{k} = path;
 
     currentTime = serviceStart + model.orders(id).service;
-    current = target;
-    direction = [];
     allPoints = [allPoints;path.points(2:end,:)];
 end
 
-path = EvaluatePolyline(paths{end},model,direction);
+path = EvaluatePolyline(paths{end},model);
 paths{end} = path;
 totalDistance = totalDistance + path.distance;
 terrainViolation = terrainViolation + path.terrainViolation;
 obstacleViolation = obstacleViolation + path.obstacleViolation;
+mapViolation = mapViolation + path.mapViolation;
 totalAngleViolation = totalAngleViolation + path.angleViolation;
 totalSmoothness = totalSmoothness + path.smoothness;
 maxClimbAngle = max(maxClimbAngle,path.maxClimbAngle);
@@ -72,6 +71,10 @@ if obstacleViolation > 1e-8
     cost = cost + 100000 + 10000*obstacleViolation;
 end
 
+if mapViolation > 1e-8
+    cost = cost + 100000 + 10000*mapViolation;
+end
+
 detail.route = route;
 detail.control = control;
 detail.records = records;
@@ -86,13 +89,15 @@ detail.maxClimbAngle = maxClimbAngle;
 detail.maxTurnAngle = maxTurnAngle;
 detail.terrainViolation = terrainViolation;
 detail.obstacleViolation = obstacleViolation;
+detail.mapViolation = mapViolation;
 detail.feasible = terrainViolation < 1e-8 ...
     && obstacleViolation < 1e-8 ...
-    && totalAngleViolation < 1e-8 && totalLate < 1e-8;
+    && totalAngleViolation < 1e-8 && totalLate < 1e-8 ...
+    && mapViolation < 1e-8;
 detail.finishTime = currentTime + path.distance/model.speed;
 end
 
-function result = EvaluatePolyline(points,model,initialDirection)
+function result = EvaluatePolyline(points,model)
 segments = diff(points,1,1);
 horizontal = vecnorm(segments(:,1:2),2,2);
 pitch = atan2d(segments(:,3),horizontal);
@@ -100,24 +105,21 @@ turn = zeros(max(0,size(segments,1)-1),1);
 for i = 1:length(turn)
     turn(i) = TurnAngle(segments(i,:),segments(i+1,:));
 end
-if ~isempty(initialDirection) && ~isempty(segments)
-    turn = [TurnAngle(initialDirection,segments(1,:));turn];
-    pitchHistory = [atan2d(initialDirection(3),norm(initialDirection(1:2)));pitch];
-else
-    pitchHistory = pitch;
-end
 angleViolation = sum(max(0,abs(pitch)-model.maxClimbAngle)) ...
     + sum(max(0,turn-model.maxTurnAngle));
 smoothness = sum((turn/model.maxTurnAngle).^2) ...
-    + sum((diff(pitchHistory)/model.maxClimbAngle).^2);
+    + sum((diff(pitch)/model.maxClimbAngle).^2);
 
 terrainViolation = 0;
 obstacleViolation = 0;
+mapViolation = sum(sum(max(0,-points(:,1:2)) ...
+    + max(0,points(:,1:2)-model.mapSize)));
 for i = 1:size(segments,1)
     t = linspace(0,1,model.safetySamples)';
     samples = points(i,:)+t.*segments(i,:);
+    xy = max(0,min(model.mapSize,samples(:,1:2)));
     ground = interp2(model.X,model.Y,model.terrainZ, ...
-        samples(:,1),samples(:,2),'linear');
+        xy(:,1),xy(:,2),'linear');
     terrainViolation = terrainViolation ...
         + mean(max(0,model.minClearance-(samples(:,3)-ground)));
     for j = 1:length(model.obstacles)
@@ -137,7 +139,8 @@ result.distance = sum(vecnorm(segments,2,2));
 result.terrainViolation = terrainViolation;
 result.obstacleViolation = obstacleViolation;
 result.angleViolation = angleViolation;
-result.totalViolation = terrainViolation+obstacleViolation+angleViolation;
+result.mapViolation = mapViolation;
+result.totalViolation = terrainViolation+obstacleViolation+angleViolation+mapViolation;
 result.maxClimbAngle = max([0;abs(pitch)]);
 result.maxTurnAngle = max([0;turn]);
 result.smoothness = smoothness;

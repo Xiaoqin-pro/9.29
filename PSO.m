@@ -3,7 +3,6 @@ function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed)
 
 rng(seed);
 nVar = length(state.activeIDs);
-K = model.nControlPoints;
 pRandom = 0.5;
 pPbest = 0.5;
 pGbest = 0.8;
@@ -35,7 +34,6 @@ for i = 1:Particle_Number
     end
     particle(i).Velocity = randn(size(particle(i).Control));
     particle(i).Velocity(:,:,1) = 2*particle(i).Velocity(:,:,1);
-    particle(i).Velocity(:,:,2) = particle(i).Velocity(:,:,2);
     [particle(i).Cost,particle(i).Detail] = Fitness( ...
         particle(i).Route,particle(i).Control,model,state);
 
