@@ -69,8 +69,6 @@ for it = 1:maxgen
             + c2*rand(size(particle(i).Control)) ...
             .*(GlobalBest.Control-particle(i).Control);
         particle(i).Control = particle(i).Control+particle(i).Velocity;
-        particle(i).Control(:,:,1) = max(0,min(model.mapSize(1), ...
-            particle(i).Control(:,:,1)));
         particle(i).Control(:,:,1) = max(-model.maxSideOffset, ...
             min(model.maxSideOffset,particle(i).Control(:,:,1)));
         particle(i).Control(:,:,2) = max(-model.maxHeightOffset, ...
@@ -95,7 +93,6 @@ for it = 1:maxgen
 end
 
 BestSol = GlobalBest;
-BestSol.Route = BestSol.Route;
 end
 
 function route = RandomInsert(route)

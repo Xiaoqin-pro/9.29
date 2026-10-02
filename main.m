@@ -32,14 +32,20 @@ state.position = model.depot;
 state.activeIDs = model.activeIDs;
 state.direction = [];
 
-%% Insertion-PSO planning
+%% Reference route and insertion-PSO planning
+[referenceCost,referenceDetail] = Fitness( ...
+    model.referenceRoute,model.referenceControl,model,state);
 Particle_Number = 20;
 maxgen = 100;
 [Best,T] = PSO(model,state,maxgen,Particle_Number,1);
 
 %% Save and plot the static result
+Reference.Route = model.referenceRoute;
+Reference.Control = model.referenceControl;
+Reference.Cost = referenceCost;
+Reference.Detail = referenceDetail;
 save(fullfile(root,'results','main_result.mat'), ...
-    'model','state','Best','T');
+    'model','state','Reference','Best','T');
 
 PlotSolution(Best,model,state, ...
     fullfile(root,'results','baseline_route_3D.png'),'route');
@@ -55,7 +61,10 @@ title('Static 3-D UAV insertion-PSO baseline');
 exportgraphics(gcf,fullfile(root,'results', ...
     'baseline_convergence.png'),'Resolution',150);
 
+fprintf('Reference cost:      %.3f\n',Reference.Cost);
+fprintf('Reference feasible:  %d\n',Reference.Detail.feasible);
 fprintf('Cost:                %.3f\n',Best.Cost);
+fprintf('Improvement:         %.3f\n',Reference.Cost-Best.Cost);
 fprintf('Distance:            %.3f\n',Best.Detail.distance);
 fprintf('Late:                %.3f\n',Best.Detail.totalLate);
 fprintf('Waiting:             %.3f\n',Best.Detail.totalWaiting);
