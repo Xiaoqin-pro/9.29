@@ -1,5 +1,5 @@
 function model = CreateModel(cfg)
-%CREATEMODEL Create the 3-D UAV benchmark model.
+%CREATEMODEL Create the static 3-D UAV time-window model.
 %   Solomon RC101 XY + Gaussian terrain + cylindrical buildings.
 
 rng(cfg.seed);
@@ -25,18 +25,17 @@ model.terrainZ = 1 ...
     + 0.6*sin(model.X/18).*cos(model.Y/22);
 model.terrainZ = max(model.terrainZ,0);
 
-%% Read the Solomon customer coordinates
+%% Read and select the RC101 customer coordinates
 raw = ReadRC101(cfg.dataFile);
 depot = raw(raw(:,1)==0,:);
-customers = raw(raw(:,1)>0,:);
-customers = sortrows(customers,1);
-n = cfg.nInitialOrders + cfg.nFutureOrders;
-index = round(linspace(1,size(customers,1),n));
+customers = sortrows(raw(raw(:,1)>0,:),1);
+index = round(linspace(1,size(customers,1),cfg.nOrders));
 customers = customers(index,:);
+
 model.depotXY = depot(1,2:3);
 model.depot = [model.depotXY ...
-    interp2(model.X,model.Y,model.terrainZ,model.depotXY(1),model.depotXY(2)) ...
-    + model.serviceHeight];
+    interp2(model.X,model.Y,model.terrainZ, ...
+    model.depotXY(1),model.depotXY(2)) + model.serviceHeight];
 
 %% Fixed cylindrical buildings
 obstacleData = [50 20 5 14; ...
@@ -53,9 +52,8 @@ end
 
 %% Orders with local terrain height
 orders = repmat(struct('id',0,'xy',zeros(1,2),'xyz',zeros(1,3), ...
-    'release',0,'ready',0,'due',0, ...
-    'service',0,'status','future'),1,n);
-for i = 1:n
+    'ready',0,'due',0,'service',0),1,cfg.nOrders);
+for i = 1:cfg.nOrders
     xy = customers(i,2:3);
     ground = interp2(model.X,model.Y,model.terrainZ,xy(1),xy(2));
     orders(i).id = i;
@@ -64,23 +62,18 @@ for i = 1:n
     orders(i).service = model.serviceTime;
 end
 
-%% Build time windows around a feasible nearest-neighbor route
+%% Build hard time windows around a feasible nearest-neighbor route
 xy = reshape([orders.xy],2,[])';
-initialXY = xy(1:cfg.nInitialOrders,:);
-model.referenceRoute = NearestNeighborRoute(model.depotXY,initialXY);
+model.referenceRoute = NearestNeighborRoute(model.depotXY,xy);
 model.selectedCustomerIDs = customers(:,1)';
-windowBefore = cfg.windowBefore;
-windowAfter = cfg.windowAfter;
-futureWindow = cfg.futureWindow;
 level = cfg.timeWindowLevel;
 model.timeWindowLevel = level;
-model.windowBefore = windowBefore;
-model.windowAfter = windowAfter;
-model.futureWindow = futureWindow;
+model.windowBefore = cfg.windowBefore;
+model.windowAfter = cfg.windowAfter;
 current = model.depot;
 currentTime = 0;
-referenceStart = zeros(1,n);
-for k = 1:cfg.nInitialOrders
+referenceStart = zeros(1,cfg.nOrders);
+for k = 1:cfg.nOrders
     id = model.referenceRoute(k);
     path = Plan3DPath(current,orders(id).xyz,model,[]);
     currentTime = currentTime + path.distance/model.speed;
@@ -90,51 +83,14 @@ for k = 1:cfg.nInitialOrders
 end
 
 model.referenceStart = referenceStart;
-for i = 1:cfg.nInitialOrders
-    orders(i).ready = max(0,referenceStart(i)-windowBefore(level));
-    orders(i).due = referenceStart(i)+windowAfter(level);
-end
-
-%% Initial and future order states
-for i = 1:cfg.nInitialOrders
-    orders(i).status = 'active';
-end
-for i = cfg.nInitialOrders+1:n
-    k = i-cfg.nInitialOrders;
-    orders(i).release = cfg.eventTime + 25*(k-1);
-    orders(i).ready = orders(i).release;
-    orders(i).due = orders(i).release+futureWindow(level);
+for i = 1:cfg.nOrders
+    orders(i).ready = max(0,referenceStart(i)-cfg.windowBefore(level));
+    orders(i).due = referenceStart(i)+cfg.windowAfter(level);
 end
 
 model.orders = orders;
-model.nOrders = n;
-model.activeIDs = 1:cfg.nInitialOrders;
-model.futureIDs = cfg.nInitialOrders+1:n;
-
-%% Dynamic events
-% Every future order has one add event. Cancel events are fixed in cfg.
-eventTimes = [];
-eventTypes = {};
-eventIDs = [];
-for i = cfg.nInitialOrders+1:n
-    eventTimes(end+1) = orders(i).release;
-    eventTypes{end+1} = 'add';
-    eventIDs(end+1) = i;
-end
-if cfg.includeCancel
-    for i = 1:length(cfg.cancelTimes)
-        eventTimes(end+1) = cfg.cancelTimes(i);
-        eventTypes{end+1} = 'cancel';
-        eventIDs(end+1) = cfg.cancelIDs(i);
-    end
-end
-[~,order] = sort(eventTimes);
-model.events = struct('time',{},'type',{},'orderIDs',{});
-for i = 1:length(order)
-    k = order(i);
-    model.events(i) = struct('time',eventTimes(k), ...
-        'type',eventTypes{k},'orderIDs',eventIDs(k));
-end
+model.nOrders = cfg.nOrders;
+model.activeIDs = 1:cfg.nOrders;
 end
 
 function data = ReadRC101(filePath)

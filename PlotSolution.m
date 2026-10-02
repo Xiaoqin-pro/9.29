@@ -3,13 +3,10 @@ function overview = PlotSolution(BestSol,model,state,filePath,mode)
 
 overview = [];
 if strcmp(mode,'all')
-    initialIDs = state.activeIDs;
     BestSol.Position = AllOrdersRoute(model);
     state.time = 0;
     state.position = model.depot;
     state.activeIDs = 1:model.nOrders;
-    state.servedIDs = [];
-    state.cancelledIDs = [];
     state.direction = [];
 end
 
@@ -56,13 +53,9 @@ for i = 1:length(state.activeIDs)
 end
 
 if strcmp(mode,'all')
-    initialXYZ = reshape([model.orders(initialIDs).xyz],3,[])';
-    futureIDs = setdiff(1:model.nOrders,initialIDs);
-    futureXYZ = reshape([model.orders(futureIDs).xyz],3,[])';
-    scatter3(initialXYZ(:,1),initialXYZ(:,2),initialXYZ(:,3),45, ...
-        [0.95 0.75 0.1],'filled','DisplayName','Initial orders');
-    scatter3(futureXYZ(:,1),futureXYZ(:,2),futureXYZ(:,3),55, ...
-        [0.1 0.7 0.3],'filled','DisplayName','Future orders (including cancelled)');
+    orderXYZ = reshape([model.orders.xyz],3,[])';
+    scatter3(orderXYZ(:,1),orderXYZ(:,2),orderXYZ(:,3),50, ...
+        [0.95 0.75 0.1],'filled','DisplayName','Orders');
     geometryFeasible = cellfun(@(p) p.isFeasible,detail.paths);
     for k = find(~geometryFeasible)'
         points = detail.paths{k}.points;
