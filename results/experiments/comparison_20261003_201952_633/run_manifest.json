@@ -1,0 +1,21 @@
+{
+  "Status": "complete",
+  "Parameters": {
+    "Runs": 1,
+    "Population": 30,
+    "Evaluations": 10000,
+    "Seed": 2.0261003E+7,
+    "Initialization": "UniformRandom",
+    "MapIDs": 2,
+    "CaseIDs": 6
+  },
+  "Algorithms": [
+    "PSO",
+    "CSO",
+    "CLPSO",
+    "GWO"
+  ],
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "ExpectedRuns": 4,
+  "CompletedRuns": 4
+}

@@ -1,0 +1,5 @@
+Terrain,Scenario,Algorithm,Runs,Evaluations,FeasibleRate,CandidateFeasibleRate,ImproveRate,BestCost,MeanCost,StdCost,MeanDistance,StdDistance,MeanWaiting,MeanReturn,MeanSearchSeconds,StdSearchSeconds,MeanLate,MeanFirstFeasibleEvaluation
+peaks,N20_tight,PSO,1,10000,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,80.777556,0,1176.13096730938,NaN
+peaks,N20_tight,CSO,1,10000,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,80.519481,0,3254.39299684597,NaN
+peaks,N20_tight,CLPSO,1,10000,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,77.1582704,0,1693.18541245019,NaN
+peaks,N20_tight,GWO,1,10000,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,113.9898252,0,2485.73724716163,NaN
