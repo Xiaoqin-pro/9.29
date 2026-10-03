@@ -1,138 +1,86 @@
-function [BestSol,BestCost] = PSO(model,state,maxgen,Particle_Number,seed)
-%PSO Insertion-based discrete PSO with local lambda/d/h control points.
-
-rng(seed);
-nVar = length(state.activeIDs);
-K = model.nControlPoints;
-pRandom = 0.5;
-pPbest = 0.5;
-pGbest = 0.8;
-w = 0.7;
-wdamp = 0.995;
-c1 = 1.5;
-c2 = 1.5;
-lambdaVelocityMax = 0.10;
-
-empty.Route = [];
-empty.Control = [];
-empty.Velocity = [];
-empty.Cost = [];
-empty.Detail = [];
-empty.Best.Route = [];
-empty.Best.Control = [];
-empty.Best.Cost = [];
-empty.Best.Detail = [];
-particle = repmat(empty,Particle_Number,1);
-GlobalBest.Cost = inf;
-lambda0 = repmat((1:K)/(K+1),nVar+1,1);
-
-for i = 1:Particle_Number
-    particle(i).Route = state.activeIDs(randperm(nVar));
-    particle(i).Control = zeros(nVar+1,K,3);
-    particle(i).Control(:,:,1) = lambda0+0.05*randn(nVar+1,K);
-    particle(i).Control(:,:,2) = randn(nVar+1,K);
-    particle(i).Control(:,:,3) = randn(nVar+1,K);
-    particle(i).Control(:,:,1) = max(model.minControlRatio, ...
-        min(model.maxControlRatio,particle(i).Control(:,:,1)));
-    particle(i).Control(:,:,2) = max(-model.maxSideOffset, ...
-        min(model.maxSideOffset,particle(i).Control(:,:,2)));
-    particle(i).Control(:,:,3) = max(-model.maxHeightOffset, ...
-        min(model.maxHeightOffset,particle(i).Control(:,:,3)));
-
-    particle(i).Velocity = zeros(size(particle(i).Control));
-    particle(i).Velocity(:,:,1) = 0.05*randn(nVar+1,K);
-    particle(i).Velocity(:,:,2) = randn(nVar+1,K);
-    particle(i).Velocity(:,:,3) = randn(nVar+1,K);
-    for leg = 1:nVar+1
-        [~,index] = sort(particle(i).Control(leg,:,1));
-        particle(i).Control(leg,:,:) = particle(i).Control(leg,index,:);
-        particle(i).Velocity(leg,:,:) = particle(i).Velocity(leg,index,:);
+function [Best,T,info] = PSO(model,state,maxgen,Particle_Number,seed)
+    % teacher风格：pop/V/pbest/gbest数组、直接循环、独立评价函数。
+    clockStart=tic;
+    sizepop=Particle_Number;
+    c1=1.5;
+    c2=1.5;
+    Vmax=0.15;
+    %% 初始化：直接使用main传入的共同种群
+    pop=state.initialPopulation;
+    n=length(state.activeIDs);
+    D=size(pop,2);
+    rng(seed);
+    V=0.01*(2*rand(sizepop,D)-1);
+    V(:,1:n)=3*V(:,1:n);
+    budget=sizepop*(maxgen+1);
+    if isfield(state,'maxEvaluations')
+        budget=state.maxEvaluations;
     end
-
-    [particle(i).Cost,particle(i).Detail] = Fitness( ...
-        particle(i).Route,particle(i).Control,model,state);
-    particle(i).Best.Route = particle(i).Route;
-    particle(i).Best.Control = particle(i).Control;
-    particle(i).Best.Cost = particle(i).Cost;
-    particle(i).Best.Detail = particle(i).Detail;
-    if particle(i).Best.Cost < GlobalBest.Cost
-        GlobalBest = particle(i).Best;
+    assert(sizepop>=4 && budget>=sizepop,'Use at least 4 particles and a budget covering initialization.');
+    fitness=zeros(sizepop,1);
+    feasible=false(sizepop,1);
+    T=nan(budget,1);
+    Best.Cost=inf;
+    Best.Detail.feasible=false;
+    for i=1:sizepop
+        [fitness(i),detail]=Fitness(pop(i,:),model,state);
+        feasible(i)=detail.feasible;
+        if (feasible(i)&&~Best.Detail.feasible) || (feasible(i)==Best.Detail.feasible&&fitness(i)<Best.Cost)
+            Best.Vector=pop(i,:);
+            Best.Route=detail.route;
+            Best.Control=detail.control;
+            Best.Cost=fitness(i);
+            Best.Detail=detail;
+        end
+        T(i)=Best.Cost;
     end
-end
+    info.Evaluations=sizepop;
+    info.Budget=budget;
+    info.FeasibleEvaluations=sum(feasible);
+    info.InitialCost=Best.Cost;
+    info.InitialFeasible=Best.Detail.feasible;
+    info.InitialPopulation=pop;
+    info.Seed=seed;
+    info.Iterations=0;
 
-BestCost = zeros(maxgen,1);
-for it = 1:maxgen
-    for i = 1:Particle_Number
-        route = particle(i).Route;
-        if rand < pRandom
-            route = RandomInsert(route);
-        end
-        if rand < pPbest
-            route = LearnInsert(route,particle(i).Best.Route);
-        end
-        if rand < pGbest
-            route = LearnInsert(route,GlobalBest.Route);
-        end
-
-        particle(i).Velocity = w*particle(i).Velocity ...
-            + c1*rand(size(particle(i).Control)) ...
-            .*(particle(i).Best.Control-particle(i).Control) ...
-            + c2*rand(size(particle(i).Control)) ...
-            .*(GlobalBest.Control-particle(i).Control);
-        particle(i).Velocity(:,:,1) = max(-lambdaVelocityMax, ...
-            min(lambdaVelocityMax,particle(i).Velocity(:,:,1)));
-        particle(i).Control = particle(i).Control+particle(i).Velocity;
-        particle(i).Control(:,:,1) = max(model.minControlRatio, ...
-            min(model.maxControlRatio,particle(i).Control(:,:,1)));
-        particle(i).Control(:,:,2) = max(-model.maxSideOffset, ...
-            min(model.maxSideOffset,particle(i).Control(:,:,2)));
-        particle(i).Control(:,:,3) = max(-model.maxHeightOffset, ...
-            min(model.maxHeightOffset,particle(i).Control(:,:,3)));
-        for leg = 1:nVar+1
-            [~,index] = sort(particle(i).Control(leg,:,1));
-            particle(i).Control(leg,:,:) = particle(i).Control(leg,index,:);
-            particle(i).Velocity(leg,:,:) = particle(i).Velocity(leg,index,:);
-        end
-
-        [particle(i).Cost,particle(i).Detail] = Fitness( ...
-            route,particle(i).Control,model,state);
-        particle(i).Route = route;
-
-        if particle(i).Cost < particle(i).Best.Cost
-            particle(i).Best.Route = particle(i).Route;
-            particle(i).Best.Control = particle(i).Control;
-            particle(i).Best.Cost = particle(i).Cost;
-            particle(i).Best.Detail = particle(i).Detail;
-        end
-        if particle(i).Best.Cost < GlobalBest.Cost
-            GlobalBest = particle(i).Best;
+    %% 更新
+    pbest=pop;
+    fitnesspbest=fitness;
+    feasiblepbest=feasible;
+    gbest=Best.Vector;
+    while info.Evaluations<info.Budget
+        info.Iterations=info.Iterations+1;
+        w=0.9-0.5*(info.Evaluations-sizepop)/(info.Budget-sizepop);
+        for i=1:sizepop
+            if info.Evaluations>=info.Budget
+                break;
+            end
+            V(i,:)=w*V(i,:)+c1*rand(1,size(pop,2)).*(pbest(i,:)-pop(i,:)) ...
+                +c2*rand(1,size(pop,2)).*(gbest-pop(i,:));
+            V(i,:)=max(-Vmax,min(Vmax,V(i,:)));
+            pop(i,:)=max(0,min(1,pop(i,:)+V(i,:)));
+            [fitness(i),detail]=Fitness(pop(i,:),model,state);
+            feasible(i)=detail.feasible;
+            info.Evaluations=info.Evaluations+1;
+            info.FeasibleEvaluations=info.FeasibleEvaluations+feasible(i);
+            if (feasible(i)&&~feasiblepbest(i)) || (feasible(i)==feasiblepbest(i)&&fitness(i)<fitnesspbest(i))
+                pbest(i,:)=pop(i,:);
+                fitnesspbest(i)=fitness(i);
+                feasiblepbest(i)=feasible(i);
+            end
+            if (feasible(i)&&~Best.Detail.feasible) || (feasible(i)==Best.Detail.feasible&&fitness(i)<Best.Cost)
+                Best.Vector=pop(i,:);
+                Best.Route=detail.route;
+                Best.Control=detail.control;
+                Best.Cost=fitness(i);
+                Best.Detail=detail;
+                gbest=pop(i,:);
+            end
+            T(info.Evaluations)=Best.Cost;
         end
     end
-    BestCost(it) = GlobalBest.Cost;
-    w = w*wdamp;
-end
-
-BestSol = GlobalBest;
-end
-
-function route = RandomInsert(route)
-if length(route)<2, return; end
-from = randi(length(route));
-customer = route(from);
-route(from) = [];
-to = randi(length(route)+1);
-route = [route(1:to-1),customer,route(to:end)];
-end
-
-function route = LearnInsert(route,guide)
-index = randi(length(guide));
-customer = guide(index);
-route(route==customer) = [];
-if index == 1
-    to = 1;
-else
-    predecessor = guide(index-1);
-    to = find(route==predecessor,1)+1;
-end
-route = [route(1:to-1),customer,route(to:end)];
+    info.Algorithm='PSO';
+    info.Seconds=toc(clockStart);
+    info.Improved=Best.Detail.feasible && Best.Cost<info.InitialCost-1e-8;
+    T=T(1:info.Evaluations);
 end

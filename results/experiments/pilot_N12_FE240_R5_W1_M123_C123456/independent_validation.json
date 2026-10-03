@@ -1,0 +1,9 @@
+{
+  "VerifiedRuns": 360,
+  "SourceHash": "3839ccb29d2f420046c3b9ab7ab70f203b8ade57bca707d25b6310dff2cafd3e",
+  "AllPassed": true,
+  "FeasibleRuns": 360,
+  "MaxDenseSampleStep": 0.05,
+  "CylinderCheck": "Independent analytic closest-point test on height-clipped segments",
+  "PairedInitialPopulations": 90
+}

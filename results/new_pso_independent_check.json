@@ -1,0 +1,38 @@
+[
+  {
+    "terrain": "ridge",
+    "visitedStations": 20,
+    "distance": 551.3823955849123,
+    "returnTime": 159.42017309918432,
+    "minimumDenseClearance": 4.607428673001859,
+    "maxClimbAngle": 24.9747281081879,
+    "maxTurnAngle": 117.7381704175668,
+    "late": 0,
+    "collisions": 0,
+    "independentPassed": true
+  },
+  {
+    "terrain": "peaks",
+    "visitedStations": 20,
+    "distance": 574.0154125713442,
+    "returnTime": 163.64280101891828,
+    "minimumDenseClearance": 4.447295942019068,
+    "maxClimbAngle": 24.982454780471635,
+    "maxTurnAngle": 118.8353756951087,
+    "late": 0,
+    "collisions": 0,
+    "independentPassed": true
+  },
+  {
+    "terrain": "mountain",
+    "visitedStations": 20,
+    "distance": 504.5571092015493,
+    "returnTime": 158.93005122281772,
+    "minimumDenseClearance": 4.076843423347935,
+    "maxClimbAngle": 24.31883043167418,
+    "maxTurnAngle": 101.6584378428143,
+    "late": 0,
+    "collisions": 0,
+    "independentPassed": true
+  }
+]

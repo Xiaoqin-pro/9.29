@@ -1,0 +1,10 @@
+Terrain,Stations,SetupSeconds,PathEvaluations,RepairPSOEvaluations
+ridge,10,3.0112851,7271,0
+peaks,10,2.7307553,7271,0
+mountain,10,2.6857843,7271,0
+ridge,15,4.1155875,10576,0
+peaks,15,4.8510798,11856,1280
+mountain,15,3.9488611,10576,0
+ridge,20,5.3270592,13881,0
+peaks,20,5.2363835,13881,0
+mountain,20,5.1090134,13881,0

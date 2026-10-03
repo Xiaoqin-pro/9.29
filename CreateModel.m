@@ -1,112 +1,95 @@
 function model = CreateModel(cfg)
-%CREATEMODEL Create the static 3-D UAV time-window model.
-%   Solomon RC101 coordinates/time windows + Gaussian terrain + cylinders.
+    %CREATEMODEL Create the static 3-D UAV time-window model.
+    %   Fixed delivery stations + hard time windows + public DSM terrain and no-fly threat zones.
 
-rng(cfg.seed);
-model.mapSize = cfg.mapSize;
-model.safetySamples = cfg.safetySamples;
-model.speed = 6;
-model.minClearance = 4;
-model.serviceHeight = 6;
-model.serviceTime = cfg.serviceTime;
-model.obstacleSafety = 2;
-model.maxClimbAngle = cfg.maxClimbAngle;
-model.maxTurnAngle = cfg.maxTurnAngle;
-model.smoothWeight = cfg.smoothWeight;
-model.nControlPoints = cfg.nControlPoints;
-model.minControlRatio = cfg.minControlRatio;
-model.maxControlRatio = cfg.maxControlRatio;
-model.maxSideOffset = cfg.maxSideOffset;
-model.maxHeightOffset = cfg.maxHeightOffset;
-model.twScale = cfg.twScale;
+    model.mapSize = cfg.mapSize;
+    model.speed = cfg.speed;
+    model.minClearance = cfg.minClearance;
+    model.serviceHeight = cfg.serviceHeight;
+    model.obstacleSafety = 2;
+    model.maxAltitude = cfg.maxAltitude;
+    model.maxClimbAngle = cfg.maxClimbAngle;
+    model.maxTurnAngle = cfg.maxTurnAngle;
+    model.smoothWeight = cfg.smoothWeight;
+    model.nControlPoints = cfg.nControlPoints;
+    model.minControlRatio = cfg.minControlRatio;
+    model.maxControlRatio = cfg.maxControlRatio;
+    model.maxSideOffset = cfg.maxSideOffset;
+    model.maxHeightOffset = cfg.maxHeightOffset;
+    model.twScale = cfg.twScale;
 
-%% Gaussian terrain
-x = linspace(0,cfg.mapSize(1),51);
-y = linspace(0,cfg.mapSize(2),51);
-[model.X,model.Y] = meshgrid(x,y);
-model.terrainZ = 1 ...
-    + 7*exp(-((model.X-25).^2+(model.Y-25).^2)/350) ...
-    + 9*exp(-((model.X-70).^2+(model.Y-35).^2)/450) ...
-    + 6*exp(-((model.X-55).^2+(model.Y-78).^2)/320) ...
-    + 0.6*sin(model.X/18).*cos(model.Y/22);
-model.terrainZ = max(model.terrainZ,0);
+    %% Public Copernicus GLO-90 terrain (no synthetic fallback)
+    names = {'ridge','peaks','mountain'};
+    terrainFile = cfg.terrainFiles{cfg.terrainType};
+    terrain = load(terrainFile,'terrainZ','terrainMeta');
+    x = linspace(0,cfg.mapSize(1),51);
+    y = linspace(0,cfg.mapSize(2),51);
+    [model.X,model.Y] = meshgrid(x,y);
+    model.terrainZ = terrain.terrainZ;
+    model.terrainType = cfg.terrainType;
+    model.terrainName = names{cfg.terrainType};
+    model.terrainMeta = terrain.terrainMeta;
 
-%% Read RC101 coordinates and time windows
-raw = ReadRC101(cfg.dataFile);
-depot = raw(raw(:,1)==0,:);
-customers = sortrows(raw(raw(:,1)>0,:),1);
-index = round(linspace(1,size(customers,1),cfg.nOrders));
-customers = customers(index,:);
+    %% 固定配送站点及时间窗
+    stations = readmatrix(cfg.stationFile);
+    stations = stations(1:cfg.nOrders,:);
+    assert(numel(unique(stations(:,1)))==size(stations,1),'Station IDs must be unique.');
+    assert(all(stations(:,4)>=0 & stations(:,5)>=stations(:,4) & stations(:,6)>=0));
+    model.depotXY = cfg.depotXY;
+    model.depot = [model.depotXY interp2(model.X,model.Y,model.terrainZ, ...
+        model.depotXY(1),model.depotXY(2))+model.serviceHeight];
+    model.depotReady = cfg.depotWindow(1);
+    model.depotDue = cfg.depotWindow(2);
+    model.stationSource = cfg.stationFile;
 
-model.depotXY = depot(1,2:3);
-model.depot = [model.depotXY ...
-    interp2(model.X,model.Y,model.terrainZ, ...
-    model.depotXY(1),model.depotXY(2))+model.serviceHeight];
-
-%% Cylindrical buildings
-obstacleData = [50 20 5 14; ...
-                72 20 5 16; ...
-                82 40 6 20; ...
-                66 55 5 18; ...
-                75 88 6 16; ...
-                82 72 6 20; ...
-                25 60 4 14; ...
-                34 25 4 12];
-for i = 1:size(obstacleData,1)
-    model.obstacles(i) = MakeObstacle(obstacleData(i,:),model);
-end
-
-%% Orders
-orders = repmat(struct('id',0,'xy',zeros(1,2),'xyz',zeros(1,3), ...
-    'ready',0,'due',0,'service',model.serviceTime),1,cfg.nOrders);
-for i = 1:cfg.nOrders
-    xy = customers(i,2:3);
-    ground = interp2(model.X,model.Y,model.terrainZ,xy(1),xy(2));
-    center = (customers(i,5)+customers(i,6))/2;
-    halfWidth = (customers(i,6)-customers(i,5))/2;
-    orders(i).id = i;
-    orders(i).xy = xy;
-    orders(i).xyz = [xy ground+model.serviceHeight];
-    orders(i).ready = max(0,center-model.twScale*halfWidth);
-    orders(i).due = center+model.twScale*halfWidth;
-end
-
-model.orders = orders;
-model.nOrders = cfg.nOrders;
-model.activeIDs = 1:cfg.nOrders;
-model.selectedCustomerIDs = customers(:,1)';
-model.referenceRoute = NearestNeighborRoute(model.depotXY, ...
-    reshape([orders.xy],2,[])');
-end
-
-function data = ReadRC101(filePath)
-fid = fopen(filePath,'r');
-lines = textscan(fid,'%s','Delimiter','\n','Whitespace','');
-fclose(fid);
-data = zeros(0,7);
-for i = 1:length(lines{1})
-    values = sscanf(lines{1}{i},'%f');
-    if length(values) >= 7
-        data(end+1,:) = values(1:7)';
+    %% 三维圆柱威胁区：底面贴地，半径/高度来自CSV
+    threatData = readmatrix(cfg.threatFile);
+    model.obstacles = repmat(struct('id',0,'x',0,'y',0,'r',0, ...
+        'zMin',0,'zMax',0),size(threatData,1),1);
+    for i = 1:size(threatData,1)
+        model.obstacles(i).id = threatData(i,1);
+        model.obstacles(i).x = threatData(i,2);
+        model.obstacles(i).y = threatData(i,3);
+        model.obstacles(i).r = threatData(i,4);
+        % 底部取安全圆域内的最低地形，防止底面悬空后出现穿底路线。
+        inside = hypot(model.X-threatData(i,2),model.Y-threatData(i,3)) ...
+            <= threatData(i,4)+model.obstacleSafety;
+        base = min(model.terrainZ(inside));
+        model.obstacles(i).zMin = base;
+        model.obstacles(i).zMax = base+threatData(i,5);
     end
-end
-end
+    model.threatSource = cfg.threatFile;
+    for i=1:numel(model.obstacles)
+        obs=model.obstacles(i);
+        assert(hypot(model.depot(1)-obs.x,model.depot(2)-obs.y)>obs.r+model.obstacleSafety, ...
+            'Depot lies inside a threat safety footprint.');
+    end
 
-function obstacle = MakeObstacle(data,model)
-ground = interp2(model.X,model.Y,model.terrainZ,data(1),data(2));
-obstacle = struct('x',data(1),'y',data(2),'r',data(3), ...
-    'zMin',ground,'zMax',ground+data(4));
-end
+    %% 三维配送点：高程=地形高程+服务高度
+    orders = repmat(struct('id',0,'stationID',0,'xy',zeros(1,2), ...
+        'xyz',zeros(1,3),'ready',0,'due',0,'service',0),1,cfg.nOrders);
+    for i = 1:cfg.nOrders
+        xy = stations(i,2:3);
+        ground = interp2(model.X,model.Y,model.terrainZ,xy(1),xy(2));
+        center = (stations(i,4)+stations(i,5))/2;
+        halfWidth = (stations(i,5)-stations(i,4))/2;
+        orders(i).id = i;
+        orders(i).stationID = stations(i,1);
+        orders(i).xy = xy;
+        orders(i).xyz = [xy ground+model.serviceHeight];
+        assert(orders(i).xyz(3)<=model.maxAltitude,'Service point is above maximum flight altitude.');
+        orders(i).ready = max(0,center-model.twScale*halfWidth);
+        orders(i).due = center+model.twScale*halfWidth;
+        orders(i).service = stations(i,6);
+        for j = 1:numel(model.obstacles)
+            obs = model.obstacles(j);
+            assert(hypot(xy(1)-obs.x,xy(2)-obs.y)>obs.r+model.obstacleSafety, ...
+                'Delivery station lies inside a threat safety footprint.');
+        end
+    end
 
-function route = NearestNeighborRoute(startXY,xy)
-remaining = 1:size(xy,1);
-route = zeros(1,size(xy,1));
-current = startXY;
-for i = 1:size(xy,1)
-    distance = sum((xy(remaining,:)-current).^2,2);
-    [~,index] = min(distance);
-    route(i) = remaining(index);
-    current = xy(route(i),:);
-    remaining(index) = [];
-end
+    model.orders = orders;
+    model.nOrders = cfg.nOrders;
+    model.activeIDs = 1:cfg.nOrders;
+    model.selectedCustomerIDs = stations(:,1)';
 end
