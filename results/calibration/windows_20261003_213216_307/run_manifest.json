@@ -1,0 +1,26 @@
+{
+  "Status": "complete",
+  "Terrain": "peaks",
+  "Stations": 20,
+  "Algorithm": "PSO",
+  "Widths": [
+    24,
+    30,
+    36,
+    45,
+    60
+  ],
+  "Seeds": [
+    2.0281304E+7,
+    2.0281305E+7,
+    2.0281306E+7,
+    2.0281307E+7,
+    2.0281308E+7
+  ],
+  "Population": 30,
+  "Evaluations": 3000,
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "Initialization": "UniformRandom",
+  "ExpectedRuns": 25,
+  "CompletedRuns": 25
+}

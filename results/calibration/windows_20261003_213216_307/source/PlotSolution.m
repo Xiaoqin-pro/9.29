@@ -239,24 +239,25 @@ end
 function PlotWindowCalibration(runs,out)
     widths=unique(runs.Width,'stable');
     rates=zeros(numel(widths),3);
-    values=zeros(numel(widths),5);
+    late=zeros(numel(widths),1);
+    geometry=zeros(numel(widths),3);
     for i=1:numel(widths)
         group=runs(runs.Width==widths(i),:);
         rates(i,:)=[mean(group.Feasible) mean(group.TimeFeasible) mean(group.GeometryFeasible)];
-        values(i,:)=[mean(group.Late) mean(group.DepotLate) mean(group.TerrainViolation) ...
-            mean(group.ObstacleViolation) mean(group.AngleViolation)];
+        late(i)=mean(group.Late);
+        geometry(i,:)=[mean(group.TerrainViolation) mean(group.ObstacleViolation) mean(group.AngleViolation)];
     end
-    f=figure('Color','w','Position',[100 100 1250 760]);
-    tiledlayout(f,2,3,'Padding','compact','TileSpacing','compact');
+    f=figure('Color','w','Position',[100 100 1100 760]);
+    tiledlayout(f,2,2,'Padding','compact','TileSpacing','compact');
     nexttile;bar(widths,rates);ylim([0 1]);grid on;
     xlabel('Window width');ylabel('Feasible rate');
     legend('Full','Time + depot','Geometry','Location','best');
     title(sprintf('peaks / N20 / PSO: %d paired seeds',sum(runs.Width==widths(1))));
-    labels={'Customer lateness (time)','Depot lateness (time)','Terrain deficit (height)', ...
-        'Cylinder intersection count','Angle violation (deg)'};
-    for i=1:5
-        nexttile;plot(widths,values(:,i),'o-','LineWidth',1.5);grid on;
-        xlabel('Window width');ylabel(labels{i});
-    end
+    nexttile;plot(widths,late,'o-','LineWidth',1.5);grid on;
+    xlabel('Window width');ylabel('Mean customer lateness');
+    nexttile;plot(widths,geometry(:,1:2),'o-','LineWidth',1.5);grid on;
+    xlabel('Window width');ylabel('Mean violation');legend('Terrain','Obstacle');
+    nexttile;plot(widths,geometry(:,3),'o-','LineWidth',1.5);grid on;
+    xlabel('Window width');ylabel('Mean angle violation (deg)');
     exportgraphics(f,fullfile(out,'window_calibration.png'),'Resolution',200);
 end
