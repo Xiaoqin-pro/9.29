@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-04",
+  "productionRevision": "85c229e",
+  "status": "complete",
+  "terrain": "peaks",
+  "population": 30,
+  "evaluations": 3000,
+  "repeats": 5,
+  "modes": {
+    "Full": 30,
+    "RouteOnly": 30,
+    "ControlOnly": 5
+  },
+  "fullFeasibleCounts": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "routeOnlyFeasibleCounts": [
+    5,
+    3,
+    4,
+    0,
+    2,
+    0
+  ],
+  "controlOnlyFeasibleCount": 0,
+  "fixedRouteFromArchiveOnly": true,
+  "archivedControlsUsedForInitialization": false,
+  "constraintsChangedInProduction": false,
+  "productionFilesUnchanged": true,
+  "independentVerifiedRuns": 65,
+  "productionSourceHashes": {
+    "CLPSO.m": "7f81cccf5422b482cf42a6434189e988b13ae71236ebe53062856f0a52566c82",
+    "CreateModel.m": "39aa4584ea0386869f1a15dae4b4aff4403078da78e7e8c5421a7edf7208b7a3",
+    "CSO.m": "c9e9f1fa3b3718e95e51dc9b6132acbe14ede57731610047238516bfa29f1398",
+    "Fitness.m": "672b07639441dc4cd8402f95b1a229cb63f1f613251bf61068a33e46a7567178",
+    "GWO.m": "4c7dca7334b617955676fc0f171325fc1583510a96be506ba6fdcfaed4ee8c7d",
+    "main.m": "06905388a1b4a4f70aa682b18045876dba30b297c09e018fd9c8719cdc68be5f",
+    "PlotSolution.m": "bee72e07110af5bcdc7e94ffce42628c7dea1c930900a4eab24ceb32170c9474",
+    "PSO.m": "ccd11b2de90e7e93660137f77118953884450b81a0a74eb1299d33fc5324d77f"
+  }
+}
