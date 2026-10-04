@@ -1,0 +1,44 @@
+[
+  {
+    "scenario": "N10_wide",
+    "found": true,
+    "solverStatus": 0,
+    "solverMessage": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  },
+  {
+    "scenario": "N10_tight",
+    "found": true,
+    "solverStatus": 0,
+    "solverMessage": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  },
+  {
+    "scenario": "N15_wide",
+    "found": true,
+    "solverStatus": 0,
+    "solverMessage": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  },
+  {
+    "scenario": "N15_tight",
+    "found": true,
+    "solverStatus": 1,
+    "solverMessage": "Time limit reached. (HiGHS Status 13: Time limit reached)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  },
+  {
+    "scenario": "N20_wide",
+    "found": true,
+    "solverStatus": 0,
+    "solverMessage": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  },
+  {
+    "scenario": "N20_tight",
+    "found": false,
+    "solverStatus": 1,
+    "solverMessage": "Time limit reached. (HiGHS Status 13: model_status is Time limit reached; primal_status is None)",
+    "searchDomain": "finite diagnostic safe-link graph, witness only, no injection"
+  }
+]

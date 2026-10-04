@@ -1,0 +1,20 @@
+{
+  "Status": "complete",
+  "Version": "platform-20261004",
+  "Algorithms": [
+    "PSO"
+  ],
+  "Population": 30,
+  "Evaluations": 3000,
+  "Runs": 3,
+  "Seed": 2.0271004E+7,
+  "MapIDs": [
+    1,
+    2,
+    3
+  ],
+  "CaseIDs": 3,
+  "Initialization": "UniformRandom",
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "CompletedRuns": 9
+}

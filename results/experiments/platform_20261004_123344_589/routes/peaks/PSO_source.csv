@@ -1,0 +1,2 @@
+Terrain,Scenario,Stations,Algorithm,Run,Seed,Evaluations,Cost,InitialCost,InitialFeasible,Improved,Feasible,FirstFeasibleEvaluation,CandidateFeasibleRate,Distance,Waiting,Late,ReturnTime,DepotLate,MinClearance,MaxClimbAngle,MaxTurnAngle,TerrainViolation,ObstacleViolation,AngleViolation,SearchSeconds,VerificationEvaluations,File
+peaks,N6_wide,6,PSO,4,20291108,3000,267.617347911338,243058.189470068,0,1,1,101,0.290333333333333,266.525262271787,0,0,62.4208770452978,0,4.0001980607418,16.7147559244143,17.6256431608038,0,0,0,8.3006538,1,runs\peaks\N6_wide\PSO_r04.mat

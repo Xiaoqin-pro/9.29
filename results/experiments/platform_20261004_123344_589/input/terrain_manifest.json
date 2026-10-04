@@ -1,0 +1,103 @@
+{
+  "accessDate": "2026-10-03",
+  "source": "Copernicus DEM GLO-90 DSM, AWS public 2021 release",
+  "maps": [
+    {
+      "terrainType": 1,
+      "name": "ridge",
+      "label": "山脊沟谷型",
+      "tile": "N36_00_E113_00",
+      "rowLimits": [
+        100,
+        400
+      ],
+      "colLimits": [
+        300,
+        600
+      ],
+      "rawMinMeters": 597.854736328125,
+      "rawMaxMeters": 2002.09130859375,
+      "rawReliefMeters": 1404.236572265625,
+      "modelMin": 0.003343119733250144,
+      "modelMax": 14.73849709274922,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        36.6675,
+        36.9175
+      ],
+      "longitudeLimits": [
+        113.24916666666667,
+        113.49916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N36_00_E113_00_DEM/Copernicus_DSM_COG_30_N36_00_E113_00_DEM.tif",
+      "sourceSHA256": "ec49c2213b6cee3434261b359eff632b29a160f164950ed61e898e6dcc9db025",
+      "matSHA256": "086e8ccac3136b6a900c28f6ad9ede0ec6af071401f5eb9b65125467aca0a80b",
+      "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 2,
+      "name": "peaks",
+      "label": "多峰起伏型",
+      "tile": "N27_00_E117_00",
+      "rowLimits": [
+        100,
+        400
+      ],
+      "colLimits": [
+        900,
+        1200
+      ],
+      "rawMinMeters": 180.5,
+      "rawMaxMeters": 2154.4814453125,
+      "rawReliefMeters": 1973.9814453125,
+      "modelMin": 0.02653763261122595,
+      "modelMax": 20.43858491443136,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        27.6675,
+        27.9175
+      ],
+      "longitudeLimits": [
+        117.74916666666667,
+        117.99916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N27_00_E117_00_DEM/Copernicus_DSM_COG_30_N27_00_E117_00_DEM.tif",
+      "sourceSHA256": "65817774ecf76a9e56ff8bfc8ea76a78989172c0bbef84950bb75085ccc5b2d1",
+      "matSHA256": "46ebda541b76fd1122c1bd4c1a4d64664ecd448fe7cd7a845c064c64f501b32a",
+      "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 3,
+      "name": "mountain",
+      "label": "秦岭复合山地",
+      "tile": "N33_00_E107_00",
+      "rowLimits": [
+        150,
+        450
+      ],
+      "colLimits": [
+        600,
+        900
+      ],
+      "rawMinMeters": 1164.1771240234375,
+      "rawMaxMeters": 3048.2939453125,
+      "rawReliefMeters": 1884.1168212890625,
+      "modelMin": 0.17588826723707027,
+      "modelMax": 19.91371641209393,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        33.62583333333333,
+        33.87583333333333
+      ],
+      "longitudeLimits": [
+        107.49916666666667,
+        107.74916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N33_00_E107_00_DEM/Copernicus_DSM_COG_30_N33_00_E107_00_DEM.tif",
+      "sourceSHA256": "7b4720c08fdad994ddddcf1ad49f2846b205ca910fd318d3cdcb4ce09eda675b",
+      "matSHA256": "4fec4f76557721362b044b0b9aeb85b15d39b0c7656bd5dce690da78f5a92bc2",
+      "independentReconstructionError": 0.0
+    }
+  ],
+  "validation": "MATLAB preparation and three-map interface/PSO smoke passed; independent reconstruction error below 1e-10; original Qinling MAT hash unchanged. Smoke run did not establish feasibility."
+}

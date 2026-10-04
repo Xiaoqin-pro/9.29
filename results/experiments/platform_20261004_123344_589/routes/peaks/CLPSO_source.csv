@@ -1,0 +1,2 @@
+Terrain,Scenario,Stations,Algorithm,Run,Seed,Evaluations,Cost,InitialCost,InitialFeasible,Improved,Feasible,FirstFeasibleEvaluation,CandidateFeasibleRate,Distance,Waiting,Late,ReturnTime,DepotLate,MinClearance,MaxClimbAngle,MaxTurnAngle,TerrainViolation,ObstacleViolation,AngleViolation,SearchSeconds,VerificationEvaluations,File
+peaks,N6_wide,6,CLPSO,1,20291105,3000,360.611355805547,287405.869791392,0,1,1,2893,0.00133333333333333,345.320063504958,0,0,75.553343917493,0,4.27568907990661,21.5103457975001,65.8377119438945,0,0,0,5.1355339,1,runs\peaks\N6_wide\CLPSO_r01.mat

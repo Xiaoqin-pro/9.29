@@ -1,0 +1,190 @@
+{
+  "version": "platform-20261004",
+  "status": "validated-candidate-not-final-performance-study",
+  "maps": [
+    "ridge",
+    "peaks",
+    "mountain"
+  ],
+  "orderCounts": [
+    6,
+    8,
+    10
+  ],
+  "coreScenarios": [
+    "N6_wide",
+    "N6_tight",
+    "N8_wide",
+    "N8_tight",
+    "N10_wide",
+    "N10_tight"
+  ],
+  "nestedStationIDs": [
+    [
+      1,
+      5,
+      9,
+      13,
+      17,
+      20
+    ],
+    [
+      1,
+      3,
+      5,
+      7,
+      9,
+      13,
+      17,
+      20
+    ],
+    [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      20
+    ]
+  ],
+  "appointmentRule": {
+    "urgencyClass": "1+mod(ID-1,3)",
+    "centers": [
+      75,
+      95,
+      115
+    ],
+    "baseWidths": [
+      120,
+      160,
+      200
+    ],
+    "tightScale": 0.5,
+    "wideScale": 1.2,
+    "ready": "max(0,center-scale*baseWidth/2)",
+    "due": "center+scale*baseWidth/2",
+    "units": "standardized simulation time",
+    "routeDependent": false
+  },
+  "controls": {
+    "K": 1,
+    "lambda": [
+      0.2,
+      0.8
+    ],
+    "d": [
+      -15,
+      15
+    ],
+    "h": [
+      0,
+      12
+    ],
+    "note": "h>=0 restricts flight to at/above endpoint chord; a new explicit problem domain, not identical feasible set to previous version"
+  },
+  "unchangedConstraints": {
+    "speed": 6,
+    "serviceHeight": 8,
+    "serviceTime": 3,
+    "minClearance": 4,
+    "maxAltitude": 42,
+    "maxClimbAngle": 25,
+    "maxTurnAngle": 120,
+    "obstacleSafety": 2,
+    "depotWindow": [
+      0,
+      240
+    ]
+  },
+  "initialization": "one uniform rand matrix for paired algorithms, no injected witness, no repair",
+  "dimensions": {
+    "N6": 27,
+    "N8": 35,
+    "N10": 43
+  },
+  "budget": {
+    "population": 30,
+    "FitnessEvaluations": 3000,
+    "initialPopulationIncluded": true,
+    "postSearchVerificationSeparate": true
+  },
+  "psoConfirmationFeasibleCounts": [
+    4,
+    3,
+    5,
+    3,
+    1,
+    0
+  ],
+  "psoConfirmationRunsPerCase": 5,
+  "baselineSimpleCase": {
+    "PSO": [
+      5,
+      5
+    ],
+    "CSO": [
+      0,
+      5
+    ],
+    "CLPSO": [
+      3,
+      5
+    ],
+    "GWO": [
+      5,
+      5
+    ]
+  },
+  "terrainRobustnessPSO_N8wide": {
+    "ridge": [
+      3,
+      3
+    ],
+    "peaks": [
+      3,
+      3
+    ],
+    "mountain": [
+      3,
+      3
+    ]
+  },
+  "knownLimitations": [
+    "N10-tight remains0/5 in held-out pilot; stress tier, not proof of unsolvability",
+    "CSO0/5 in easiest pilot, not tuned away",
+    "five runs insufficient for final ranking",
+    "no proposed algorithm yet, superiority is not established"
+  ],
+  "finalDecision": "Use this executable version for protocol/algorithm development, keep application fixed temporarily; require preregistered broader held-out experiment before calling it a final frozen paper benchmark",
+  "dataHashes": {
+    "delivery_stations.csv": "eef2a9e5881b98dfdf795c012f2d98f75542a251dbac7671f6a503731c994bf9",
+    "map_mountain.mat": "4fec4f76557721362b044b0b9aeb85b15d39b0c7656bd5dce690da78f5a92bc2",
+    "map_mountain.tif": "7b4720c08fdad994ddddcf1ad49f2846b205ca910fd318d3cdcb4ce09eda675b",
+    "map_peaks.mat": "46ebda541b76fd1122c1bd4c1a4d64664ecd448fe7cd7a845c064c64f501b32a",
+    "map_peaks.tif": "65817774ecf76a9e56ff8bfc8ea76a78989172c0bbef84950bb75085ccc5b2d1",
+    "map_ridge.mat": "086e8ccac3136b6a900c28f6ad9ede0ec6af071401f5eb9b65125467aca0a80b",
+    "map_ridge.tif": "ec49c2213b6cee3434261b359eff632b29a160f164950ed61e898e6dcc9db025",
+    "terrain_manifest.json": "aafa71230fe254d986039ad027f4517e0f6fe17949140567ca064ecd5a85d585",
+    "threat_zones.csv": "55cf93609b116af4d011979d3512ae4b07d852ce41b4bee6d2e2ea75ac02fd44",
+    "experiment_cases\\N10_tight.csv": "1d39bab25b2d9258bb2a8dff4d2891183c765c30b58e0f71645f33588a1c9c68",
+    "experiment_cases\\N10_wide.csv": "f798f9b0de58b71a02f3caf8620daf024ccdf728d4561e7e41d6fa0387018413",
+    "experiment_cases\\N6_tight.csv": "58be2f75149d2b76a6f4314120d3132d22067faf80549b546740fe04ed0dde4a",
+    "experiment_cases\\N6_wide.csv": "2d95962edb21e4f387656a4021a02955356560ce2b5a9642cab1a2e141103fba",
+    "experiment_cases\\N8_tight.csv": "2cec91b763057e26c33a08ef0b38aea188a9aa6a9a1a90c9e9a2c6213b3999e4",
+    "experiment_cases\\N8_wide.csv": "6f5361b7624c51a116db80db051695036516a867da481cb285540f1393a19166"
+  },
+  "sourceHashes": {
+    "CLPSO.m": "7f81cccf5422b482cf42a6434189e988b13ae71236ebe53062856f0a52566c82",
+    "CreateModel.m": "8e0075f4f44542c876b1a2c11136d3a2870c103f8822d2433ae4286613cb68a6",
+    "CSO.m": "c9e9f1fa3b3718e95e51dc9b6132acbe14ede57731610047238516bfa29f1398",
+    "Fitness.m": "d265d382ba81625fb1ae6942eb5d4070a740f66e5b6973adbcfdeaf441725af7",
+    "GWO.m": "4c7dca7334b617955676fc0f171325fc1583510a96be506ba6fdcfaed4ee8c7d",
+    "main.m": "447ec2997cd76592782705715cdd34a624253f8c612952c869649d0d26fd9619",
+    "PlotSolution.m": "29c7c454cde2a23499bc605928dff63c5e582606dbd5c6d2ed3fe269f42afbcf",
+    "PSO.m": "ccd11b2de90e7e93660137f77118953884450b81a0a74eb1299d33fc5324d77f"
+  }
+}

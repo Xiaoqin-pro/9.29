@@ -1,0 +1,6 @@
+Scenario,Runs,FeasibleCount,FeasibleRate,GeometryRate,MeanFeasibleDistance,MeanLate,MeanObstacle,MeanTerrain,MeanAngle
+N10_wide,3,3,1.0,1.0,520.505813121567,0.0,0.0,0.0,0.0
+N10_tight,3,0,0.0,1.0,,30.0658067170294,0.0,0.0,0.0
+N15_wide,3,0,0.0,0.0,,0.0,2.0,0.0,0.0
+N15_tight,3,0,0.0,0.0,,203.49427868332364,2.0,0.0,0.0
+N20_wide,3,0,0.0,0.0,,41.07059700638707,5.0,0.0,0.0

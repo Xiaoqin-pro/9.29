@@ -1,0 +1,7 @@
+{
+  "Population": 60,
+  "Evaluations": 30000,
+  "Promotable": false,
+  "AnyTrainingFeasible": true,
+  "Reason": "Prespecified rank: feasibility, feasible cost, budget then population; pilot choice only pending independent holdout"
+}
