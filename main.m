@@ -9,8 +9,8 @@ root = fileparts(mfilename('fullpath'));
 algorithms = {'PSO','CSO','CLPSO','GWO','SCSO'};
 population = 60;
 if developmentMode
-    maxEvaluations = 10000;
-    repeatIDs = 1:2;
+    maxEvaluations = 30000;
+    repeatIDs = 1:3;
 else
     maxEvaluations = 30000;
     repeatIDs = 101:130;
@@ -125,7 +125,7 @@ if ~runComparison
     fprintf('First feasible FE:   %.0f\n',info.FirstFeasibleEvaluation);
 else
     stamp=char(datetime('now','Format','yyyyMMdd_HHmmss_SSS'));
-    out=fullfile(root,'results','experiments',['benchmark_v6_candidate_' stamp]);
+    out=fullfile(root,'results','experiments',['benchmark_v1_' stamp]);
     mkdir(out);
     mkdir(fullfile(out,'source'));copyfile(fullfile(root,'*.m'),fullfile(out,'source'));
     copyfile(fullfile(root,'data'),fullfile(out,'input'));
@@ -134,7 +134,7 @@ else
     else
         mode='formal';
     end
-    manifest=struct('Status','running','Version','benchmark-candidate-v6','Mode',mode, ...
+    manifest=struct('Status','running','Version','benchmark-v1','Mode',mode, ...
         'Algorithms',{algorithms}, ...
         'Population',population,'Evaluations',maxEvaluations,'Runs',runs,'RepeatIDs',repeatIDs, ...
         'SeedBase',seedBase,'ControlPoints',cfg.nControlPoints, ...

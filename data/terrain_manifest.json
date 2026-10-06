@@ -115,9 +115,16 @@
       "rawMaxMeters": 576.9873657226562,
       "rawReliefMeters": 570.4873657226562,
       "heightScale": 0.01061505304449038,
-      "latitudeLimits": [],
-      "longitudeLimits": [],
+      "latitudeLimits": [
+        31.00083333333333,
+        31.25083333333333
+      ],
+      "longitudeLimits": [
+        119.41583333333333,
+        119.66583333333333
+      ],
       "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N31_00_E119_00_DEM/Copernicus_DSM_COG_30_N31_00_E119_00_DEM.tif",
+      "sourceSHA256": "142708cd374fe1b6d458441ed3f62a88e8afe124f49fb503c6c0f8189106480f",
       "matSHA256": "73fafd2fff75d6e2495d290c17bddc74a1a29d0fae83ed7f8df952b38acc5b5",
       "independentReconstructionError": null
     },
@@ -138,9 +145,16 @@
       "rawMaxMeters": 2305.482421875,
       "rawReliefMeters": 1892.2242431640625,
       "heightScale": 0.01061505304449038,
-      "latitudeLimits": [],
-      "longitudeLimits": [],
+      "latitudeLimits": [
+        34.1675,
+        34.4175
+      ],
+      "longitudeLimits": [
+        109.41583333333333,
+        109.66583333333333
+      ],
       "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N34_00_E109_00_DEM/Copernicus_DSM_COG_30_N34_00_E109_00_DEM.tif",
+      "sourceSHA256": "81862980d1c806a514d383f04b5091cb1077abb6b70ddef1258e02b923092da6",
       "matSHA256": "2d75f1249e2afcc09c620056b91d4b02419048552b928f2cf871da157c55bdcd",
       "independentReconstructionError": null
     }

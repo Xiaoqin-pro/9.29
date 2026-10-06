@@ -23,14 +23,13 @@ function PlotSolution(BestSol,model,state,filePath)
         clim(ax,[0 max(model.terrainZ(:))]);
         cb = colorbar(ax,'Position',[0.86 0.24 0.017 0.53]);
         cb.Label.String = 'Terrain height (model units)';
-        %% 三维圆柱威胁区：侧面、顶面和边界，地形保持原样
-        displayHeightScale=1.35;
+        %% 三维圆柱威胁区：使用模型中的真实高度
         for i=1:numel(model.obstacles)
             obs=model.obstacles(i);
             [X,Y,Z]=cylinder(obs.r,64);
             X=X+obs.x;
             Y=Y+obs.y;
-            displayTop=obs.zMin+displayHeightScale*(obs.zMax-obs.zMin);
+            displayTop=obs.zMax;
             Z=obs.zMin+Z*(displayTop-obs.zMin);
             h=surf(ax,X,Y,Z,'FaceColor',[0.88 0.18 0.16], ...
                 'FaceAlpha',0.20,'EdgeColor','none','FaceLighting','none');

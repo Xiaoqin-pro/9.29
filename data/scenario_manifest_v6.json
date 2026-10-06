@@ -1,16 +1,17 @@
 {
-  "version": "benchmark-candidate-v6",
-  "status": "candidate-dispersed-stations-speed10",
+  "version": "benchmark-v1",
+  "status": "frozen-heterogeneous-benchmark",
   "maps": ["ridge", "peaks", "mountain", "hills", "plateau"],
   "primaryScenario": "N20",
+  "scenarioType": "five heterogeneous UAV delivery scenarios",
   "orderCounts": [20],
   "controlPoints": {
     "K": 3,
     "dimension": "D=N+3*K*(N+1)",
     "N20": 209,
     "lambda": [0.2, 0.8],
-    "sideOffset": [-8, 8],
-    "heightOffset": [0, 6]
+    "sideOffset": [-4, 4],
+    "heightOffset": [0, 4]
   },
   "scenarioFiles": {
     "ridge": "data/map_scenarios_v6/N20_ridge.csv",
@@ -24,7 +25,7 @@
     "serviceHeight": 16,
     "minClearance": 4,
     "maxAltitude": 42,
-    "maxClimbAngle": 30,
+    "maxClimbAngle": 35,
     "maxTurnAngle": 120,
     "depotWindow": [0, 360],
     "stationLayout": "map-specific dispersed coordinates",
@@ -33,8 +34,8 @@
   "resourceProtocol": {
     "development": {
       "population": 60,
-      "fitnessEvaluations": 10000,
-      "repeatIDs": [1, 2]
+      "fitnessEvaluations": 30000,
+      "repeatIDs": [1, 2, 3]
     },
     "formal": {
       "population": 60,
@@ -50,5 +51,5 @@
     "allMapsFeasible": true,
     "note": "Reference route is an instance check only; it is not injected into algorithm initialization."
   },
-  "scope": "Fixed application candidate for controlled optimization comparisons; freeze after development screening and before formal testing."
+  "scope": "Frozen application benchmark for controlled optimization comparisons; development and formal runs use the same resource budget."
 }
