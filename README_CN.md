@@ -21,7 +21,7 @@ main
 - `developmentMode=false`：切换到正式重复编号 `101:130` 和 30000 次 Fitness 评价。
 - 两种模式都固定使用 60 个粒子和 30000 次 Fitness 评价，只切换 seed；地图、站点和时间窗不变。
 
-多场景比较输出写入 `results/experiments/benchmark_v6_candidate_*`，并保存原始运行、汇总、代码和输入快照。诊断材料统一放在 `results/diagnostics/`。
+多场景比较输出写入 `results/experiments/benchmark_v1_*`，并保存原始运行、汇总、代码和输入快照。诊断材料统一放在 `results/diagnostics/`。
 
 ## 场景与模型
 
@@ -56,6 +56,7 @@ depotWindow     = [0, 360]
 - 同一地图和重复编号下，所有算法读取同一个随机初始种群。
 - 所有算法使用相同的粒子数和 Fitness 评价预算；初始化评价计入预算，搜索结束后的复算单独记录。
 - 先比较可行率和首次可行评价次数；距离、目标值、等待和平滑度只在可行运行中比较。
+- 收敛图明确标记为带罚项的最优 Cost；另外输出 Feasible rate vs Fitness evaluations，不把不可行罚项和可行目标混称为同一个物理量。
 - 开发阶段使用 seed `1:3` 检查场景和资源；算法自己的参数只能在开发阶段调整。开发和正式阶段使用相同的粒子数和 Fitness 预算。
 - 正式测试使用全新的 seed `101:130`，冻结场景、速度、粒子数、评价次数和算法参数后不再修改。
 - 当前主比较只纳入群智能算法：PSO、CSO、CLPSO、GWO 和 SCSO，后续接入提出的新群智能算法。

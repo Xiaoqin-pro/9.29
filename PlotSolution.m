@@ -172,7 +172,47 @@ function PlotComparison(runs,out)
     for map=maps'
         f=figure('Visible','off','Color','w','Position',[100 100 1400 850]);
         layout=tiledlayout(f,2,3,'Padding','compact','TileSpacing','compact');
-        title(layout,sprintf('%s | Mean convergence (equal evaluation budget)',map));
+        title(layout,sprintf('%s | Feasible rate vs Fitness evaluations',map));
+        for number=1:length(cases)
+            ax=nexttile(layout);
+            hold(ax,'on');
+            scenario=cases(number);
+            for k=1:numel(algorithms)
+                selected=string(runs.Terrain)==map & string(runs.Scenario)==scenario ...
+                    & string(runs.Algorithm)==algorithms{k};
+                group=runs(selected,:);
+                if isempty(group)
+                    continue;
+                end
+                x=1:group.Evaluations(1);
+                rate=zeros(size(x));
+                for r=1:height(group)
+                    first=group.FirstFeasibleEvaluation(r);
+                    if ~isnan(first)
+                        rate=rate+(x>=first);
+                    end
+                end
+                plot(ax,x,rate/height(group),'Color',colors(k,:), ...
+                    'LineWidth',1.6,'DisplayName',algorithms{k});
+            end
+            title(ax,strrep(char(scenario),'_',' '));
+            xlabel(ax,'Fitness evaluations');
+            ylabel(ax,'Feasible rate');
+            ylim(ax,[0 1]);
+            grid(ax,'on');
+            box(ax,'on');
+            ax.Toolbar.Visible='off';
+            legend(ax,'Location','best','FontSize',8);
+        end
+        exportgraphics(f,fullfile(out,[char(map) '_feasible_rate_vs_fe.png']),'Resolution',200);
+        exportgraphics(f,fullfile(out,[char(map) '_feasible_rate_vs_fe.pdf']),'ContentType','vector');
+        close(f);
+    end
+
+    for map=maps'
+        f=figure('Visible','off','Color','w','Position',[100 100 1400 850]);
+        layout=tiledlayout(f,2,3,'Padding','compact','TileSpacing','compact');
+        title(layout,sprintf('%s | Penalized best-cost convergence',map));
         for number=1:length(cases)
             ax=nexttile(layout);
             hold(ax,'on');
@@ -194,14 +234,14 @@ function PlotComparison(runs,out)
             end
             title(ax,strrep(char(scenario),'_',' '));
             xlabel(ax,'Fitness evaluations');
-            ylabel(ax,'Best objective');
+            ylabel(ax,'Best penalized cost');
             grid(ax,'on');
             box(ax,'on');
             ax.Toolbar.Visible='off';
             legend(ax,'Location','best','FontSize',8);
         end
-        exportgraphics(f,fullfile(out,[char(map) '_convergence.png']),'Resolution',200);
-        exportgraphics(f,fullfile(out,[char(map) '_convergence.pdf']),'ContentType','vector');
+        exportgraphics(f,fullfile(out,[char(map) '_penalized_convergence.png']),'Resolution',200);
+        exportgraphics(f,fullfile(out,[char(map) '_penalized_convergence.pdf']),'ContentType','vector');
         close(f);
         f=figure('Visible','off','Color','w','Position',[100 100 1400 850]);
         layout=tiledlayout(f,2,3,'Padding','compact','TileSpacing','compact');

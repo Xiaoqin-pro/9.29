@@ -17,7 +17,7 @@ function model = CreateModel(cfg)
     model.maxSideOffset = cfg.maxSideOffset;
     model.minHeightOffset = cfg.minHeightOffset;
     model.maxHeightOffset = cfg.maxHeightOffset;
-    model.benchmarkVersion = 'benchmark-candidate-v6';
+    model.benchmarkVersion = 'benchmark-v1';
 
     %% Public Copernicus GLO-90 terrain (no synthetic fallback)
     names = {'ridge','peaks','mountain','hills','plateau'};

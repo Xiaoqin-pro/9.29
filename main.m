@@ -106,8 +106,8 @@ if ~runComparison
     ax.Toolbar.Visible = 'off';
     grid on
     xlabel('Fitness evaluations','fontsize',12);
-    ylabel('The Function Value','fontsize',12);
-    title('Static 3-D UAV PSO with random initialization');
+    ylabel('Best penalized cost','fontsize',12);
+    title('Static 3-D UAV PSO | Penalized best-cost convergence');
     exportgraphics(gcf,fullfile(resultDir,'delivery_convergence.png'),'Resolution',150);
 
     fprintf('Cost:                %.3f\n',Best.Cost);
