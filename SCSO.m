@@ -53,7 +53,7 @@ function [Best,T,info] = SCSO(model,state,maxgen,Particle_Number,seed)
             if abs(R)>1
                 candidate=sensitivity*(pop(randomIndex,:)-rand(1,D).*pop(i,:));
             else
-                randomPosition=rand(1,D).*Best.Vector-pop(i,:);
+                randomPosition=abs(rand(1,D).*Best.Vector-pop(i,:));
                 candidate=Best.Vector-sensitivity*randomPosition*cos(theta);
             end
             candidate=max(0,min(1,candidate));
