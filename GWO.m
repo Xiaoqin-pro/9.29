@@ -7,7 +7,6 @@ function [Best,T,info] = GWO(model,state,maxgen,Particle_Number,seed)
     pop=state.initialPopulation;
     D=size(pop,2);
     rng(seed);
-    rand(sizepop,D); % 与其他算法初始化后的随机数序列对齐，不引入速度变量。
     budget=sizepop*(maxgen+1);
     if isfield(state,'maxEvaluations')
         budget=state.maxEvaluations;

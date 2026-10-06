@@ -17,6 +17,7 @@ else
 end
 runs = numel(repeatIDs);
 seedBase = 20271004;
+searchSeedOffset = 100000;
 mapIDs = 1:5;                     % 五张不同地形；正式测试固定为1:5
 caseIDs = 1;                      % 单一N20时间窗场景
 plotComparison = true;
@@ -72,9 +73,11 @@ if ~runComparison
     state.maxEvaluations = maxEvaluations;
     maxgen = ceil(state.maxEvaluations/Particle_Number);
     D = model.nOrders+3*(model.nOrders+1)*model.nControlPoints;
-    rng(seedBase);
+    initSeed = seedBase;
+    searchSeed = initSeed+searchSeedOffset;
+    rng(initSeed);
     state.initialPopulation = rand(Particle_Number,D);
-    [Best,T,info] = PSO(model,state,maxgen,Particle_Number,seedBase);
+    [Best,T,info] = PSO(model,state,maxgen,Particle_Number,searchSeed);
     Best.Algorithm = 'PSO';
 
     %% Save and plot the static result
@@ -137,7 +140,7 @@ else
     manifest=struct('Status','running','Version','benchmark-v1','Mode',mode, ...
         'Algorithms',{algorithms}, ...
         'Population',population,'Evaluations',maxEvaluations,'Runs',runs,'RepeatIDs',repeatIDs, ...
-        'SeedBase',seedBase,'ControlPoints',cfg.nControlPoints, ...
+        'SeedBase',seedBase,'SearchSeedOffset',searchSeedOffset,'ControlPoints',cfg.nControlPoints, ...
         'MapIDs',mapIDs,'CaseIDs',caseIDs,'Initialization','UniformRandom','MATLAB',version);
     WriteManifest(out,manifest);
     records=cell(numel(mapIDs)*numel(caseIDs)*runs*numel(algorithms),1);
@@ -152,14 +155,16 @@ else
             for repeatIndex=1:runs
                 repeat=repeatIDs(repeatIndex);
                 seed=seedBase+100*ceil(number/2)+repeat;
+                initSeed=seed;
+                searchSeed=initSeed+searchSeedOffset;
                 state=struct('time',0,'position',model.depot,'activeIDs',model.activeIDs, ...
                     'maxEvaluations',maxEvaluations);
                 D=model.nOrders+3*(model.nOrders+1)*model.nControlPoints;
-                rng(seed);state.initialPopulation=rand(population,D);
+                rng(initSeed);state.initialPopulation=rand(population,D);
                 % 循环轮换执行次序，避免总让同一算法首先承担JIT/冷启动开销。
                 order=circshift(1:numel(algorithms),[0 mod(repeatIndex-1,numel(algorithms))]);
                 for k=order
-                    [Best,T,info]=feval(algorithms{k},model,state,ceil(maxEvaluations/population),population,seed);
+                    [Best,T,info]=feval(algorithms{k},model,state,ceil(maxEvaluations/population),population,searchSeed);
                     [cost,detail]=Fitness(Best.Vector,model,state);
                     assert(info.Evaluations==maxEvaluations && numel(T)==maxEvaluations);
                     assert(abs(cost-Best.Cost)<1e-7 && isequal(info.InitialPopulation,state.initialPopulation));
@@ -168,7 +173,8 @@ else
                     if ~exist(folder,'dir'),mkdir(folder);end
                     record=struct('Terrain',model.terrainName,'Scenario',scenario,'Stations',model.nOrders, ...
                         'ControlPoints',model.nControlPoints, ...
-                        'Algorithm',algorithms{k},'Run',repeat,'Seed',seed,'Evaluations',info.Evaluations, ...
+                        'Algorithm',algorithms{k},'Run',repeat,'Seed',seed,'InitSeed',initSeed, ...
+                        'SearchSeed',searchSeed,'Evaluations',info.Evaluations, ...
                         'Cost',Best.Cost,'InitialCost',info.InitialCost,'InitialFeasible',info.InitialFeasible, ...
                         'Improved',info.Improved,'Feasible',detail.feasible, ...
                         'FirstFeasibleEvaluation',info.FirstFeasibleEvaluation, ...
@@ -190,7 +196,7 @@ else
         writetable(rawRuns,fullfile(out,'raw_runs.csv'));
     end
     save(fullfile(out,'experiment_results.mat'),'rawRuns','cfg','population','maxEvaluations', ...
-        'runs','repeatIDs','mapIDs','caseIDs','seedBase');
+        'runs','repeatIDs','mapIDs','caseIDs','seedBase','searchSeedOffset');
     summary=SummarizeResults(rawRuns,out);
     if plotComparison,PlotSolution(rawRuns,out);end
     manifest.Status='complete';manifest.CompletedRuns=count;
