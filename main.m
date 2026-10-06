@@ -4,46 +4,59 @@ close all
 
 %% 单图演示false；多场景/算法比较true
 runComparison = false;
+developmentMode = true;          % 开发筛选true；正式测试false
 root = fileparts(mfilename('fullpath'));
-algorithms = {'PSO','CSO','CLPSO','GWO'};
-population = 30;
-maxEvaluations = 3000;
-runs = 5;
+algorithms = {'PSO','CSO','CLPSO','GWO','SCSO'};
+population = 60;
+if developmentMode
+    maxEvaluations = 10000;
+    repeatIDs = 1:2;
+else
+    maxEvaluations = 30000;
+    repeatIDs = 101:130;
+end
+runs = numel(repeatIDs);
 seedBase = 20271004;
-mapIDs = 2;                       % 主实验；地形鲁棒性改成1:3
-caseIDs = 1:6;                    % 鲁棒性固定一个代表场景，如3
+mapIDs = 1:5;                     % 五张不同地形；正式测试固定为1:5
+caseIDs = 1;                      % 单一N20时间窗场景
 plotComparison = true;
-scenarioID = 1;                   % 单图默认N6-wide，不挑成功seed
-scenarioNames = {'N6_wide','N6_tight','N8_wide','N8_tight','N10_wide','N10_tight'};
-orderCounts = [6 6 8 8 10 10];
+scenarioID = 1;                   % 单图默认N20
+scenarioNames = {'N20'};
+orderCounts = 20;
+caseFolder = fullfile(root,'data','map_scenarios_v6');
+mapNames = {'ridge','peaks','mountain','hills','plateau'};
+mapScenarioFiles = cellfun(@(name) fullfile(caseFolder,['N20_' name '.csv']), ...
+    mapNames,'UniformOutput',false);
 
 %% 固定应用参数：地形、威胁区和硬约束不变
 cfg.threatFile = fullfile(root,'data','threat_zones.csv');
 cfg.terrainFiles = {fullfile(root,'data','map_ridge.mat'), ...
-    fullfile(root,'data','map_peaks.mat'),fullfile(root,'data','map_mountain.mat')};
+    fullfile(root,'data','map_peaks.mat'),fullfile(root,'data','map_mountain.mat'), ...
+    fullfile(root,'data','map_hills.mat'),fullfile(root,'data','map_plateau.mat')};
 cfg.mapSize = [100 100];
 cfg.terrainType = 2;
 cfg.depotXY = [40 50];
-cfg.depotWindow = [0 240];
-cfg.speed = 6;
-cfg.serviceHeight = 8;
+cfg.depotWindow = [0 360];
+cfg.speed = 10;
+cfg.serviceHeight = 16;
 cfg.minClearance = 4;
 cfg.maxAltitude = 42;
-cfg.maxClimbAngle = 25;
+cfg.maxClimbAngle = 35;
 cfg.maxTurnAngle = 120;
-cfg.nControlPoints = 1;
+cfg.nControlPoints = 3;
 cfg.minControlRatio = 0.2;
 cfg.maxControlRatio = 0.8;
-cfg.maxSideOffset = 15;
+cfg.maxSideOffset = 4;
 cfg.minHeightOffset = 0;
-cfg.maxHeightOffset = 12;
+cfg.maxHeightOffset = 4;
 cfg.smoothWeight = 2;
 
 if ~runComparison
-    cfg.stationFile = fullfile(root,'data','experiment_cases',[scenarioNames{scenarioID} '.csv']);
+    cfg.terrainType = mapIDs(1);
+    cfg.stationFile = mapScenarioFiles{cfg.terrainType};
     cfg.nOrders = orderCounts(scenarioID);
     model = CreateModel(cfg);
-    resultDir = fullfile(root,'results',model.terrainName,scenarioNames{scenarioID});
+    resultDir = fullfile(root,'results','demo',model.terrainName,scenarioNames{scenarioID});
     if ~exist(resultDir,'dir')
         mkdir(resultDir);
     end
@@ -112,12 +125,19 @@ if ~runComparison
     fprintf('First feasible FE:   %.0f\n',info.FirstFeasibleEvaluation);
 else
     stamp=char(datetime('now','Format','yyyyMMdd_HHmmss_SSS'));
-    out=fullfile(root,'results','experiments',['platform_' stamp]);
+    out=fullfile(root,'results','experiments',['benchmark_v6_candidate_' stamp]);
     mkdir(out);
     mkdir(fullfile(out,'source'));copyfile(fullfile(root,'*.m'),fullfile(out,'source'));
     copyfile(fullfile(root,'data'),fullfile(out,'input'));
-    manifest=struct('Status','running','Version','platform-20261004','Algorithms',{algorithms}, ...
-        'Population',population,'Evaluations',maxEvaluations,'Runs',runs,'Seed',seedBase, ...
+    if developmentMode
+        mode='development';
+    else
+        mode='formal';
+    end
+    manifest=struct('Status','running','Version','benchmark-candidate-v6','Mode',mode, ...
+        'Algorithms',{algorithms}, ...
+        'Population',population,'Evaluations',maxEvaluations,'Runs',runs,'RepeatIDs',repeatIDs, ...
+        'SeedBase',seedBase,'ControlPoints',cfg.nControlPoints, ...
         'MapIDs',mapIDs,'CaseIDs',caseIDs,'Initialization','UniformRandom','MATLAB',version);
     WriteManifest(out,manifest);
     records=cell(numel(mapIDs)*numel(caseIDs)*runs*numel(algorithms),1);
@@ -126,17 +146,18 @@ else
         cfg.terrainType=map;
         for number=caseIDs
             scenario=scenarioNames{number};
-            cfg.stationFile=fullfile(root,'data','experiment_cases',[scenario '.csv']);
+            cfg.stationFile=mapScenarioFiles{cfg.terrainType};
             cfg.nOrders=orderCounts(number);
             model=CreateModel(cfg);
-            for repeat=1:runs
-                seed=seedBase+10000*map+100*ceil(number/2)+repeat;
+            for repeatIndex=1:runs
+                repeat=repeatIDs(repeatIndex);
+                seed=seedBase+100*ceil(number/2)+repeat;
                 state=struct('time',0,'position',model.depot,'activeIDs',model.activeIDs, ...
                     'maxEvaluations',maxEvaluations);
                 D=model.nOrders+3*(model.nOrders+1)*model.nControlPoints;
                 rng(seed);state.initialPopulation=rand(population,D);
                 % 循环轮换执行次序，避免总让同一算法首先承担JIT/冷启动开销。
-                order=circshift(1:numel(algorithms),[0 mod(repeat-1,numel(algorithms))]);
+                order=circshift(1:numel(algorithms),[0 mod(repeatIndex-1,numel(algorithms))]);
                 for k=order
                     [Best,T,info]=feval(algorithms{k},model,state,ceil(maxEvaluations/population),population,seed);
                     [cost,detail]=Fitness(Best.Vector,model,state);
@@ -146,6 +167,7 @@ else
                     file=fullfile(out,relative);folder=fileparts(file);
                     if ~exist(folder,'dir'),mkdir(folder);end
                     record=struct('Terrain',model.terrainName,'Scenario',scenario,'Stations',model.nOrders, ...
+                        'ControlPoints',model.nControlPoints, ...
                         'Algorithm',algorithms{k},'Run',repeat,'Seed',seed,'Evaluations',info.Evaluations, ...
                         'Cost',Best.Cost,'InitialCost',info.InitialCost,'InitialFeasible',info.InitialFeasible, ...
                         'Improved',info.Improved,'Feasible',detail.feasible, ...
@@ -167,7 +189,8 @@ else
         rawRuns=struct2table(vertcat(records{1:count}));
         writetable(rawRuns,fullfile(out,'raw_runs.csv'));
     end
-    save(fullfile(out,'experiment_results.mat'),'rawRuns','cfg','population','maxEvaluations','runs','mapIDs','caseIDs','seedBase');
+    save(fullfile(out,'experiment_results.mat'),'rawRuns','cfg','population','maxEvaluations', ...
+        'runs','repeatIDs','mapIDs','caseIDs','seedBase');
     summary=SummarizeResults(rawRuns,out);
     if plotComparison,PlotSolution(rawRuns,out);end
     manifest.Status='complete';manifest.CompletedRuns=count;

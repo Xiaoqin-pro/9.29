@@ -1,9 +1,0 @@
-K,Algorithm,FitnessCalls,RecordedFE,SharedInitialPopulation,ResultRecomputed
-1,PSO,127,127,1,1
-1,CSO,127,127,1,1
-1,CLPSO,127,127,1,1
-1,GWO,127,127,1,1
-2,PSO,127,127,1,1
-2,CSO,127,127,1,1
-2,CLPSO,127,127,1,1
-2,GWO,127,127,1,1

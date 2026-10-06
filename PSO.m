@@ -1,5 +1,4 @@
 function [Best,T,info] = PSO(model,state,maxgen,Particle_Number,seed)
-    % teacher风格：pop/V/pbest/gbest数组、直接循环、独立评价函数。
     clockStart=tic;
     sizepop=Particle_Number;
     c1=1.5;

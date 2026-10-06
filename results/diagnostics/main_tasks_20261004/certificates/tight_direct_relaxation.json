@@ -1,7 +1,0 @@
-{
-  "scenario": "N20_tight",
-  "found": false,
-  "solverStatus": 1,
-  "message": "Time limit reached. (HiGHS Status 13: model_status is Time limit reached; primal_status is None)",
-  "limitation": "direct 3D optimistic travel relaxation: feasible does not prove actual path feasibility; certified infeasible would rule out full problem"
-}

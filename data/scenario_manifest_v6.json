@@ -1,0 +1,54 @@
+{
+  "version": "benchmark-candidate-v6",
+  "status": "candidate-dispersed-stations-speed10",
+  "maps": ["ridge", "peaks", "mountain", "hills", "plateau"],
+  "primaryScenario": "N20",
+  "orderCounts": [20],
+  "controlPoints": {
+    "K": 3,
+    "dimension": "D=N+3*K*(N+1)",
+    "N20": 209,
+    "lambda": [0.2, 0.8],
+    "sideOffset": [-8, 8],
+    "heightOffset": [0, 6]
+  },
+  "scenarioFiles": {
+    "ridge": "data/map_scenarios_v6/N20_ridge.csv",
+    "peaks": "data/map_scenarios_v6/N20_peaks.csv",
+    "mountain": "data/map_scenarios_v6/N20_mountain.csv",
+    "hills": "data/map_scenarios_v6/N20_hills.csv",
+    "plateau": "data/map_scenarios_v6/N20_plateau.csv"
+  },
+  "application": {
+    "speed": 10,
+    "serviceHeight": 16,
+    "minClearance": 4,
+    "maxAltitude": 42,
+    "maxClimbAngle": 30,
+    "maxTurnAngle": 120,
+    "depotWindow": [0, 360],
+    "stationLayout": "map-specific dispersed coordinates",
+    "timeWindowLayout": "map-specific fixed centers and widths, independent of algorithm output"
+  },
+  "resourceProtocol": {
+    "development": {
+      "population": 60,
+      "fitnessEvaluations": 10000,
+      "repeatIDs": [1, 2]
+    },
+    "formal": {
+      "population": 60,
+      "fitnessEvaluations": 30000,
+      "repeatIDs": [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130]
+    },
+    "initialization": "shared uniform-random population for paired algorithms",
+    "initialPopulationIncluded": true,
+    "postSearchVerificationSeparate": true
+  },
+  "feasibilityAudit": {
+    "referenceRoute": "results/diagnostics/v6_witness.csv",
+    "allMapsFeasible": true,
+    "note": "Reference route is an instance check only; it is not injected into algorithm initialization."
+  },
+  "scope": "Fixed application candidate for controlled optimization comparisons; freeze after development screening and before formal testing."
+}

@@ -1,0 +1,18 @@
+# Temporary experiments and generated scratch files
+/work/
+/data/map_scenarios/
+/data/map_scenarios_v7/
+/data/map_scenarios_v8_pilot/
+/data/map_scenarios_v9_width1p25/
+/data/map_scenarios_v10_pilot/
+/data/map_scenarios_v11_pilot/
+/data/map_scenarios_v12_pilot/
+/data/scenario_manifest_v3.json
+/results/diagnostics/distributed_time_window_check/
+/results/diagnostics/*.mat
+/results/diagnostics/scale_feasibility_trial.csv
+/results/diagnostics/v10pilot_*.csv
+/results/diagnostics/v12pilot_*.csv
+/results/diagnostics/v7_*.csv
+/results/diagnostics/v6_scso_*.csv
+/results/diagnostics/v6_speed10_*.csv

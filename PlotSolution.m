@@ -24,12 +24,14 @@ function PlotSolution(BestSol,model,state,filePath)
         cb = colorbar(ax,'Position',[0.86 0.24 0.017 0.53]);
         cb.Label.String = 'Terrain height (model units)';
         %% 三维圆柱威胁区：侧面、顶面和边界，地形保持原样
+        displayHeightScale=1.35;
         for i=1:numel(model.obstacles)
             obs=model.obstacles(i);
             [X,Y,Z]=cylinder(obs.r,64);
             X=X+obs.x;
             Y=Y+obs.y;
-            Z=obs.zMin+Z*(obs.zMax-obs.zMin);
+            displayTop=obs.zMin+displayHeightScale*(obs.zMax-obs.zMin);
+            Z=obs.zMin+Z*(displayTop-obs.zMin);
             h=surf(ax,X,Y,Z,'FaceColor',[0.88 0.18 0.16], ...
                 'FaceAlpha',0.20,'EdgeColor','none','FaceLighting','none');
             if i==1
@@ -50,7 +52,7 @@ function PlotSolution(BestSol,model,state,filePath)
                 zz=interp2(model.X,model.Y,model.terrainZ,xx,yy)+0.2;
                 plot3(ax,xx,yy,zz,'--','Color',[0.86 0.28 0.25], ...
                     'LineWidth',0.8,'HandleVisibility','off');
-                text(ax,obs.x,obs.y,obs.zMax+0.6,sprintf('T%d',obs.id), ...
+                text(ax,obs.x,obs.y,displayTop+0.6,sprintf('T%d',obs.id), ...
                 'Color',[0.75 0.05 0.05],'FontSize',10,'FontWeight','bold');
             end
         end

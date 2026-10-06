@@ -97,7 +97,53 @@
       "sourceSHA256": "7b4720c08fdad994ddddcf1ad49f2846b205ca910fd318d3cdcb4ce09eda675b",
       "matSHA256": "4fec4f76557721362b044b0b9aeb85b15d39b0c7656bd5dce690da78f5a92bc2",
       "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 4,
+      "name": "hills",
+      "label": "丘陵型",
+      "tile": "N31_00_E119_00",
+      "rowLimits": [
+        900,
+        1200
+      ],
+      "colLimits": [
+        500,
+        800
+      ],
+      "rawMinMeters": 6.5,
+      "rawMaxMeters": 576.9873657226562,
+      "rawReliefMeters": 570.4873657226562,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [],
+      "longitudeLimits": [],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N31_00_E119_00_DEM/Copernicus_DSM_COG_30_N31_00_E119_00_DEM.tif",
+      "matSHA256": "73fafd2fff75d6e2495d290c17bddc74a1a29d0fae83ed7f8df952b38acc5b5",
+      "independentReconstructionError": null
+    },
+    {
+      "terrainType": 5,
+      "name": "plateau",
+      "label": "高原山地型",
+      "tile": "N34_00_E109_00",
+      "rowLimits": [
+        700,
+        1000
+      ],
+      "colLimits": [
+        500,
+        800
+      ],
+      "rawMinMeters": 413.2582092285156,
+      "rawMaxMeters": 2305.482421875,
+      "rawReliefMeters": 1892.2242431640625,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [],
+      "longitudeLimits": [],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N34_00_E109_00_DEM/Copernicus_DSM_COG_30_N34_00_E109_00_DEM.tif",
+      "matSHA256": "2d75f1249e2afcc09c620056b91d4b02419048552b928f2cf871da157c55bdcd",
+      "independentReconstructionError": null
     }
   ],
-  "validation": "MATLAB preparation and three-map interface/PSO smoke passed; independent reconstruction error below 1e-10; original Qinling MAT hash unchanged. Smoke run did not establish feasibility."
+  "validation": "Existing three maps retained; hills and plateau added from the same Copernicus GLO-90 workflow. The active N20/K=3 candidate has a feasible reference route on all five maps; see results/diagnostics/v6_bands_witness.csv."
 }

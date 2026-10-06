@@ -1,2 +1,0 @@
-Terrain,Scenario,Stations,Algorithm,Run,Seed,Evaluations,Cost,InitialCost,InitialFeasible,Improved,Feasible,FirstFeasibleEvaluation,CandidateFeasibleRate,Distance,Waiting,Late,ReturnTime,DepotLate,MinClearance,MaxClimbAngle,MaxTurnAngle,TerrainViolation,ObstacleViolation,AngleViolation,SearchSeconds,VerificationEvaluations,File
-peaks,N6_wide,6,GWO,5,20291109,3000,308.830459059694,140341.033821079,0,1,1,67,0.159,304.213246496031,0,0,68.7022077493385,0,4.03421914468987,19.7735962686009,16.7063801148042,0,0,0,8.2782114,1,runs\peaks\N6_wide\GWO_r05.mat
