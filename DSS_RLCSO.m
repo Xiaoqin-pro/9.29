@@ -24,6 +24,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
+    paperMode=strcmp(rlMode,'paper');
     diversityThreshold=0.50;
     pop=state.initialPopulation;
     D=size(pop,2);
@@ -62,6 +63,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.UseRL=useRL;
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
+    info.PaperMode=paperMode;
     info.RewardHistory=[];
     info.GlobalRewardHistory=[];
     info.PopulationRewardHistory=[];
@@ -88,6 +90,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         epsilon=0.50-0.45*progress;
         if strcmp(actionMode,'fixed')
             action=4;
+        elseif strcmp(actionMode,'fixed3')
+            action=3;
         elseif strcmp(actionMode,'random')
             action=randi(4);
         elseif useRL && rand<epsilon
@@ -99,7 +103,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         end
         info.ActionCounts(action)=info.ActionCounts(action)+1;
         info.ActionHistory(end+1)=action;
-        [mr,srd,cdc,jump]=ActionParameters(action);
+        [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode);
         oldBest=Best.Cost;
         oldFitness=fitness;
         evaluated=false(sizepop,1);
@@ -139,9 +143,23 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         for i=1:sizepop
             if rand<mr
                 tracing(i)=true;
-                trialVelocity(i,:)=V(i,:)+2*rand(1,D).*(Best.Vector-pop(i,:));
+                if paperMode && peerLearn
+                    peer=OtherCat(i,sizepop);
+                    trialVelocity(i,:)=0.9*V(i,:)+1.5*rand(1,D).* ...
+                        (pop(peer,:)-pop(i,:));
+                elseif paperMode && action==1
+                    trialVelocity(i,:)=0.4*V(i,:)+ ...
+                        1.0*rand(1,D).*(Best.Vector-pop(i,:))+ ...
+                        2.5*rand(1,D).*(Best.Vector-pop(i,:));
+                else
+                    trialVelocity(i,:)=V(i,:)+2*rand(1,D).* ...
+                        (Best.Vector-pop(i,:));
+                end
                 trialVelocity(i,:)=max(-Vmax,min(Vmax,trialVelocity(i,:)));
-                if jump
+                if opposition
+                    trialVelocity(i,:)=-V(i,:);
+                    trial(i,:)=lb+ub-pop(i,:);
+                elseif jump
                     sigma=0.10*(1-progress);
                     trial(i,:)=Best.Vector+sigma*randn(1,D).*(ub-lb);
                 else
@@ -151,9 +169,17 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             else
                 copies=repmat(pop(i,:),SMP,1);
                 for j=2:SMP
-                    if jump
+                    if opposition
+                        sigma=0.05*(1-progress);
+                        copies(j,:)=lb+ub-pop(i,:)+ ...
+                            sigma*randn(1,D).*(ub-lb);
+                    elseif jump
                         sigma=0.10*(1-progress);
                         copies(j,:)=Best.Vector+sigma*randn(1,D).*(ub-lb);
+                    elseif paperMode && peerLearn
+                        peer=OtherCat(i,sizepop);
+                        copies(j,:)=pop(i,:)+rand(1,D).* ...
+                            (pop(peer,:)-pop(i,:));
                     else
                         d=randperm(D,max(1,round(cdc*D)));
                         copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
@@ -226,6 +252,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         end
 
         improved=Best.Cost<oldBest;
+        oldStall=stall;
         if improved
             stall=0;
         else
@@ -241,7 +268,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         else
             populationReward=mean(localGain);
         end
-        if useContinuousReward
+        if paperMode
+            reward=-1;
+            if improved
+                reward=10;
+            elseif oldStall>=10 && (action==3 || action==4)
+                reward=0.5;
+            end
+        elseif useContinuousReward
             reward=0.70*globalReward+0.30*populationReward;
         else
             reward=-1;
@@ -272,8 +306,23 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.Seconds=toc(clockStart);
 end
 
-function [mr,srd,cdc,jump]=ActionParameters(action)
+function [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode)
     jump=false;
+    peerLearn=false;
+    opposition=false;
+    if strcmp(rlMode,'paper')
+        switch action
+            case 1
+                mr=0.60; srd=0.03; cdc=0.20;
+            case 2
+                mr=0.40; srd=0.10; cdc=0.40; peerLearn=true;
+            case 3
+                mr=0.20; srd=0.15; cdc=0.60; jump=true;
+            otherwise
+                mr=0.20; srd=0.20; cdc=0.60; opposition=true;
+        end
+        return
+    end
     switch action
         case 1
             mr=0.20; srd=0.05; cdc=0.20;
@@ -283,6 +332,13 @@ function [mr,srd,cdc,jump]=ActionParameters(action)
             mr=0.60; srd=0.10; cdc=0.40;
         otherwise
             mr=0.40; srd=0.25; cdc=0.70; jump=true;
+    end
+end
+
+function peer=OtherCat(i,sizepop)
+    peer=randi(sizepop-1);
+    if peer>=i
+        peer=peer+1;
     end
 end
 
