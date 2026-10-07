@@ -8,11 +8,12 @@ addpath(root)
 addpath(cecRoot)
 cd(cecRoot)
 
-algorithms={'PSO_CEC','CSO_CEC','DSS_MAQLCSO'};
-algorithmNames={'PSO','CSO','DSS-RLCSO'};
+% 正式比较算法；DSS-RLCSO 的模式感知 Q-learning 已冻结。
+algorithms={'PSO_CEC','CSO_CEC','CLPSO_CEC','LSHADE_CEC','DSS_RLCSO_CEC'};
+algorithmNames={'PSO','CSO','CLPSO','L-SHADE','DSS-RLCSO'};
+populationSizes=[50 50 50 18*30 50];
 functionIDs=[1 3:30];
 D=30;
-population=50;
 maxEvaluations=10000*D;
 developmentMode=true;
 if developmentMode
@@ -31,7 +32,9 @@ end
 
 stamp=char(datetime('now','Format','yyyyMMdd_HHmmss'));
 resultDir=fullfile(root,'results','cec',['cec2017_' stamp]);
+historyDir=fullfile(resultDir,'histories');
 if ~exist(resultDir,'dir'),mkdir(resultDir);end
+if ~exist(historyDir,'dir'),mkdir(historyDir);end
 checkpointFile=fullfile(resultDir,'cec2017_checkpoint.mat');
 checkpointCsv=fullfile(resultDir,'raw_runs_checkpoint.csv');
 
@@ -43,33 +46,40 @@ for functionID=functionIDs
     for repeat=repeatIDs
         initSeed=seedBase+repeat;
         searchSeed=initSeed+searchSeedOffset;
-        state=struct('lowerBound',lowerBound,'upperBound',upperBound, ...
-            'maxEvaluations',maxEvaluations,'rlMode','modeAware');
+        maxPopulation=max(populationSizes);
         rng(initSeed)
-        state.initialPopulation=lowerBound+rand(population,D).* ...
-            (upperBound-lowerBound);
+        initialPool=lowerBound+rand(maxPopulation,D).*(upperBound-lowerBound);
         for k=1:numel(algorithms)
+            state=struct('lowerBound',lowerBound,'upperBound',upperBound, ...
+                'maxEvaluations',maxEvaluations,'rlMode','modeAware', ...
+                'initialPopulation',initialPool(1:populationSizes(k),:));
             [Best,T,info]=feval(algorithms{k},f,state, ...
-                ceil(maxEvaluations/population),population,searchSeed);
-            assert(info.Evaluations==maxEvaluations && numel(T)==maxEvaluations);
-            assert(isequal(info.InitialPopulation,state.initialPopulation));
-            assert(isfinite(Best.Cost));
+                ceil(maxEvaluations/populationSizes(k)),populationSizes(k),searchSeed);
+            assert(info.Evaluations==maxEvaluations)
+            assert(numel(T)==maxEvaluations && all(isfinite(T)))
+            assert(isequal(info.InitialPopulation,state.initialPopulation))
+            assert(isfinite(Best.Cost) && all(Best.Vector>=lowerBound) && ...
+                all(Best.Vector<=upperBound))
             count=count+1;
-            records{count}=struct('Function',functionName,'FunctionID',functionID, ...
+            runRecord=struct('Function',functionName,'FunctionID',functionID, ...
                 'Dimension',D,'Algorithm',algorithmNames{k},'Run',repeat, ...
                 'InitSeed',initSeed,'SearchSeed',searchSeed, ...
-                'Evaluations',info.Evaluations,'BestCost',Best.Cost, ...
-                'BestError',max(0,Best.Cost-100*functionID), ...
+                'Population',populationSizes(k),'Evaluations',info.Evaluations, ...
+                'BestCost',Best.Cost,'BestError',max(0,Best.Cost-100*functionID), ...
                 'Seconds',info.Seconds,'FirstImprovementFE', ...
                 info.FirstImprovementEvaluation);
+            records{count}=runRecord;
+            historyFile=fullfile(historyDir,sprintf('%s_%s_r%03d.mat', ...
+                functionName,algorithmNames{k},repeat));
+            save(historyFile,'T','Best','info','runRecord','-v7.3');
             fprintf('%s %s r%02d cost=%.6g time=%.3fs\n', ...
                 functionName,algorithmNames{k},repeat,Best.Cost,info.Seconds);
             rawRuns=struct2table([records{1:count}]);
             writetable(rawRuns,checkpointCsv);
             completedRuns=count;
-            save(checkpointFile,'rawRuns','completedRuns','D','population', ...
-                'maxEvaluations','repeatIDs','functionIDs','seedBase', ...
-                'searchSeedOffset','developmentMode');
+            save(checkpointFile,'rawRuns','completedRuns','D', ...
+                'populationSizes','maxEvaluations','repeatIDs','functionIDs', ...
+                'seedBase','searchSeedOffset','developmentMode','algorithmNames');
         end
     end
 end
@@ -96,6 +106,6 @@ end
 summary=struct2table([summaryRecords{:}]);
 writetable(summary,fullfile(resultDir,'summary.csv'));
 save(fullfile(resultDir,'cec2017_results.mat'),'rawRuns','summary','D', ...
-    'population','maxEvaluations','repeatIDs','functionIDs','seedBase', ...
-    'searchSeedOffset','developmentMode');
+    'populationSizes','maxEvaluations','repeatIDs','functionIDs','seedBase', ...
+    'searchSeedOffset','developmentMode','algorithmNames');
 fprintf('Saved CEC2017 results to %s\n',resultDir);

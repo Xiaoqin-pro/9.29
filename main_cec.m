@@ -4,7 +4,7 @@ close all
 
 root=fileparts(mfilename('fullpath'));
 addpath(root)
-algorithms={'PSO_CEC','CSO_CEC','DSS_MAQLCSO'};
+algorithms={'PSO_CEC','CSO_CEC','DSS_RLCSO_CEC'};
 algorithmNames={'PSO','CSO','DSS-RLCSO'};
 functionIDs=1:6;
 D=30;
