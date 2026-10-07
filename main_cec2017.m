@@ -9,7 +9,7 @@ addpath(cecRoot)
 cd(cecRoot)
 
 algorithms={'PSO_CEC','CSO_CEC','DSS_MAQLCSO'};
-algorithmNames={'PSO','CSO','DSS-MAQLCSO'};
+algorithmNames={'PSO','CSO','DSS-RLCSO'};
 functionIDs=[1 3:30];
 D=30;
 population=50;
