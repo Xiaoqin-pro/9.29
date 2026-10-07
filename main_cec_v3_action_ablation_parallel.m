@@ -57,7 +57,7 @@ batchSize=18;
 for first=1:batchSize:numel(jobs)
     last=min(first+batchSize-1,numel(jobs));
     batch=jobs(first:last);
-    batchRecords=cell(numel(batch),1);
+    batchResults=cell(numel(batch),1);
     parfor j=1:numel(batch)
         job=batch(j);
         f=@(x)CEC2017Function(x,job.FunctionID);
@@ -88,9 +88,15 @@ for first=1:batchSize:numel(jobs)
             'Action2Share',info.ActionCounts(2)/sum(info.ActionCounts), ...
             'Action3Share',info.ActionCounts(3)/sum(info.ActionCounts), ...
             'Action4Share',info.ActionCounts(4)/sum(info.ActionCounts));
-        batchRecords{j}=record;
+        batchResults{j}=struct('Best',Best,'T',T,'info',info,'record',record);
+    end
+    batchRecords=cell(numel(batch),1);
+    for j=1:numel(batch)
+        job=batch(j);
+        result=batchResults{j};
+        batchRecords{j}=result.record;
         save(fullfile(historyDir,sprintf('F%02d_%s_r%03d.mat', ...
-            job.FunctionID,job.Variant,job.Run)),'Best','T','info','record');
+            job.FunctionID,job.Variant,job.Run)),'-struct','result');
     end
     records(first:last)=batchRecords;
     rawRuns=struct2table([records{1:last}]);
