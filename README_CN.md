@@ -74,6 +74,8 @@ Q-learning 机制的第一阶段对照可运行 `main_cec_rl_ablation.m`，分�
 
 参考论文的 CSO 适配对照可运行 `main_cec_paper_ablation.m`。`rlMode='paper'` 保留 9 状态和简单奖励，并将四个动作分别实现为强化开发、同伴学习、高斯扰动和反向跳跃；实验同时比较 Paper-style Q-learning、随机动作、固定 A3 和原始 Legacy-RLCSO，结果保存到 `results/cec/paper_ablation_时间戳/`。
 
+面向 CSO 双模式的状态感知调度可运行 `main_cec_mode_ablation.m`。`rlMode='modeAware'` 使用阶段、停滞和 Seeking/Tracing 最近成功率构成 27 状态，并保留固定、随机和启发式对照；核心记录还包括状态访问和状态--动作访问次数，结果保存到 `results/cec/mode_ablation_时间戳/`。
+
 ## 加入新算法
 
 算法沿用统一接口：
