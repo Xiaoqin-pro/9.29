@@ -70,6 +70,8 @@ depotWindow     = [0, 360]
 
 动作调度对照可运行 `main_cec_action_ablation.m`，比较固定 A4、随机选择 A1--A4 和 Q-learning 三种方式。三者均保留双层筛选，只改变动作选择方式，结果保存到 `results/cec/action_ablation_时间戳/`。
 
+Q-learning 机制的第一阶段对照可运行 `main_cec_rl_ablation.m`，分别比较旧奖励、连续改进奖励、加入多样性状态以及两者同时启用的版本。旧版本使用 9 个状态，加入多样性后使用 18 个状态，结果保存到 `results/cec/rl_ablation_时间戳/`。
+
 ## 加入新算法
 
 算法沿用统一接口：

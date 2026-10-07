@@ -10,6 +10,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useCandidateScreen=true;
     useRL=true;
     actionMode='qlearning';
+    rlMode='legacy';
     if isfield(state,'ablation')
         useCatScreen=state.ablation.useCatScreen;
         useCandidateScreen=state.ablation.useCandidateScreen;
@@ -18,6 +19,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     if isfield(state,'actionMode')
         actionMode=state.actionMode;
     end
+    if isfield(state,'rlMode')
+        rlMode=state.rlMode;
+    end
+    useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
+    useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
+    diversityThreshold=0.50;
     pop=state.initialPopulation;
     D=size(pop,2);
     lb=state.lowerBound;
@@ -54,13 +61,30 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.UseCandidateScreen=useCandidateScreen;
     info.UseRL=useRL;
     info.ActionMode=actionMode;
+    info.RLMode=rlMode;
+    info.RewardHistory=[];
+    info.GlobalRewardHistory=[];
+    info.PopulationRewardHistory=[];
+    info.DiversityStateHistory=[];
     stall=0;
-    Q=zeros(9,4);
+    initialCenter=mean(pop,1);
+    initialDiversity=mean(sqrt(sum((pop-initialCenter).^2,2)));
+    if useDiversityState
+        qStateCount=18;
+    else
+        qStateCount=9;
+    end
+    info.QStateCount=qStateCount;
+    Q=zeros(qStateCount,4);
 
     while info.Evaluations<budget
         roundStart=info.Evaluations;
         progress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
-        stateIndex=StateIndex(progress,stall);
+        center=mean(pop,1);
+        diversity=mean(sqrt(sum((pop-center).^2,2)));
+        diversityRatio=diversity/max(initialDiversity,eps);
+        stateIndex=StateIndex(progress,stall,diversityRatio, ...
+            useDiversityState,diversityThreshold);
         epsilon=0.50-0.45*progress;
         if strcmp(actionMode,'fixed')
             action=4;
@@ -77,6 +101,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.ActionHistory(end+1)=action;
         [mr,srd,cdc,jump]=ActionParameters(action);
         oldBest=Best.Cost;
+        oldFitness=fitness;
+        evaluated=false(sizepop,1);
 
         if useCatScreen
             budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
@@ -85,9 +111,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             budgetThisRound=min(sizepop,budget-info.Evaluations);
             catCount=sizepop;
         end
-        center=mean(pop,1);
-        diversity=mean(sqrt(sum((pop-center).^2,2)));
         info.DiversityHistory(end+1)=diversity;
+        info.DiversityStateHistory(end+1)=diversityRatio;
         info.StallHistory(end+1)=stall;
         if useCatScreen
             distBest=sum((pop-Best.Vector).^2,2);
@@ -146,6 +171,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
             i=cats(k);
             if tracing(i)
+                evaluated(i)=true;
                 value=f(trial(i,:));
                 info.Evaluations=info.Evaluations+1;
                 info.TracingEvaluations=info.TracingEvaluations+1;
@@ -168,6 +194,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 else
                     selected=2:size(copies,1);
                     selected=selected(1:min(numel(selected),remaining));
+                end
+                if ~isempty(selected)
+                    evaluated(i)=true;
                 end
                 localCost=fitness(i);
                 localVector=pop(i,:);
@@ -202,14 +231,34 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         else
             stall=stall+1;
         end
-        reward=-1;
-        if improved
-            reward=10;
-        elseif stall>=10 && action==4
-            reward=0.5;
+        newCenter=mean(pop,1);
+        newDiversity=mean(sqrt(sum((pop-newCenter).^2,2)));
+        globalReward=max(0,(oldBest-Best.Cost)/(abs(oldBest)+eps));
+        localGain=max(0,(oldFitness(evaluated)-fitness(evaluated))./ ...
+            (abs(oldFitness(evaluated))+eps));
+        if isempty(localGain)
+            populationReward=0;
+        else
+            populationReward=mean(localGain);
         end
+        if useContinuousReward
+            reward=0.70*globalReward+0.30*populationReward;
+        else
+            reward=-1;
+            if improved
+                reward=10;
+            elseif stall>=10 && action==4
+                reward=0.5;
+            end
+        end
+        info.RewardHistory(end+1)=reward;
+        info.GlobalRewardHistory(end+1)=globalReward;
+        info.PopulationRewardHistory(end+1)=populationReward;
         if useRL
-            nextState=StateIndex((info.Evaluations-sizepop)/max(1,budget-sizepop),stall);
+            nextProgress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
+            nextRatio=newDiversity/max(initialDiversity,eps);
+            nextState=StateIndex(nextProgress,stall,nextRatio, ...
+                useDiversityState,diversityThreshold);
             Q(stateIndex,action)=Q(stateIndex,action)+alpha* ...
                 (reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
         end
@@ -237,7 +286,7 @@ function [mr,srd,cdc,jump]=ActionParameters(action)
     end
 end
 
-function stateIndex=StateIndex(progress,stall)
+function stateIndex=StateIndex(progress,stall,diversityRatio,useDiversityState,threshold)
     if progress<0.3
         phase=1;
     elseif progress<0.7
@@ -252,7 +301,16 @@ function stateIndex=StateIndex(progress,stall)
     else
         status=3;
     end
-    stateIndex=(phase-1)*3+status;
+    if useDiversityState
+        if diversityRatio<threshold
+            diversityState=1;
+        else
+            diversityState=2;
+        end
+        stateIndex=(phase-1)*6+(status-1)*2+diversityState;
+    else
+        stateIndex=(phase-1)*3+status;
+    end
 end
 
 function selected=CandidateScreen(copies,best,center,quota)
