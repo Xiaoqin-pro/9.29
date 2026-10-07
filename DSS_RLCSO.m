@@ -9,10 +9,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useCatScreen=true;
     useCandidateScreen=true;
     useRL=true;
+    actionMode='qlearning';
     if isfield(state,'ablation')
         useCatScreen=state.ablation.useCatScreen;
         useCandidateScreen=state.ablation.useCandidateScreen;
         useRL=state.ablation.useRL;
+    end
+    if isfield(state,'actionMode')
+        actionMode=state.actionMode;
     end
     pop=state.initialPopulation;
     D=size(pop,2);
@@ -49,6 +53,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.UseCatScreen=useCatScreen;
     info.UseCandidateScreen=useCandidateScreen;
     info.UseRL=useRL;
+    info.ActionMode=actionMode;
     stall=0;
     Q=zeros(9,4);
 
@@ -57,7 +62,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         progress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
         stateIndex=StateIndex(progress,stall);
         epsilon=0.50-0.45*progress;
-        if useRL && rand<epsilon
+        if strcmp(actionMode,'fixed')
+            action=4;
+        elseif strcmp(actionMode,'random')
+            action=randi(4);
+        elseif useRL && rand<epsilon
             action=randi(4);
         elseif useRL
             [~,action]=max(Q(stateIndex,:));
