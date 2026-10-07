@@ -26,6 +26,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
     modeAware=strcmp(rlMode,'modeAware');
+    modeAwareV2=strcmp(rlMode,'modeAwareV2');
     diversityThreshold=0.50;
     pop=state.initialPopulation;
     D=size(pop,2);
@@ -65,7 +66,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
-    info.ModeAware=modeAware;
+    info.ModeAware=modeAware || modeAwareV2;
+    info.ModeAwareV2=modeAwareV2;
     info.RewardHistory=[];
     info.GlobalRewardHistory=[];
     info.PopulationRewardHistory=[];
@@ -74,13 +76,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SeekingSuccessHistory=[];
     info.TracingSuccessHistory=[];
     info.ModeSuccessRateHistory=[];
+    info.ModeEfficiencyHistory=[];
     info.StateHistory=[];
     info.StateVisitCounts=[];
     info.StateActionCounts=[];
     stall=0;
     initialCenter=mean(pop,1);
     initialDiversity=mean(sqrt(sum((pop-initialCenter).^2,2)));
-    if modeAware
+    if modeAware || modeAwareV2
         qStateCount=27;
     elseif useDiversityState
         qStateCount=18;
@@ -95,6 +98,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     seekEvaluationHistory=[];
     traceSuccessHistory=[];
     traceEvaluationHistory=[];
+    seekGainHistory=[];
+    traceGainHistory=[];
     modeWindow=5;
     modeThreshold=0.05;
 
@@ -105,8 +110,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         diversity=mean(sqrt(sum((pop-center).^2,2)));
         diversityRatio=diversity/max(initialDiversity,eps);
         modeStatus=ModeStatus(seekSuccessHistory,seekEvaluationHistory, ...
-            traceSuccessHistory,traceEvaluationHistory,modeWindow,modeThreshold);
-        if modeAware
+            traceSuccessHistory,traceEvaluationHistory,seekGainHistory, ...
+            traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
+        if modeAware || modeAwareV2
             stateIndex=ModeAwareStateIndex(progress,stall,modeStatus);
         else
             stateIndex=StateIndex(progress,stall,diversityRatio, ...
@@ -122,12 +128,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         elseif strcmp(actionMode,'random')
             action=randi(4);
         elseif strcmp(actionMode,'heuristic')
-            if modeStatus==1
+            if stall>=10
+                action=4;
+            elseif modeStatus==1
                 action=1;
             elseif modeStatus==3
                 action=3;
-            elseif stall>=10
-                action=4;
             else
                 action=2;
             end
@@ -153,6 +159,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         roundSeekSuccess=0;
         roundTraceEvaluations=0;
         roundTraceSuccess=0;
+        roundSeekGain=0;
+        roundTraceGain=0;
 
         if useCatScreen
             budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
@@ -253,6 +261,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 if value<oldLocalCost
                     roundTraceSuccess=roundTraceSuccess+1;
                 end
+                roundTraceGain=roundTraceGain+max(0,(oldLocalCost-value)/ ...
+                    (abs(oldLocalCost)+abs(value)+eps));
                 remaining=remaining-1;
                 V(i,:)=trialVelocity(i,:);
                 pop(i,:)=trial(i,:);
@@ -289,6 +299,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     if value<localCost
                         roundSeekSuccess=roundSeekSuccess+1;
                     end
+                    roundSeekGain=roundSeekGain+max(0,(localCost-value)/ ...
+                        (abs(localCost)+abs(value)+eps));
                     remaining=remaining-1;
                     if value<localCost
                         localCost=value;
@@ -320,6 +332,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         seekEvaluationHistory(end+1)=roundSeekEvaluations;
         traceSuccessHistory(end+1)=roundTraceSuccess;
         traceEvaluationHistory(end+1)=roundTraceEvaluations;
+        seekGainHistory(end+1)=roundSeekGain;
+        traceGainHistory(end+1)=roundTraceGain;
         localGain=max(0,(oldFitness(evaluated)-fitness(evaluated))./ ...
             (abs(oldFitness(evaluated))+eps));
         if isempty(localGain)
@@ -329,12 +343,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         end
         modeSuccessRate=(roundSeekSuccess+roundTraceSuccess)/ ...
             max(1,roundSeekEvaluations+roundTraceEvaluations);
+        modeEfficiency=(roundSeekGain+roundTraceGain)/ ...
+            max(1,roundSeekEvaluations+roundTraceEvaluations);
         info.SeekingSuccessHistory(end+1)=roundSeekSuccess/ ...
             max(1,roundSeekEvaluations);
         info.TracingSuccessHistory(end+1)=roundTraceSuccess/ ...
             max(1,roundTraceEvaluations);
         info.ModeSuccessRateHistory(end+1)=modeSuccessRate;
-        if modeAware
+        info.ModeEfficiencyHistory(end+1)=modeEfficiency;
+        if modeAwareV2
+            globalEfficiency=max(0,(oldBest-Best.Cost)/ ...
+                (abs(oldBest)+abs(Best.Cost)+eps));
+            reward=5*globalEfficiency+modeEfficiency;
+        elseif modeAware
             reward=2*modeSuccessRate-1;
             if improved
                 reward=10;
@@ -366,8 +387,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             nextRatio=newDiversity/max(initialDiversity,eps);
             nextModeStatus=ModeStatus(seekSuccessHistory, ...
                 seekEvaluationHistory,traceSuccessHistory, ...
-                traceEvaluationHistory,modeWindow,modeThreshold);
-            if modeAware
+                traceEvaluationHistory,seekGainHistory, ...
+                traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
+            if modeAware || modeAwareV2
                 nextState=ModeAwareStateIndex(nextProgress,stall, ...
                     nextModeStatus);
             else
@@ -424,14 +446,26 @@ function peer=OtherCat(i,sizepop)
 end
 
 function modeStatus=ModeStatus(seekSuccess,seekEvaluations, ...
-    traceSuccess,traceEvaluations,windowSize,threshold)
+    traceSuccess,traceEvaluations,seekGain,traceGain,windowSize, ...
+    threshold,useEfficiency)
     if isempty(seekSuccess)
         modeStatus=2;
         return
     end
     first=max(1,numel(seekSuccess)-windowSize+1);
-    seekRate=sum(seekSuccess(first:end))/max(1,sum(seekEvaluations(first:end)));
-    traceRate=sum(traceSuccess(first:end))/max(1,sum(traceEvaluations(first:end)));
+    seekEvaluationsWindow=sum(seekEvaluations(first:end));
+    traceEvaluationsWindow=sum(traceEvaluations(first:end));
+    if useEfficiency
+        if seekEvaluationsWindow<2 || traceEvaluationsWindow<2
+            modeStatus=2;
+            return
+        end
+        seekRate=sum(seekGain(first:end))/seekEvaluationsWindow;
+        traceRate=sum(traceGain(first:end))/traceEvaluationsWindow;
+    else
+        seekRate=sum(seekSuccess(first:end))/max(1,seekEvaluationsWindow);
+        traceRate=sum(traceSuccess(first:end))/max(1,traceEvaluationsWindow);
+    end
     if seekRate>traceRate+threshold
         modeStatus=1;
     elseif traceRate>seekRate+threshold

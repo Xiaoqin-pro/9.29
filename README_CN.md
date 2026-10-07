@@ -76,6 +76,8 @@ Q-learning 机制的第一阶段对照可运行 `main_cec_rl_ablation.m`，分�
 
 面向 CSO 双模式的状态感知调度可运行 `main_cec_mode_ablation.m`。`rlMode='modeAware'` 使用阶段、停滞和 Seeking/Tracing 最近成功率构成 27 状态，并保留固定、随机和启发式对照；核心记录还包括状态访问和状态--动作访问次数，结果保存到 `results/cec/mode_ablation_时间戳/`。
 
+模式信号对齐实验可运行 `main_cec_mode_signal_ablation.m`，比较 Legacy、MAQL-V1、单位 FE 改善效率版本 MAQL-V2、随机调度和启发式调度。每次运行的 `StateHistory`、`StateVisitCounts`、`StateActionCounts` 和 Q 表保存在结果 MAT 文件中，结果保存到 `results/cec/mode_signal_ablation_时间戳/`。
+
 ## 加入新算法
 
 算法沿用统一接口：
