@@ -66,6 +66,8 @@ depotWindow     = [0, 360]
 
 暂时不使用 UAV 路径图时，可运行 `main_cec.m`。它在六个经典连续函数上，用相同初始种群和相同 FE 预算比较 `PSO_CEC`、`CSO_CEC` 与冻结的 `DSS_MAQLCSO`。其中 MAQL-V1 固定使用 27 状态的模式感知 Q-learning；`modeAwareV2` 只保留在模式信号消融中，不作为正式候选。当前函数用于算法开发验证，尚未替代正式的官方 CEC2017 移位旋转测试包。
 
+正式基准入口为 `main_cec2017.m`。它使用官方 CEC2017 MATLAB 函数包的 30 维数据、`10000*D` 次评价预算和相同初始种群，比较 `PSO`、`CSO` 与 `DSS-MAQLCSO`。官方 MATLAB 包删除了原始 F2，因此入口使用 `F1,F3,...,F30` 共 29 个函数；`data/cec2017/` 保留对应的 C++ 源文件、Windows MEX 文件和 30 维输入数据。开发阶段运行 3 个 seed；将 `developmentMode=false` 后使用正式 seed `101:130`。运行前需要在 MATLAB 中确认 `cec17_func.mexw64` 可用，或按 `data/cec2017/cec17_func.cpp` 的说明重新编译。
+
 消融实验可运行 `main_cec_ablation.m`，比较 `CSO`、`SS-CSO`、`DSS-CSO` 和 `DSS-RLCSO`。后三个版本共用 `DSS_RLCSO.m`，分别关闭或开启第一层猫筛选、第二层候选筛选和 Q-learning；四个版本使用相同初始种群和相同 FE 预算。结果保存到 `results/cec/ablation_时间戳/`。
 
 动作调度对照可运行 `main_cec_action_ablation.m`，比较固定 A4、随机选择 A1--A4 和 Q-learning 三种方式。三者均保留双层筛选，只改变动作选择方式，结果保存到 `results/cec/action_ablation_时间戳/`。
