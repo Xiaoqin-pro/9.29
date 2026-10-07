@@ -28,9 +28,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeAware=strcmp(rlMode,'modeAware');
     modeAwareV2=strcmp(rlMode,'modeAwareV2');
     modeAwareV3=strcmp(rlMode,'modeAwareV3');
+    modeAwareV32=strcmp(rlMode,'modeAwareV32');
     fairOpportunity=strcmp(rlMode,'modeAwareV31');
-    modeSampleV3=modeAwareV3;
-    opportunityV3=modeAwareV3;
+    modeSampleV3=modeAwareV3 || modeAwareV32;
+    opportunityV3=modeAwareV3 || modeAwareV32;
     if fairOpportunity
         modeSampleV3=true;
         opportunityV3=true;
@@ -80,16 +81,24 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
-    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3;
+    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32;
     info.ModeAwareV2=modeAwareV2;
     info.ModeAwareV3=modeSampleV3;
+    info.ModeAwareV32=modeAwareV32;
     info.OpportunityScreen=opportunityV3;
     info.FairOpportunity=fairOpportunity;
+    info.ModePreservingOpportunity=modeAwareV32;
     info.WasExploration=[];
     info.GreedyActionHistory=[];
     info.EpsilonHistory=[];
     info.SeekingEvaluationsPerRound=[];
     info.TracingEvaluationsPerRound=[];
+    info.TargetTracingEvaluations=[];
+    info.ActualTracingEvaluations=[];
+    info.TargetSeekingEvaluations=[];
+    info.ActualSeekingEvaluations=[];
+    info.BudgetFillRate=[];
+    info.ModeAllocationError=[];
     info.ModeSampleCounts=[];
     info.ModeWindowRates=[];
     info.OpportunitySelectionChanged=[];
@@ -296,8 +305,59 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
 
-        % V3：全部新候选先参与空间评分，再分配真实评价机会。
-        if opportunityV3
+        % V3.2：先按模式分配评价名额，再在每个模式内部筛选。
+        if modeAwareV32
+            traceIds=find(tracing);
+            seekIds=find(~tracing);
+            candidateLimit=2;
+            if ~useCandidateScreen
+                candidateLimit=SMP-1;
+            end
+            targetTrace=min(numel(traceIds),round(budgetThisRound*mr));
+            targetSeek=min(candidateLimit*numel(seekIds), ...
+                budgetThisRound-targetTrace);
+            leftover=budgetThisRound-targetTrace-targetSeek;
+            extraTrace=min(leftover,numel(traceIds)-targetTrace);
+            targetTrace=targetTrace+extraTrace;
+            leftover=leftover-extraTrace;
+            extraSeek=min(leftover,candidateLimit*numel(seekIds)-targetSeek);
+            targetSeek=targetSeek+extraSeek;
+            if useCatScreen
+                if targetTrace>0
+                    traceBest=sum((trial(traceIds,:)-Best.Vector).^2,2);
+                    traceCenter=sum((trial(traceIds,:)-center).^2,2);
+                    traceCats=traceIds(SelectCats(traceBest,traceCenter, ...
+                        min(targetTrace,numel(traceIds))));
+                else
+                    traceCats=[];
+                end
+                if targetSeek>0
+                    seekBest=zeros(numel(seekIds),1);
+                    seekCenter=zeros(numel(seekIds),1);
+                    for q=1:numel(seekIds)
+                        candidates=seekingPool{seekIds(q)}(2:end,:);
+                        seekBest(q)=min(sum((candidates-Best.Vector).^2,2));
+                        seekCenter(q)=max(sum((candidates-center).^2,2));
+                    end
+                    seekCatCount=min(numel(seekIds), ...
+                        ceil(targetSeek/candidateLimit));
+                    seekCats=seekIds(SelectCats(seekBest,seekCenter, ...
+                        seekCatCount));
+                else
+                    seekCats=[];
+                end
+            else
+                traceCats=traceIds(1:min(targetTrace,numel(traceIds)));
+                seekCatCount=min(numel(seekIds),ceil(targetSeek/candidateLimit));
+                seekCats=seekIds(1:seekCatCount);
+            end
+            traceCats=traceCats(randperm(numel(traceCats)));
+            seekCats=seekCats(randperm(numel(seekCats)));
+            cats=[traceCats;seekCats];
+            info.OpportunitySelectionChanged(end+1)=true;
+            info.TargetTracingEvaluations(end+1)=targetTrace;
+            info.TargetSeekingEvaluations(end+1)=targetSeek;
+        elseif opportunityV3
             if useCatScreen
                 distBest=zeros(sizepop,1);
                 distCenter=zeros(sizepop,1);
@@ -333,12 +393,21 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.SelectedTracingCatShare(end+1)=mean(tracing(cats));
 
         remaining=budgetThisRound;
+        remainingTrace=budgetThisRound;
+        remainingSeek=budgetThisRound;
+        if modeAwareV32
+            remainingTrace=info.TargetTracingEvaluations(end);
+            remainingSeek=info.TargetSeekingEvaluations(end);
+        end
         for k=1:numel(cats)
             if remaining<=0
                 break;
             end
             i=cats(k);
             if tracing(i)
+                if modeAwareV32 && remainingTrace<=0
+                    continue;
+                end
                 evaluated(i)=true;
                 oldLocalCost=fitness(i);
                 value=f(trial(i,:));
@@ -346,6 +415,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 info.TracingEvaluations=info.TracingEvaluations+1;
                 info.CandidateEvaluations=info.CandidateEvaluations+1;
                 roundTraceEvaluations=roundTraceEvaluations+1;
+                if modeAwareV32
+                    remainingTrace=remainingTrace-1;
+                end
                 if value<oldLocalCost
                     roundTraceSuccess=roundTraceSuccess+1;
                 end
@@ -366,6 +438,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 end
                 T(info.Evaluations)=Best.Cost;
             else
+                if modeAwareV32 && remainingSeek<=0
+                    continue;
+                end
                 copies=seekingPool{i};
                 if useCandidateScreen
                     quota=min(2,remaining);
@@ -384,11 +459,17 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     if remaining<=0
                         break;
                     end
+                    if modeAwareV32 && remainingSeek<=0
+                        break;
+                    end
                     value=f(copies(j,:));
                     info.Evaluations=info.Evaluations+1;
                     info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
                     roundSeekEvaluations=roundSeekEvaluations+1;
+                    if modeAwareV32
+                        remainingSeek=remainingSeek-1;
+                    end
                     successCost=localCost;
                     if modeSampleV3
                         successCost=parentCost;
@@ -417,6 +498,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
 
+        if modeAwareV32
+            targetTrace=info.TargetTracingEvaluations(end);
+            targetSeek=info.TargetSeekingEvaluations(end);
+            info.ActualTracingEvaluations(end+1)=roundTraceEvaluations;
+            info.ActualSeekingEvaluations(end+1)=roundSeekEvaluations;
+            info.BudgetFillRate(end+1)=(roundTraceEvaluations+roundSeekEvaluations)/ ...
+                max(1,budgetThisRound);
+            info.ModeAllocationError(end+1,:)=[roundTraceEvaluations-targetTrace ...
+                roundSeekEvaluations-targetSeek];
+        end
         improved=Best.Cost<oldBest;
         oldStall=stall;
         if improved
