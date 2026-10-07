@@ -1,5 +1,5 @@
 function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
-    % 双层空间筛选 + Q-learning 调度的猫群优化原型。
+    % DSS-RLCSO V2：全体试探位置 + 双层空间筛选 + Q-learning。
     clockStart=tic;
     sizepop=Particle_Number;
     SMP=5;
@@ -29,11 +29,20 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.InitialPopulation=state.initialPopulation;
     info.FirstImprovementEvaluation=NaN;
     info.ActionCounts=zeros(1,4);
+    info.ActionHistory=[];
+    info.DiversityHistory=[];
+    info.StallHistory=[];
+    info.SelectedCatCounts=[];
+    info.CatSelectionCounts=zeros(sizepop,1);
+    info.EvaluationsPerRound=[];
+    info.SeekingEvaluations=0;
+    info.TracingEvaluations=0;
     info.CandidateEvaluations=0;
     stall=0;
     Q=zeros(9,4);
 
     while info.Evaluations<budget
+        roundStart=info.Evaluations;
         progress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
         stateIndex=StateIndex(progress,stall);
         epsilon=0.50-0.45*progress;
@@ -43,11 +52,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             [~,action]=max(Q(stateIndex,:));
         end
         info.ActionCounts(action)=info.ActionCounts(action)+1;
+        info.ActionHistory(end+1)=action;
         [mr,srd,cdc,jump]=ActionParameters(action);
         oldBest=Best.Cost;
+
         budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
         catCount=min(sizepop,max(2,ceil(budgetThisRound/2)));
         center=mean(pop,1);
+        diversity=mean(sqrt(sum((pop-center).^2,2)));
+        info.DiversityHistory(end+1)=diversity;
+        info.StallHistory(end+1)=stall;
         distBest=sum((pop-Best.Vector).^2,2);
         distCenter=sum((pop-center).^2,2);
         [~,orderBest]=sort(distBest);
@@ -58,33 +72,25 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             extra=setdiff((1:sizepop)',cats,'stable');
             cats=[cats;extra(1:catCount-numel(cats))];
         end
-        remaining=budgetThisRound;
+        info.SelectedCatCounts(end+1)=numel(cats);
+        info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
 
-        for k=1:numel(cats)
-            if remaining<=0
-                break;
-            end
-            i=cats(k);
+        trial=pop;
+        trialVelocity=V;
+        tracing=false(sizepop,1);
+        seekingPool=cell(sizepop,1);
+        for i=1:sizepop
             if rand<mr
-                V(i,:)=V(i,:)+2*rand(1,D).*(Best.Vector-pop(i,:));
-                V(i,:)=max(-Vmax,min(Vmax,V(i,:)));
+                tracing(i)=true;
+                trialVelocity(i,:)=V(i,:)+2*rand(1,D).*(Best.Vector-pop(i,:));
+                trialVelocity(i,:)=max(-Vmax,min(Vmax,trialVelocity(i,:)));
                 if jump
                     sigma=0.10*(1-progress);
-                    trial=Best.Vector+sigma*randn(1,D).*(ub-lb);
+                    trial(i,:)=Best.Vector+sigma*randn(1,D).*(ub-lb);
                 else
-                    trial=pop(i,:)+V(i,:);
+                    trial(i,:)=pop(i,:)+trialVelocity(i,:);
                 end
-                trial=max(lb,min(ub,trial));
-                value=f(trial);
-                info.Evaluations=info.Evaluations+1;
-                info.CandidateEvaluations=info.CandidateEvaluations+1;
-                remaining=remaining-1;
-                if value<fitness(i)
-                    pop(i,:)=trial;
-                    fitness(i)=value;
-                end
-                Best=UpdateBest(Best,trial,value);
-                T(info.Evaluations)=Best.Cost;
+                trial(i,:)=max(lb,min(ub,trial(i,:)));
             else
                 copies=repmat(pop(i,:),SMP,1);
                 for j=2:SMP
@@ -93,11 +99,37 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         copies(j,:)=Best.Vector+sigma*randn(1,D).*(ub-lb);
                     else
                         d=randperm(D,max(1,round(cdc*D)));
-                        copies(j,d)=copies(j,d)+srd*(ub(d)-lb(d)) ...
-                            .*(2*rand(1,numel(d))-1);
+                        copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
                     end
                     copies(j,:)=max(lb,min(ub,copies(j,:)));
                 end
+                seekingPool{i}=copies;
+            end
+        end
+
+        remaining=budgetThisRound;
+        for k=1:numel(cats)
+            if remaining<=0
+                break;
+            end
+            i=cats(k);
+            if tracing(i)
+                value=f(trial(i,:));
+                info.Evaluations=info.Evaluations+1;
+                info.TracingEvaluations=info.TracingEvaluations+1;
+                info.CandidateEvaluations=info.CandidateEvaluations+1;
+                remaining=remaining-1;
+                V(i,:)=trialVelocity(i,:);
+                pop(i,:)=trial(i,:);
+                fitness(i)=value;
+                oldCandidateBest=Best.Cost;
+                Best=UpdateBest(Best,trial(i,:),value);
+                if Best.Cost<oldCandidateBest && isnan(info.FirstImprovementEvaluation)
+                    info.FirstImprovementEvaluation=info.Evaluations;
+                end
+                T(info.Evaluations)=Best.Cost;
+            else
+                copies=seekingPool{i};
                 quota=min(2,remaining);
                 selected=CandidateScreen(copies,Best.Vector,center,quota);
                 localCost=fitness(i);
@@ -108,13 +140,18 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     value=f(copies(j,:));
                     info.Evaluations=info.Evaluations+1;
+                    info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
                     remaining=remaining-1;
                     if value<localCost
                         localCost=value;
                         localVector=copies(j,:);
                     end
+                    oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
+                    if Best.Cost<oldCandidateBest && isnan(info.FirstImprovementEvaluation)
+                        info.FirstImprovementEvaluation=info.Evaluations;
+                    end
                     T(info.Evaluations)=Best.Cost;
                 end
                 pop(i,:)=localVector;
@@ -125,9 +162,6 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         improved=Best.Cost<oldBest;
         if improved
             stall=0;
-            if isnan(info.FirstImprovementEvaluation)
-                info.FirstImprovementEvaluation=info.Evaluations;
-            end
         else
             stall=stall+1;
         end
@@ -140,6 +174,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         nextState=StateIndex((info.Evaluations-sizepop)/max(1,budget-sizepop),stall);
         Q(stateIndex,action)=Q(stateIndex,action)+alpha* ...
             (reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
+        info.EvaluationsPerRound(end+1)=info.Evaluations-roundStart;
     end
     T=T(1:info.Evaluations);
     info.Algorithm='DSS_RLCSO';
