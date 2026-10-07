@@ -66,6 +66,8 @@ depotWindow     = [0, 360]
 
 暂时不使用 UAV 路径图时，可运行 `main_cec.m`。它在六个经典连续函数上，用相同初始种群和相同 FE 预算比较 `PSO_CEC`、`CSO_CEC` 与 `DSS_RLCSO`。当前函数用于算法开发验证，尚未替代正式的官方 CEC2017 移位旋转测试包。
 
+消融实验可运行 `main_cec_ablation.m`，比较 `CSO`、`SS-CSO`、`DSS-CSO` 和 `DSS-RLCSO`。后三个版本共用 `DSS_RLCSO.m`，分别关闭或开启第一层猫筛选、第二层候选筛选和 Q-learning；四个版本使用相同初始种群和相同 FE 预算。结果保存到 `results/cec/ablation_时间戳/`。
+
 ## 加入新算法
 
 算法沿用统一接口：

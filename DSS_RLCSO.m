@@ -6,6 +6,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     rho=0.10;
     alpha=0.10;
     gamma=0.90;
+    useCatScreen=true;
+    useCandidateScreen=true;
+    useRL=true;
+    if isfield(state,'ablation')
+        useCatScreen=state.ablation.useCatScreen;
+        useCandidateScreen=state.ablation.useCandidateScreen;
+        useRL=state.ablation.useRL;
+    end
     pop=state.initialPopulation;
     D=size(pop,2);
     lb=state.lowerBound;
@@ -38,6 +46,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SeekingEvaluations=0;
     info.TracingEvaluations=0;
     info.CandidateEvaluations=0;
+    info.UseCatScreen=useCatScreen;
+    info.UseCandidateScreen=useCandidateScreen;
+    info.UseRL=useRL;
     stall=0;
     Q=zeros(9,4);
 
@@ -46,32 +57,44 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         progress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
         stateIndex=StateIndex(progress,stall);
         epsilon=0.50-0.45*progress;
-        if rand<epsilon
+        if useRL && rand<epsilon
             action=randi(4);
-        else
+        elseif useRL
             [~,action]=max(Q(stateIndex,:));
+        else
+            action=1;
         end
         info.ActionCounts(action)=info.ActionCounts(action)+1;
         info.ActionHistory(end+1)=action;
         [mr,srd,cdc,jump]=ActionParameters(action);
         oldBest=Best.Cost;
 
-        budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
-        catCount=min(sizepop,max(2,ceil(budgetThisRound/2)));
+        if useCatScreen
+            budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
+            catCount=min(sizepop,max(2,ceil(budgetThisRound/2)));
+        else
+            budgetThisRound=min(sizepop,budget-info.Evaluations);
+            catCount=sizepop;
+        end
         center=mean(pop,1);
         diversity=mean(sqrt(sum((pop-center).^2,2)));
         info.DiversityHistory(end+1)=diversity;
         info.StallHistory(end+1)=stall;
-        distBest=sum((pop-Best.Vector).^2,2);
-        distCenter=sum((pop-center).^2,2);
-        [~,orderBest]=sort(distBest);
-        [~,orderCenter]=sort(distCenter,'descend');
-        cats=unique([orderBest(1:ceil(catCount/2)); ...
-            orderCenter(1:floor(catCount/2))],'stable');
-        if numel(cats)<catCount
-            extra=setdiff((1:sizepop)',cats,'stable');
-            cats=[cats;extra(1:catCount-numel(cats))];
+        if useCatScreen
+            distBest=sum((pop-Best.Vector).^2,2);
+            distCenter=sum((pop-center).^2,2);
+            [~,orderBest]=sort(distBest);
+            [~,orderCenter]=sort(distCenter,'descend');
+            cats=unique([orderBest(1:ceil(catCount/2)); ...
+                orderCenter(1:floor(catCount/2))],'stable');
+            if numel(cats)<catCount
+                extra=setdiff((1:sizepop)',cats,'stable');
+                cats=[cats;extra(1:catCount-numel(cats))];
+            end
+        else
+            cats=(1:sizepop)';
         end
+        cats=cats(randperm(numel(cats)));
         info.SelectedCatCounts(end+1)=numel(cats);
         info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
 
@@ -130,8 +153,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 T(info.Evaluations)=Best.Cost;
             else
                 copies=seekingPool{i};
-                quota=min(2,remaining);
-                selected=CandidateScreen(copies,Best.Vector,center,quota);
+                if useCandidateScreen
+                    quota=min(2,remaining);
+                    selected=CandidateScreen(copies,Best.Vector,center,quota);
+                else
+                    selected=2:size(copies,1);
+                    selected=selected(1:min(numel(selected),remaining));
+                end
                 localCost=fitness(i);
                 localVector=pop(i,:);
                 for j=selected
@@ -171,9 +199,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         elseif stall>=10 && action==4
             reward=0.5;
         end
-        nextState=StateIndex((info.Evaluations-sizepop)/max(1,budget-sizepop),stall);
-        Q(stateIndex,action)=Q(stateIndex,action)+alpha* ...
-            (reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
+        if useRL
+            nextState=StateIndex((info.Evaluations-sizepop)/max(1,budget-sizepop),stall);
+            Q(stateIndex,action)=Q(stateIndex,action)+alpha* ...
+                (reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
+        end
         info.EvaluationsPerRound(end+1)=info.Evaluations-roundStart;
     end
     T=T(1:info.Evaluations);
