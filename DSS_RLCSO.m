@@ -28,8 +28,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeAware=strcmp(rlMode,'modeAware');
     modeAwareV2=strcmp(rlMode,'modeAwareV2');
     modeAwareV3=strcmp(rlMode,'modeAwareV3');
+    fairOpportunity=strcmp(rlMode,'modeAwareV31');
     modeSampleV3=modeAwareV3;
     opportunityV3=modeAwareV3;
+    if fairOpportunity
+        modeSampleV3=true;
+        opportunityV3=true;
+    end
     if isfield(state,'modeSampleV3')
         modeSampleV3=state.modeSampleV3;
     end
@@ -79,6 +84,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ModeAwareV2=modeAwareV2;
     info.ModeAwareV3=modeSampleV3;
     info.OpportunityScreen=opportunityV3;
+    info.FairOpportunity=fairOpportunity;
+    info.WasExploration=[];
+    info.GreedyActionHistory=[];
+    info.EpsilonHistory=[];
     info.SeekingEvaluationsPerRound=[];
     info.TracingEvaluationsPerRound=[];
     info.ModeSampleCounts=[];
@@ -148,6 +157,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 useDiversityState,diversityThreshold);
         end
         epsilon=0.50-0.45*progress;
+        wasExploration=false;
+        greedyAction=NaN;
         if strcmp(actionMode,'fixed')
             action=4;
         elseif strcmp(actionMode,'fixed1')
@@ -170,13 +181,20 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             else
                 action=2;
             end
-        elseif useRL && rand<epsilon
-            action=randi(4);
         elseif useRL
-            [~,action]=max(Q(stateIndex,:));
+            if rand<epsilon
+                action=randi(4);
+                wasExploration=true;
+            else
+                [~,action]=max(Q(stateIndex,:));
+                greedyAction=action;
+            end
         else
             action=1;
         end
+        info.WasExploration(end+1)=wasExploration;
+        info.GreedyActionHistory(end+1)=greedyAction;
+        info.EpsilonHistory(end+1)=epsilon;
         info.ActionCounts(action)=info.ActionCounts(action)+1;
         info.ActionHistory(end+1)=action;
         info.StateHistory(end+1)=stateIndex;
@@ -289,8 +307,15 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     else
                         candidates=seekingPool{i}(2:end,:); % 排除缓存父代
                     end
-                    distBest(i)=min(sum((candidates-Best.Vector).^2,2));
-                    distCenter(i)=max(sum((candidates-center).^2,2));
+                    candidateBest=sum((candidates-Best.Vector).^2,2);
+                    candidateCenter=sum((candidates-center).^2,2);
+                    if fairOpportunity
+                        distBest(i)=mean(candidateBest);
+                        distCenter(i)=mean(candidateCenter);
+                    else
+                        distBest(i)=min(candidateBest);
+                        distCenter(i)=max(candidateCenter);
+                    end
                 end
                 cats=SelectCats(distBest,distCenter,catCount);
                 oldCats=SelectCats(sum((pop-Best.Vector).^2,2), ...
