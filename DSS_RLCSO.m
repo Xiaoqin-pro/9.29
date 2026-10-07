@@ -1,5 +1,5 @@
 function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
-    % DSS-RLCSO V2：全体试探位置 + 双层空间筛选 + Q-learning。
+    % 双层空间筛选 + Q-learning；modeAware 保留旧版，modeAwareV3 修正流程。
     clockStart=tic;
     sizepop=Particle_Number;
     SMP=5;
@@ -27,6 +27,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     paperMode=strcmp(rlMode,'paper');
     modeAware=strcmp(rlMode,'modeAware');
     modeAwareV2=strcmp(rlMode,'modeAwareV2');
+    modeAwareV3=strcmp(rlMode,'modeAwareV3');
     diversityThreshold=0.50;
     pop=state.initialPopulation;
     D=size(pop,2);
@@ -66,8 +67,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
-    info.ModeAware=modeAware || modeAwareV2;
+    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3;
     info.ModeAwareV2=modeAwareV2;
+    info.ModeAwareV3=modeAwareV3;
+    info.SeekingEvaluationsPerRound=[];
+    info.TracingEvaluationsPerRound=[];
+    info.ModeSampleCounts=[];
+    info.ModeWindowRates=[];
+    info.OpportunitySelectionChanged=[];
     info.RewardHistory=[];
     info.GlobalRewardHistory=[];
     info.PopulationRewardHistory=[];
@@ -83,7 +90,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     stall=0;
     initialCenter=mean(pop,1);
     initialDiversity=mean(sqrt(sum((pop-initialCenter).^2,2)));
-    if modeAware || modeAwareV2
+    if modeAware || modeAwareV2 || modeAwareV3
         qStateCount=27;
     elseif useDiversityState
         qStateCount=18;
@@ -102,6 +109,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     traceGainHistory=[];
     modeWindow=5;
     modeThreshold=0.05;
+    seekSamples=[];
+    traceSamples=[];
+    sampleWindow=20;
+    minimumSamples=10;
 
     while info.Evaluations<budget
         roundStart=info.Evaluations;
@@ -109,10 +120,17 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         center=mean(pop,1);
         diversity=mean(sqrt(sum((pop-center).^2,2)));
         diversityRatio=diversity/max(initialDiversity,eps);
-        modeStatus=ModeStatus(seekSuccessHistory,seekEvaluationHistory, ...
-            traceSuccessHistory,traceEvaluationHistory,seekGainHistory, ...
-            traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
-        if modeAware || modeAwareV2
+        if modeAwareV3
+            [modeStatus,rates]=SampleModeStatus(seekSamples,traceSamples, ...
+                minimumSamples,modeThreshold);
+            info.ModeSampleCounts(end+1,:)=[numel(seekSamples) numel(traceSamples)];
+            info.ModeWindowRates(end+1,:)=rates;
+        else
+            modeStatus=ModeStatus(seekSuccessHistory,seekEvaluationHistory, ...
+                traceSuccessHistory,traceEvaluationHistory,seekGainHistory, ...
+                traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
+        end
+        if modeAware || modeAwareV2 || modeAwareV3
             stateIndex=ModeAwareStateIndex(progress,stall,modeStatus);
         else
             stateIndex=StateIndex(progress,stall,diversityRatio, ...
@@ -172,7 +190,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.DiversityHistory(end+1)=diversity;
         info.DiversityStateHistory(end+1)=diversityRatio;
         info.StallHistory(end+1)=stall;
-        if useCatScreen
+        if useCatScreen && ~modeAwareV3
             distBest=sum((pop-Best.Vector).^2,2);
             distCenter=sum((pop-center).^2,2);
             [~,orderBest]=sort(distBest);
@@ -183,12 +201,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 extra=setdiff((1:sizepop)',cats,'stable');
                 cats=[cats;extra(1:catCount-numel(cats))];
             end
-        else
+        elseif ~modeAwareV3
             cats=(1:sizepop)';
         end
-        cats=cats(randperm(numel(cats)));
-        info.SelectedCatCounts(end+1)=numel(cats);
-        info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
+        if ~modeAwareV3
+            cats=cats(randperm(numel(cats)));
+            info.SelectedCatCounts(end+1)=numel(cats);
+            info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
+        end
 
         trial=pop;
         trialVelocity=V;
@@ -244,6 +264,33 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
 
+        % V3：全部新候选先参与空间评分，再分配真实评价机会。
+        if modeAwareV3
+            if useCatScreen
+                distBest=zeros(sizepop,1);
+                distCenter=zeros(sizepop,1);
+                for i=1:sizepop
+                    if tracing(i)
+                        candidates=trial(i,:);
+                    else
+                        candidates=seekingPool{i}(2:end,:); % 排除缓存父代
+                    end
+                    distBest(i)=min(sum((candidates-Best.Vector).^2,2));
+                    distCenter(i)=max(sum((candidates-center).^2,2));
+                end
+                cats=SelectCats(distBest,distCenter,catCount);
+                oldCats=SelectCats(sum((pop-Best.Vector).^2,2), ...
+                    sum((pop-center).^2,2),catCount);
+                info.OpportunitySelectionChanged(end+1)= ...
+                    ~isequal(sort(cats),sort(oldCats));
+            else
+                cats=(1:sizepop)';
+            end
+            cats=cats(randperm(numel(cats)));
+            info.SelectedCatCounts(end+1)=numel(cats);
+            info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
+        end
+
         remaining=budgetThisRound;
         for k=1:numel(cats)
             if remaining<=0
@@ -260,6 +307,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 roundTraceEvaluations=roundTraceEvaluations+1;
                 if value<oldLocalCost
                     roundTraceSuccess=roundTraceSuccess+1;
+                end
+                if modeAwareV3
+                    traceSamples=[traceSamples value<oldLocalCost];
+                    traceSamples=traceSamples(max(1,end-sampleWindow+1):end);
                 end
                 roundTraceGain=roundTraceGain+max(0,(oldLocalCost-value)/ ...
                     (abs(oldLocalCost)+abs(value)+eps));
@@ -286,6 +337,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     evaluated(i)=true;
                 end
                 localCost=fitness(i);
+                parentCost=fitness(i);
                 localVector=pop(i,:);
                 for j=selected
                     if remaining<=0
@@ -296,11 +348,17 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
                     roundSeekEvaluations=roundSeekEvaluations+1;
-                    if value<localCost
+                    successCost=localCost;
+                    if modeAwareV3
+                        successCost=parentCost;
+                        seekSamples=[seekSamples value<parentCost];
+                        seekSamples=seekSamples(max(1,end-sampleWindow+1):end);
+                    end
+                    if value<successCost
                         roundSeekSuccess=roundSeekSuccess+1;
                     end
-                    roundSeekGain=roundSeekGain+max(0,(localCost-value)/ ...
-                        (abs(localCost)+abs(value)+eps));
+                    roundSeekGain=roundSeekGain+max(0,(successCost-value)/ ...
+                        (abs(successCost)+abs(value)+eps));
                     remaining=remaining-1;
                     if value<localCost
                         localCost=value;
@@ -355,7 +413,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             globalEfficiency=max(0,(oldBest-Best.Cost)/ ...
                 (abs(oldBest)+abs(Best.Cost)+eps));
             reward=5*globalEfficiency+modeEfficiency;
-        elseif modeAware
+        elseif modeAware || modeAwareV3
             reward=2*modeSuccessRate-1;
             if improved
                 reward=10;
@@ -385,11 +443,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         if useRL
             nextProgress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
             nextRatio=newDiversity/max(initialDiversity,eps);
-            nextModeStatus=ModeStatus(seekSuccessHistory, ...
-                seekEvaluationHistory,traceSuccessHistory, ...
-                traceEvaluationHistory,seekGainHistory, ...
-                traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
-            if modeAware || modeAwareV2
+            if modeAwareV3
+                nextModeStatus=SampleModeStatus(seekSamples,traceSamples, ...
+                    minimumSamples,modeThreshold);
+            else
+                nextModeStatus=ModeStatus(seekSuccessHistory, ...
+                    seekEvaluationHistory,traceSuccessHistory, ...
+                    traceEvaluationHistory,seekGainHistory, ...
+                    traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
+            end
+            if modeAware || modeAwareV2 || modeAwareV3
                 nextState=ModeAwareStateIndex(nextProgress,stall, ...
                     nextModeStatus);
             else
@@ -400,13 +463,42 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 (reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
         end
         info.EvaluationsPerRound(end+1)=info.Evaluations-roundStart;
+        info.SeekingEvaluationsPerRound(end+1)=roundSeekEvaluations;
+        info.TracingEvaluationsPerRound(end+1)=roundTraceEvaluations;
     end
     T=T(1:info.Evaluations);
     info.Algorithm='DSS_RLCSO';
     info.Seed=seed;
     info.Q=Q;
     info.Stall=stall;
+    info.FinalSeekSamples=seekSamples;
+    info.FinalTraceSamples=traceSamples;
     info.Seconds=toc(clockStart);
+end
+
+function cats=SelectCats(distBest,distCenter,catCount)
+    [~,near]=sort(distBest);
+    [~,far]=sort(distCenter,'descend');
+    cats=unique([near(1:ceil(catCount/2));far(1:floor(catCount/2))],'stable');
+    if numel(cats)<catCount
+        extra=setdiff((1:numel(distBest))',cats,'stable');
+        cats=[cats;extra(1:catCount-numel(cats))];
+    end
+end
+
+function [modeStatus,rates]=SampleModeStatus(seekSamples,traceSamples,minimum,threshold)
+    modeStatus=2;
+    rates=[NaN NaN];
+    if ~isempty(seekSamples),rates(1)=mean(seekSamples);end
+    if ~isempty(traceSamples),rates(2)=mean(traceSamples);end
+    if numel(seekSamples)<minimum || numel(traceSamples)<minimum
+        return
+    end
+    if rates(1)>rates(2)+threshold
+        modeStatus=1;
+    elseif rates(2)>rates(1)+threshold
+        modeStatus=3;
+    end
 end
 
 function [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode)
