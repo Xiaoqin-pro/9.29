@@ -4,7 +4,8 @@ close all
 
 root=fileparts(mfilename('fullpath'));
 addpath(root)
-algorithms={'PSO_CEC','CSO_CEC','DSS_RLCSO'};
+algorithms={'PSO_CEC','CSO_CEC','DSS_MAQLCSO'};
+algorithmNames={'PSO','CSO','DSS-MAQLCSO'};
 functionIDs=1:6;
 D=30;
 population=50;
@@ -25,7 +26,7 @@ for functionID=functionIDs
         initSeed=seedBase+repeat;
         searchSeed=initSeed+searchSeedOffset;
         state=struct('lowerBound',lb,'upperBound',ub, ...
-            'maxEvaluations',maxEvaluations);
+            'maxEvaluations',maxEvaluations,'rlMode','modeAware');
         rng(initSeed)
         state.initialPopulation=lb+rand(population,D).*(ub-lb);
         for k=1:numel(algorithms)
@@ -36,7 +37,7 @@ for functionID=functionIDs
             assert(isfinite(Best.Cost));
             count=count+1;
             records{count}=struct('Function',functionName,'Dimension',D, ...
-                'Algorithm',algorithms{k},'Run',repeat,'InitSeed',initSeed, ...
+                'Algorithm',algorithmNames{k},'Run',repeat,'InitSeed',initSeed, ...
                 'SearchSeed',searchSeed,'Evaluations',info.Evaluations, ...
                 'BestCost',Best.Cost,'Seconds',info.Seconds, ...
                 'FirstImprovementFE',info.FirstImprovementEvaluation);

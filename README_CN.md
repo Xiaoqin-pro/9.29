@@ -64,7 +64,7 @@ depotWindow     = [0, 360]
 
 ## CEC 开发实验
 
-暂时不使用 UAV 路径图时，可运行 `main_cec.m`。它在六个经典连续函数上，用相同初始种群和相同 FE 预算比较 `PSO_CEC`、`CSO_CEC` 与 `DSS_RLCSO`。当前函数用于算法开发验证，尚未替代正式的官方 CEC2017 移位旋转测试包。
+暂时不使用 UAV 路径图时，可运行 `main_cec.m`。它在六个经典连续函数上，用相同初始种群和相同 FE 预算比较 `PSO_CEC`、`CSO_CEC` 与冻结的 `DSS_MAQLCSO`。其中 MAQL-V1 固定使用 27 状态的模式感知 Q-learning；`modeAwareV2` 只保留在模式信号消融中，不作为正式候选。当前函数用于算法开发验证，尚未替代正式的官方 CEC2017 移位旋转测试包。
 
 消融实验可运行 `main_cec_ablation.m`，比较 `CSO`、`SS-CSO`、`DSS-CSO` 和 `DSS-RLCSO`。后三个版本共用 `DSS_RLCSO.m`，分别关闭或开启第一层猫筛选、第二层候选筛选和 Q-learning；四个版本使用相同初始种群和相同 FE 预算。结果保存到 `results/cec/ablation_时间戳/`。
 
@@ -86,7 +86,7 @@ Q-learning 机制的第一阶段对照可运行 `main_cec_rl_ablation.m`，分�
 [Best,T,info] = Method(model,state,maxgen,population,seed)
 ```
 
-读取 `state.initialPopulation`，调用同一 `Fitness`，遵守 `state.maxEvaluations` 并记录实际评价次数。把方法名加入 `main.m` 开头的 `algorithms` 即可参与同一协议；调参只能使用开发重复编号。
+读取 `state.initialPopulation`，调用同一 `Fitness`，遵守 `state.maxEvaluations` 并记录实际评价次数。CEC 开发入口使用 `DSS_MAQLCSO.m` 固定 MAQL-V1；UAV 主程序仍可通过 `DSS_RLCSO.m` 保留旧模式。把方法名加入对应入口的 `algorithms` 即可参与同一协议；调参只能使用开发重复编号。
 
 ## 文件分工
 
