@@ -8,9 +8,9 @@ addpath(root)
 addpath(cecRoot)
 cd(cecRoot)
 
-algorithms={'PSO_CEC','CSO_CEC','CLPSO_CEC','LSHADE_CEC','DSS_RLCSO_CEC'};
-algorithmNames={'PSO','CSO','CLPSO','L-SHADE','DSS-RLCSO'};
-populationSizes=[50 50 50 18*30 50];
+algorithms={'PSO_CEC','CSO_CEC','CLPSO_CEC','GWO_CEC','SCSO_CEC','DSS_RLCSO_CEC'};
+algorithmNames={'PSO','CSO','CLPSO','GWO','SCSO','DSS-RLCSO'};
+populationSizes=[50 50 50 50 50 50];
 functionIDs=[3 13 30];
 D=30;
 maxEvaluations=30000;
@@ -64,3 +64,4 @@ writetable(rawRuns,fullfile(resultDir,'raw_runs.csv'));
 save(fullfile(resultDir,'smoke_results.mat'),'rawRuns','functionIDs','repeatIDs', ...
     'populationSizes','maxEvaluations','algorithmNames');
 fprintf('Saved smoke results to %s\n',resultDir);
+

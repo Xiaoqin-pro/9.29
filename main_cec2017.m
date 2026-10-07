@@ -9,9 +9,9 @@ addpath(cecRoot)
 cd(cecRoot)
 
 % 正式比较算法；DSS-RLCSO 的模式感知 Q-learning 已冻结。
-algorithms={'PSO_CEC','CSO_CEC','CLPSO_CEC','LSHADE_CEC','DSS_RLCSO_CEC'};
-algorithmNames={'PSO','CSO','CLPSO','L-SHADE','DSS-RLCSO'};
-populationSizes=[50 50 50 18*30 50];
+algorithms={'PSO_CEC','CSO_CEC','CLPSO_CEC','GWO_CEC','SCSO_CEC','DSS_RLCSO_CEC'};
+algorithmNames={'PSO','CSO','CLPSO','GWO','SCSO','DSS-RLCSO'};
+populationSizes=[50 50 50 50 50 50];
 functionIDs=[1 3:30];
 D=30;
 maxEvaluations=10000*D;
@@ -109,3 +109,4 @@ save(fullfile(resultDir,'cec2017_results.mat'),'rawRuns','summary','D', ...
     'populationSizes','maxEvaluations','repeatIDs','functionIDs','seedBase', ...
     'searchSeedOffset','developmentMode','algorithmNames');
 fprintf('Saved CEC2017 results to %s\n',resultDir);
+
