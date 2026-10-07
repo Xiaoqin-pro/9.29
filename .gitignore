@@ -16,3 +16,4 @@
 /results/diagnostics/v7_*.csv
 /results/diagnostics/v6_scso_*.csv
 /results/diagnostics/v6_speed10_*.csv
+/results/cec/
