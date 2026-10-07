@@ -43,7 +43,7 @@ for functionID=functionIDs
     end
 end
 
-workerCount=6;
+workerCount=4;
 pool=gcp('nocreate');
 if isempty(pool)
     parpool('local',workerCount);
@@ -123,3 +123,4 @@ writetable(summary,fullfile(resultDir,'summary.csv'));
 save(fullfile(resultDir,'action_ablation_results.mat'),'rawRuns','summary');
 delete(gcp('nocreate'))
 fprintf('Saved parallel action ablation to %s\n',resultDir);
+
