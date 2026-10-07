@@ -9,7 +9,7 @@ function [Best,T,info] = CLPSO_CEC(f,state,~,Particle_Number,seed)
     lb=state.lowerBound;
     ub=state.upperBound;
     budget=state.maxEvaluations;
-    rng(seed);
+    rng(seed,'twister');
     V=0.01*(2*rand(sizepop,D)-1).*(ub-lb);
     Vmax=0.15*(ub-lb);
     assert(sizepop>=4 && budget>=sizepop);
@@ -85,3 +85,4 @@ function Best=UpdateBest(Best,vector,cost)
         Best.Cost=cost;
     end
 end
+

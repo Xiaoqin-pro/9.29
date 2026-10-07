@@ -5,7 +5,7 @@ function [Best,T,info] = PSO_CEC(f,state,~,Particle_Number,seed)
     D=size(pop,2);
     lb=state.lowerBound;
     ub=state.upperBound;
-    rng(seed);
+    rng(seed,'twister');
     V=0.01*(2*rand(sizepop,D)-1).*(ub-lb);
     Vmax=0.2*(ub-lb);
     budget=state.maxEvaluations;
@@ -64,3 +64,4 @@ function Best=UpdateBest(Best,vector,cost)
         Best.Cost=cost;
     end
 end
+

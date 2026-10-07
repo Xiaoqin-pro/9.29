@@ -41,7 +41,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     D=size(pop,2);
     lb=state.lowerBound;
     ub=state.upperBound;
-    rng(seed);
+    rng(seed,'twister');
     V=0.01*(2*rand(sizepop,D)-1).*(ub-lb);
     Vmax=0.2*(ub-lb);
     budget=state.maxEvaluations;
@@ -152,8 +152,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             action=4;
         elseif strcmp(actionMode,'fixed1')
             action=1;
+        elseif strcmp(actionMode,'fixed2')
+            action=2;
         elseif strcmp(actionMode,'fixed3')
             action=3;
+        elseif strcmp(actionMode,'fixed4')
+            action=4;
         elseif strcmp(actionMode,'random')
             action=randi(4);
         elseif strcmp(actionMode,'heuristic')
@@ -641,3 +645,4 @@ function Best=UpdateBest(Best,vector,cost)
         Best.Cost=cost;
     end
 end
+

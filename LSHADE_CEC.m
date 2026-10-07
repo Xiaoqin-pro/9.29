@@ -14,7 +14,7 @@ function [Best,T,info] = LSHADE_CEC(f,state,~,Particle_Number,seed)
     ub=state.upperBound;
     budget=state.maxEvaluations;
     assert(sizepop>=4 && budget>=sizepop);
-    rng(seed);
+    rng(seed,'twister');
 
     fitness=zeros(sizepop,1);
     T=nan(budget,1);
@@ -151,3 +151,4 @@ function Best=UpdateBest(Best,vector,cost)
         Best.Cost=cost;
     end
 end
+
