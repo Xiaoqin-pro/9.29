@@ -9,6 +9,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useCatScreen=true;
     useCandidateScreen=true;
     useRL=true;
+    useModeSignal=true;
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -18,6 +19,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'actionMode')
         actionMode=state.actionMode;
+    end
+    if isfield(state,'useModeSignal')
+        useModeSignal=state.useModeSignal;
     end
     if isfield(state,'rlMode')
         rlMode=state.rlMode;
@@ -30,9 +34,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeAwareV3=strcmp(rlMode,'modeAwareV3');
     modeAwareV32=strcmp(rlMode,'modeAwareV32');
     modeAwareV4=strcmp(rlMode,'modeAwareV4');
+    modeAwareV41=strcmp(rlMode,'modeAwareV41');
     fairOpportunity=strcmp(rlMode,'modeAwareV31');
-    modeSampleV3=modeAwareV3 || modeAwareV32 || modeAwareV4;
-    opportunityV3=modeAwareV3 || modeAwareV32;
+    modeSampleV3=modeAwareV3 || modeAwareV32 || modeAwareV4 || modeAwareV41;
+    modePreserving=modeAwareV32 || modeAwareV41;
+    opportunityV3=modeAwareV3 || modePreserving;
     if fairOpportunity
         modeSampleV3=true;
         opportunityV3=true;
@@ -42,6 +48,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'opportunityScreen')
         opportunityV3=state.opportunityScreen;
+    end
+    recoveryEnabled=modeAwareV4;
+    recoveryInterval=20;
+    recoveryThreshold=10;
+    if modeAwareV41
+        if isfield(state,'recoveryEnabled')
+            recoveryEnabled=state.recoveryEnabled;
+        else
+            recoveryEnabled=true;
+        end
+        if isfield(state,'recoveryInterval')
+            recoveryInterval=state.recoveryInterval;
+        end
     end
     diversityThreshold=0.50;
     pop=state.initialPopulation;
@@ -82,14 +101,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
-    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32 || modeAwareV4;
+    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32 || ...
+        modeAwareV4 || modeAwareV41;
     info.ModeAwareV2=modeAwareV2;
     info.ModeAwareV3=modeSampleV3;
     info.ModeAwareV32=modeAwareV32;
     info.ModeAwareV4=modeAwareV4;
+    info.ModeAwareV41=modeAwareV41;
     info.OpportunityScreen=opportunityV3;
     info.FairOpportunity=fairOpportunity;
-    info.ModePreservingOpportunity=modeAwareV32;
+    info.ModePreservingOpportunity=modePreserving;
+    info.UseModeSignal=useModeSignal;
+    info.RecoveryEnabled=recoveryEnabled;
+    info.RecoveryInterval=recoveryInterval;
     info.WasExploration=[];
     info.GreedyActionHistory=[];
     info.EpsilonHistory=[];
@@ -103,6 +127,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ModeAllocationError=[];
     info.RecoveryEvaluations=0;
     info.RecoveryEvaluationsPerRound=[];
+    info.RecoveryImprovementPerRound=[];
     info.ModeSampleCounts=[];
     info.ModeWindowRates=[];
     info.OpportunitySelectionChanged=[];
@@ -123,7 +148,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     stall=0;
     initialCenter=mean(pop,1);
     initialDiversity=mean(sqrt(sum((pop-initialCenter).^2,2)));
-    if modeAware || modeAwareV2 || modeSampleV3
+    if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
         qStateCount=27;
     elseif useDiversityState
         qStateCount=18;
@@ -133,7 +158,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.QStateCount=qStateCount;
     info.StateVisitCounts=zeros(qStateCount,1);
     actionCount=4;
-    if modeAwareV4
+    if modeAwareV4 || modeAwareV41
         actionCount=3;
     end
     info.ActionCounts=zeros(1,actionCount);
@@ -168,7 +193,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 traceSuccessHistory,traceEvaluationHistory,seekGainHistory, ...
                 traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
         end
-        if modeAware || modeAwareV2 || modeSampleV3
+        if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
             stateIndex=ModeAwareStateIndex(progress,stall,modeStatus);
         else
             stateIndex=StateIndex(progress,stall,diversityRatio, ...
@@ -230,6 +255,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.ModeStateHistory(end+1)=modeStatus;
         [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode);
         oldBest=Best.Cost;
+        modeBestBefore=oldBest;
         oldFitness=fitness;
         evaluated=false(sizepop,1);
         roundSeekEvaluations=0;
@@ -238,7 +264,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         roundTraceSuccess=0;
         roundSeekGain=0;
         roundTraceGain=0;
-        recoveryActive=modeAwareV4 && stall>=10;
+        if recoveryEnabled
+            if modeAwareV41
+                recoveryActive=stall>=recoveryThreshold && ...
+                    mod(stall-recoveryThreshold,recoveryInterval)==0;
+            else
+                recoveryActive=stall>=recoveryThreshold;
+            end
+        else
+            recoveryActive=false;
+        end
         if recoveryActive
             recoveryVector=Best.Vector+0.10*(1-progress)*randn(1,D).*(ub-lb);
             recoveryVector=max(lb,min(ub,recoveryVector));
@@ -330,18 +365,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
 
+        modeBudget=budgetThisRound-double(recoveryActive);
         % V3.2：先按模式分配评价名额，再在每个模式内部筛选。
-        if modeAwareV32
+        if modePreserving
             traceIds=find(tracing);
             seekIds=find(~tracing);
             candidateLimit=2;
             if ~useCandidateScreen
                 candidateLimit=SMP-1;
             end
-            targetTrace=min(numel(traceIds),round(budgetThisRound*mr));
+            targetTrace=min(numel(traceIds),round(modeBudget*mr));
             targetSeek=min(candidateLimit*numel(seekIds), ...
-                budgetThisRound-targetTrace);
-            leftover=budgetThisRound-targetTrace-targetSeek;
+                modeBudget-targetTrace);
+            leftover=modeBudget-targetTrace-targetSeek;
             extraTrace=min(leftover,numel(traceIds)-targetTrace);
             targetTrace=targetTrace+extraTrace;
             leftover=leftover-extraTrace;
@@ -415,7 +451,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             info.CatSelectionCounts(cats)=info.CatSelectionCounts(cats)+1;
         end
         info.GeneratedTracingCatShare(end+1)=mean(tracing);
-        info.SelectedTracingCatShare(end+1)=mean(tracing(cats));
+        if isempty(cats)
+            info.SelectedTracingCatShare(end+1)=0;
+        else
+            info.SelectedTracingCatShare(end+1)=mean(tracing(cats));
+        end
 
         remaining=budgetThisRound;
         if recoveryActive && remaining>0
@@ -431,9 +471,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
             T(info.Evaluations)=Best.Cost;
         end
+        recoveryImproved=Best.Cost<modeBestBefore;
+        modeBestBefore=Best.Cost;
         remainingTrace=budgetThisRound;
         remainingSeek=budgetThisRound;
-        if modeAwareV32
+        if modePreserving
             remainingTrace=info.TargetTracingEvaluations(end);
             remainingSeek=info.TargetSeekingEvaluations(end);
         end
@@ -443,7 +485,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
             i=cats(k);
             if tracing(i)
-                if modeAwareV32 && remainingTrace<=0
+                if modePreserving && remainingTrace<=0
                     continue;
                 end
                 evaluated(i)=true;
@@ -453,7 +495,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 info.TracingEvaluations=info.TracingEvaluations+1;
                 info.CandidateEvaluations=info.CandidateEvaluations+1;
                 roundTraceEvaluations=roundTraceEvaluations+1;
-                if modeAwareV32
+                if modePreserving
                     remainingTrace=remainingTrace-1;
                 end
                 if value<oldLocalCost
@@ -476,7 +518,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 end
                 T(info.Evaluations)=Best.Cost;
             else
-                if modeAwareV32 && remainingSeek<=0
+                if modePreserving && remainingSeek<=0
                     continue;
                 end
                 copies=seekingPool{i};
@@ -497,7 +539,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     if remaining<=0
                         break;
                     end
-                    if modeAwareV32 && remainingSeek<=0
+                    if modePreserving && remainingSeek<=0
                         break;
                     end
                     value=f(copies(j,:));
@@ -505,7 +547,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
                     roundSeekEvaluations=roundSeekEvaluations+1;
-                    if modeAwareV32
+                    if modePreserving
                         remainingSeek=remainingSeek-1;
                     end
                     successCost=localCost;
@@ -536,17 +578,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
 
-        if modeAwareV32
+        if modePreserving
             targetTrace=info.TargetTracingEvaluations(end);
             targetSeek=info.TargetSeekingEvaluations(end);
             info.ActualTracingEvaluations(end+1)=roundTraceEvaluations;
             info.ActualSeekingEvaluations(end+1)=roundSeekEvaluations;
-            info.BudgetFillRate(end+1)=(roundTraceEvaluations+roundSeekEvaluations)/ ...
+            info.BudgetFillRate(end+1)=(roundTraceEvaluations+roundSeekEvaluations+roundRecovery)/ ...
                 max(1,budgetThisRound);
             info.ModeAllocationError(end+1,:)=[roundTraceEvaluations-targetTrace ...
                 roundSeekEvaluations-targetSeek];
         end
+        modeImproved=Best.Cost<modeBestBefore;
         improved=Best.Cost<oldBest;
+        info.RecoveryImprovementPerRound(end+1)=recoveryImproved;
         oldStall=stall;
         if improved
             stall=0;
@@ -583,6 +627,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             globalEfficiency=max(0,(oldBest-Best.Cost)/ ...
                 (abs(oldBest)+abs(Best.Cost)+eps));
             reward=5*globalEfficiency+modeEfficiency;
+        elseif modeAwareV41
+            reward=2*modeSuccessRate-1;
+            if modeImproved
+                reward=10;
+            end
         elseif modeAwareV4
             reward=2*modeSuccessRate-1;
             if improved
@@ -627,7 +676,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     traceEvaluationHistory,seekGainHistory, ...
                     traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
             end
-            if modeAware || modeAwareV2 || modeSampleV3
+            if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
                 nextState=ModeAwareStateIndex(nextProgress,stall, ...
                     nextModeStatus);
             else
@@ -681,7 +730,7 @@ function [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode)
     jump=false;
     peerLearn=false;
     opposition=false;
-    if strcmp(rlMode,'modeAwareV4')
+    if strcmp(rlMode,'modeAwareV4') || strcmp(rlMode,'modeAwareV41')
         mrValues=[0.20 0.40 0.60];
         mr=mrValues(min(action,3));
         srd=0.05;
