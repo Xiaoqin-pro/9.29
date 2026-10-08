@@ -150,6 +150,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.TracingSuccessHistory=[];
     info.ModeSuccessRateHistory=[];
     info.ModeEfficiencyHistory=[];
+    info.ClassicCandidateGenerated=0;
+    info.RangeCandidateGenerated=0;
+    info.ClassicCandidateEvaluations=0;
+    info.RangeCandidateEvaluations=0;
+    info.ClassicCandidateSuccess=0;
+    info.RangeCandidateSuccess=0;
+    info.ClassicGlobalImprovements=0;
+    info.RangeGlobalImprovements=0;
     info.StateHistory=[];
     info.StateVisitCounts=[];
     info.StateActionCounts=[];
@@ -352,6 +360,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 trial(i,:)=max(lb,min(ub,trial(i,:)));
             else
                 copies=repmat(pop(i,:),SMP,1);
+                if strcmp(seekingMode,'hybrid')
+                    info.ClassicCandidateGenerated=info.ClassicCandidateGenerated+2;
+                    info.RangeCandidateGenerated=info.RangeCandidateGenerated+2;
+                end
                 for j=2:SMP
                     if opposition
                         sigma=0.05*(1-progress);
@@ -364,14 +376,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         peer=OtherCat(i,sizepop);
                         copies(j,:)=pop(i,:)+rand(1,D).* ...
                             (pop(peer,:)-pop(i,:));
+                    elseif strcmp(seekingMode,'range') || ...
+                            (strcmp(seekingMode,'hybrid') && j>3)
+                        d=randperm(D,max(1,round(cdc*D)));
+                        step=srd*(ub(d)-lb(d))/2*(1-progress);
+                        copies(j,d)=pop(i,d)+step.*(2*rand(1,numel(d))-1);
                     else
                         d=randperm(D,max(1,round(cdc*D)));
-                        if strcmp(seekingMode,'range')
-                            step=srd*(ub(d)-lb(d))/2*(1-progress);
-                            copies(j,d)=pop(i,d)+step.*(2*rand(1,numel(d))-1);
-                        else
-                            copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
-                        end
+                        copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
                     end
                     copies(j,:)=max(lb,min(ub,copies(j,:)));
                 end
@@ -557,6 +569,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         break;
                     end
                     value=f(copies(j,:));
+                    hybridRange=strcmp(seekingMode,'hybrid') && j>3;
+                    if strcmp(seekingMode,'hybrid')
+                        if hybridRange
+                            info.RangeCandidateEvaluations=info.RangeCandidateEvaluations+1;
+                        else
+                            info.ClassicCandidateEvaluations=info.ClassicCandidateEvaluations+1;
+                        end
+                    end
                     info.Evaluations=info.Evaluations+1;
                     info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
@@ -572,6 +592,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     if value<successCost
                         roundSeekSuccess=roundSeekSuccess+1;
+                        if strcmp(seekingMode,'hybrid')
+                            if hybridRange
+                                info.RangeCandidateSuccess=info.RangeCandidateSuccess+1;
+                            else
+                                info.ClassicCandidateSuccess=info.ClassicCandidateSuccess+1;
+                            end
+                        end
                     end
                     roundSeekGain=roundSeekGain+max(0,(successCost-value)/ ...
                         (abs(successCost)+abs(value)+eps));
@@ -582,6 +609,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
+                    if Best.Cost<oldCandidateBest && strcmp(seekingMode,'hybrid')
+                        if hybridRange
+                            info.RangeGlobalImprovements=info.RangeGlobalImprovements+1;
+                        else
+                            info.ClassicGlobalImprovements=info.ClassicGlobalImprovements+1;
+                        end
+                    end
                     if Best.Cost<oldCandidateBest && isnan(info.FirstImprovementEvaluation)
                         info.FirstImprovementEvaluation=info.Evaluations;
                     end
