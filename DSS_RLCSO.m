@@ -10,6 +10,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useCandidateScreen=true;
     useRL=true;
     useModeSignal=true;
+    seekingMode='classic';
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -25,6 +26,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'rlMode')
         rlMode=state.rlMode;
+    end
+    if isfield(state,'seekingMode')
+        seekingMode=state.seekingMode;
     end
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
@@ -115,6 +119,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.FairOpportunity=fairOpportunity;
     info.ModePreservingOpportunity=modePreserving;
     info.UseModeSignal=useModeSignal;
+    info.SeekingMode=seekingMode;
     info.RecoveryEnabled=recoveryEnabled;
     info.RecoveryInterval=recoveryInterval;
     info.WasExploration=[];
@@ -289,8 +294,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
             catCount=min(sizepop,max(2,ceil(budgetThisRound/2)));
         else
-            budgetThisRound=min(sizepop,budget-info.Evaluations);
-            catCount=sizepop;
+            % 消融时保持每轮评价预算不变，只改变猫的选择方式。
+            budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
+            catCount=min(sizepop,max(2,ceil(budgetThisRound/2)));
         end
         info.DiversityHistory(end+1)=diversity;
         info.DiversityStateHistory(end+1)=diversityRatio;
@@ -360,7 +366,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                             (pop(peer,:)-pop(i,:));
                     else
                         d=randperm(D,max(1,round(cdc*D)));
-                        copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
+                        if strcmp(seekingMode,'range')
+                            step=srd*(ub(d)-lb(d))/2*(1-progress);
+                            copies(j,d)=pop(i,d)+step.*(2*rand(1,numel(d))-1);
+                        else
+                            copies(j,d)=copies(j,d).*(1+srd*(2*rand(1,numel(d))-1));
+                        end
                     end
                     copies(j,:)=max(lb,min(ub,copies(j,:)));
                 end
@@ -374,9 +385,6 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             traceIds=find(tracing);
             seekIds=find(~tracing);
             candidateLimit=2;
-            if ~useCandidateScreen
-                candidateLimit=SMP-1;
-            end
             targetTrace=min(numel(traceIds),round(modeBudget*mr));
             targetSeek=min(candidateLimit*numel(seekIds), ...
                 modeBudget-targetTrace);
@@ -532,7 +540,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     selected=CandidateScreen(copies,Best.Vector,center,quota);
                 else
                     selected=2:size(copies,1);
-                    selected=selected(1:min(numel(selected),remaining));
+                    selected=selected(randperm(numel(selected)));
+                    selected=selected(1:min(2,min(numel(selected),remaining)));
                 end
                 if ~isempty(selected)
                     evaluated(i)=true;
