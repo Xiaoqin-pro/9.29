@@ -29,8 +29,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeAwareV2=strcmp(rlMode,'modeAwareV2');
     modeAwareV3=strcmp(rlMode,'modeAwareV3');
     modeAwareV32=strcmp(rlMode,'modeAwareV32');
+    modeAwareV4=strcmp(rlMode,'modeAwareV4');
     fairOpportunity=strcmp(rlMode,'modeAwareV31');
-    modeSampleV3=modeAwareV3 || modeAwareV32;
+    modeSampleV3=modeAwareV3 || modeAwareV32 || modeAwareV4;
     opportunityV3=modeAwareV3 || modeAwareV32;
     if fairOpportunity
         modeSampleV3=true;
@@ -65,7 +66,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.InitialCost=Best.Cost;
     info.InitialPopulation=state.initialPopulation;
     info.FirstImprovementEvaluation=NaN;
-    info.ActionCounts=zeros(1,4);
+    info.ActionCounts=[];
     info.ActionHistory=[];
     info.DiversityHistory=[];
     info.StallHistory=[];
@@ -81,10 +82,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActionMode=actionMode;
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
-    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32;
+    info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32 || modeAwareV4;
     info.ModeAwareV2=modeAwareV2;
     info.ModeAwareV3=modeSampleV3;
     info.ModeAwareV32=modeAwareV32;
+    info.ModeAwareV4=modeAwareV4;
     info.OpportunityScreen=opportunityV3;
     info.FairOpportunity=fairOpportunity;
     info.ModePreservingOpportunity=modeAwareV32;
@@ -99,6 +101,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ActualSeekingEvaluations=[];
     info.BudgetFillRate=[];
     info.ModeAllocationError=[];
+    info.RecoveryEvaluations=0;
+    info.RecoveryEvaluationsPerRound=[];
     info.ModeSampleCounts=[];
     info.ModeWindowRates=[];
     info.OpportunitySelectionChanged=[];
@@ -128,8 +132,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     info.QStateCount=qStateCount;
     info.StateVisitCounts=zeros(qStateCount,1);
-    info.StateActionCounts=zeros(qStateCount,4);
-    Q=zeros(qStateCount,4);
+    actionCount=4;
+    if modeAwareV4
+        actionCount=3;
+    end
+    info.ActionCounts=zeros(1,actionCount);
+    info.StateActionCounts=zeros(qStateCount,actionCount);
+    Q=zeros(qStateCount,actionCount);
     seekSuccessHistory=[];
     seekEvaluationHistory=[];
     traceSuccessHistory=[];
@@ -179,7 +188,15 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         elseif strcmp(actionMode,'fixed4')
             action=4;
         elseif strcmp(actionMode,'random')
-            action=randi(4);
+            action=randi(actionCount);
+        elseif strcmp(actionMode,'epsFixed')
+            if rand<epsilon
+                action=randi(actionCount);
+                wasExploration=true;
+            else
+                action=min(2,actionCount);
+                greedyAction=action;
+            end
         elseif strcmp(actionMode,'heuristic')
             if stall>=10
                 action=4;
@@ -192,7 +209,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         elseif useRL
             if rand<epsilon
-                action=randi(4);
+                action=randi(actionCount);
                 wasExploration=true;
             else
                 [~,action]=max(Q(stateIndex,:));
@@ -221,6 +238,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         roundTraceSuccess=0;
         roundSeekGain=0;
         roundTraceGain=0;
+        recoveryActive=modeAwareV4 && stall>=10;
+        if recoveryActive
+            recoveryVector=Best.Vector+0.10*(1-progress)*randn(1,D).*(ub-lb);
+            recoveryVector=max(lb,min(ub,recoveryVector));
+        else
+            recoveryVector=[];
+        end
+        roundRecovery=0;
 
         if useCatScreen
             budgetThisRound=min(ceil(rho*sizepop),budget-info.Evaluations);
@@ -393,6 +418,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.SelectedTracingCatShare(end+1)=mean(tracing(cats));
 
         remaining=budgetThisRound;
+        if recoveryActive && remaining>0
+            oldCandidateBest=Best.Cost;
+            value=f(recoveryVector);
+            info.Evaluations=info.Evaluations+1;
+            info.RecoveryEvaluations=info.RecoveryEvaluations+1;
+            roundRecovery=1;
+            remaining=remaining-1;
+            Best=UpdateBest(Best,recoveryVector,value);
+            if Best.Cost<oldCandidateBest && isnan(info.FirstImprovementEvaluation)
+                info.FirstImprovementEvaluation=info.Evaluations;
+            end
+            T(info.Evaluations)=Best.Cost;
+        end
         remainingTrace=budgetThisRound;
         remainingSeek=budgetThisRound;
         if modeAwareV32
@@ -545,6 +583,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             globalEfficiency=max(0,(oldBest-Best.Cost)/ ...
                 (abs(oldBest)+abs(Best.Cost)+eps));
             reward=5*globalEfficiency+modeEfficiency;
+        elseif modeAwareV4
+            reward=2*modeSuccessRate-1;
+            if improved
+                reward=10;
+            end
         elseif modeAware || modeSampleV3
             reward=2*modeSuccessRate-1;
             if improved
@@ -597,6 +640,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         info.EvaluationsPerRound(end+1)=info.Evaluations-roundStart;
         info.SeekingEvaluationsPerRound(end+1)=roundSeekEvaluations;
         info.TracingEvaluationsPerRound(end+1)=roundTraceEvaluations;
+        info.RecoveryEvaluationsPerRound(end+1)=roundRecovery;
     end
     T=T(1:info.Evaluations);
     info.Algorithm='DSS_RLCSO';
@@ -637,6 +681,13 @@ function [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode)
     jump=false;
     peerLearn=false;
     opposition=false;
+    if strcmp(rlMode,'modeAwareV4')
+        mrValues=[0.20 0.40 0.60];
+        mr=mrValues(min(action,3));
+        srd=0.05;
+        cdc=0.20;
+        return
+    end
     if strcmp(rlMode,'paper')
         switch action
             case 1
