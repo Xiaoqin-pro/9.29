@@ -38,6 +38,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     fairOpportunity=strcmp(rlMode,'modeAwareV31');
     modeSampleV3=modeAwareV3 || modeAwareV32 || modeAwareV4 || modeAwareV41;
     modePreserving=modeAwareV32 || modeAwareV41;
+    if isfield(state,'useModePreserving')
+        modePreserving=state.useModePreserving;
+    end
     opportunityV3=modeAwareV3 || modePreserving;
     if fairOpportunity
         modeSampleV3=true;
@@ -408,9 +411,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     seekCats=[];
                 end
             else
-                traceCats=traceIds(1:min(targetTrace,numel(traceIds)));
+                traceOrder=randperm(numel(traceIds));
+                traceCats=traceIds(traceOrder(1:min(targetTrace,numel(traceIds))));
                 seekCatCount=min(numel(seekIds),ceil(targetSeek/candidateLimit));
-                seekCats=seekIds(1:seekCatCount);
+                seekOrder=randperm(numel(seekIds));
+                seekCats=seekIds(seekOrder(1:seekCatCount));
             end
             traceCats=traceCats(randperm(numel(traceCats)));
             seekCats=seekCats(randperm(numel(seekCats)));
