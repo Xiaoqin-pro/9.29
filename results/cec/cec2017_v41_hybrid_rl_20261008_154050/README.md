@@ -20,4 +20,4 @@ Protocol: F03/F05/F13/F15/F19/F30, D=30, population=50, 300000 FE, new seeds 4--
 | F19 | 6179.20 | 2407.18 | 5307.66 | 3165.68 |
 | F30 | 31794.41 | 23661.74 | 21780.45 | 8390.35 |
 
-Q is better than Random on 4 of 6 function means, but better than fixed MR=0.4 on only F13. Across all 18 paired runs, this does not yet support a stable Q-learning gain over the simple fixed policy. The experiment is a new-seed development diagnostic; no Q parameters or rewards were changed.
+Q is better than Random on 4 of 6 function means, but better than fixed MR=0.4 on only F5. Across all 18 paired runs, this does not yet support a stable Q-learning gain over the simple fixed policy. The experiment is a new-seed development diagnostic; no Q parameters or rewards were changed.

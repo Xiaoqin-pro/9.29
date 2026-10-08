@@ -11,6 +11,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useRL=true;
     useModeSignal=true;
     seekingMode='classic';
+    candidateScheduler='none';
+    useFamilySignal=true;
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -30,6 +32,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     if isfield(state,'seekingMode')
         seekingMode=state.seekingMode;
     end
+    if isfield(state,'candidateScheduler')
+        candidateScheduler=state.candidateScheduler;
+    end
+    if isfield(state,'useFamilySignal')
+        useFamilySignal=state.useFamilySignal;
+    end
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -39,6 +47,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeAwareV32=strcmp(rlMode,'modeAwareV32');
     modeAwareV4=strcmp(rlMode,'modeAwareV4');
     modeAwareV41=strcmp(rlMode,'modeAwareV41');
+    familyScheduler=~strcmp(candidateScheduler,'none');
     fairOpportunity=strcmp(rlMode,'modeAwareV31');
     modeSampleV3=modeAwareV3 || modeAwareV32 || modeAwareV4 || modeAwareV41;
     modePreserving=modeAwareV32 || modeAwareV41;
@@ -109,7 +118,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.RLMode=rlMode;
     info.PaperMode=paperMode;
     info.ModeAware=modeAware || modeAwareV2 || modeAwareV3 || modeAwareV32 || ...
-        modeAwareV4 || modeAwareV41;
+        modeAwareV4 || modeAwareV41 || familyScheduler;
     info.ModeAwareV2=modeAwareV2;
     info.ModeAwareV3=modeSampleV3;
     info.ModeAwareV32=modeAwareV32;
@@ -120,6 +129,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.ModePreservingOpportunity=modePreserving;
     info.UseModeSignal=useModeSignal;
     info.SeekingMode=seekingMode;
+    info.CandidateScheduler=candidateScheduler;
+    info.UseFamilySignal=useFamilySignal;
+    info.FamilyScheduler=familyScheduler;
     info.RecoveryEnabled=recoveryEnabled;
     info.RecoveryInterval=recoveryInterval;
     info.WasExploration=[];
@@ -146,6 +158,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.PopulationRewardHistory=[];
     info.DiversityStateHistory=[];
     info.ModeStateHistory=[];
+    info.FamilyStateHistory=[];
     info.SeekingSuccessHistory=[];
     info.TracingSuccessHistory=[];
     info.ModeSuccessRateHistory=[];
@@ -164,7 +177,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     stall=0;
     initialCenter=mean(pop,1);
     initialDiversity=mean(sqrt(sum((pop-initialCenter).^2,2)));
-    if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
+    if familyScheduler
+        if useFamilySignal
+            qStateCount=27;
+        else
+            qStateCount=9;
+        end
+    elseif (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
         qStateCount=27;
     elseif useDiversityState
         qStateCount=18;
@@ -174,7 +193,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.QStateCount=qStateCount;
     info.StateVisitCounts=zeros(qStateCount,1);
     actionCount=4;
-    if modeAwareV4 || modeAwareV41
+    if modeAwareV4 || modeAwareV41 || familyScheduler
         actionCount=3;
     end
     info.ActionCounts=zeros(1,actionCount);
@@ -190,6 +209,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     modeThreshold=0.05;
     seekSamples=[];
     traceSamples=[];
+    classicSamples=[];
+    rangeSamples=[];
     sampleWindow=20;
     minimumSamples=10;
 
@@ -209,7 +230,21 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 traceSuccessHistory,traceEvaluationHistory,seekGainHistory, ...
                 traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
         end
-        if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
+        if familyScheduler
+            familyStatus=FamilyStatus(classicSamples,rangeSamples, ...
+                minimumSamples,modeThreshold);
+            info.FamilyStateHistory(end+1)=familyStatus;
+        else
+            familyStatus=2;
+        end
+        if familyScheduler
+            if useFamilySignal
+                stateIndex=ModeAwareStateIndex(progress,stall,familyStatus);
+            else
+                stateIndex=StateIndex(progress,stall,diversityRatio, ...
+                    false,diversityThreshold);
+            end
+        elseif (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
             stateIndex=ModeAwareStateIndex(progress,stall,modeStatus);
         else
             stateIndex=StateIndex(progress,stall,diversityRatio, ...
@@ -218,7 +253,23 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         epsilon=0.50-0.45*progress;
         wasExploration=false;
         greedyAction=NaN;
-        if strcmp(actionMode,'fixed')
+        if strcmp(candidateScheduler,'fixedClassic')
+            action=1;
+        elseif strcmp(candidateScheduler,'fixedHybrid')
+            action=2;
+        elseif strcmp(candidateScheduler,'fixedRange')
+            action=3;
+        elseif strcmp(candidateScheduler,'randomFamily')
+            action=randi(3);
+        elseif strcmp(candidateScheduler,'qFamily')
+            if rand<epsilon
+                action=randi(3);
+                wasExploration=true;
+            else
+                [~,action]=max(Q(stateIndex,:));
+                greedyAction=action;
+            end
+        elseif strcmp(actionMode,'fixed')
             action=4;
         elseif strcmp(actionMode,'fixed1')
             action=1;
@@ -270,6 +321,22 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             info.StateActionCounts(stateIndex,action)+1;
         info.ModeStateHistory(end+1)=modeStatus;
         [mr,srd,cdc,jump,peerLearn,opposition]=ActionParameters(action,rlMode);
+        roundSeekingMode=seekingMode;
+        if familyScheduler
+            mr=0.40;
+            srd=0.05;
+            cdc=0.20;
+            jump=false;
+            peerLearn=false;
+            opposition=false;
+            if action==1
+                roundSeekingMode='classic';
+            elseif action==2
+                roundSeekingMode='hybrid';
+            else
+                roundSeekingMode='range';
+            end
+        end
         oldBest=Best.Cost;
         modeBestBefore=oldBest;
         oldFitness=fitness;
@@ -360,9 +427,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 trial(i,:)=max(lb,min(ub,trial(i,:)));
             else
                 copies=repmat(pop(i,:),SMP,1);
-                if strcmp(seekingMode,'hybrid')
+                if strcmp(roundSeekingMode,'hybrid')
                     info.ClassicCandidateGenerated=info.ClassicCandidateGenerated+2;
                     info.RangeCandidateGenerated=info.RangeCandidateGenerated+2;
+                elseif familyScheduler && strcmp(roundSeekingMode,'range')
+                    info.RangeCandidateGenerated=info.RangeCandidateGenerated+4;
+                elseif familyScheduler
+                    info.ClassicCandidateGenerated=info.ClassicCandidateGenerated+4;
                 end
                 for j=2:SMP
                     if opposition
@@ -376,8 +447,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         peer=OtherCat(i,sizepop);
                         copies(j,:)=pop(i,:)+rand(1,D).* ...
                             (pop(peer,:)-pop(i,:));
-                    elseif strcmp(seekingMode,'range') || ...
-                            (strcmp(seekingMode,'hybrid') && j>3)
+                    elseif strcmp(roundSeekingMode,'range') || ...
+                            (strcmp(roundSeekingMode,'hybrid') && j>3)
                         d=randperm(D,max(1,round(cdc*D)));
                         step=srd*(ub(d)-lb(d))/2*(1-progress);
                         copies(j,d)=pop(i,d)+step.*(2*rand(1,numel(d))-1);
@@ -569,8 +640,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         break;
                     end
                     value=f(copies(j,:));
-                    hybridRange=strcmp(seekingMode,'hybrid') && j>3;
-                    if strcmp(seekingMode,'hybrid')
+                    hybridRange=strcmp(roundSeekingMode,'range') || ...
+                        (strcmp(roundSeekingMode,'hybrid') && j>3);
+                    trackCandidateType=familyScheduler || ...
+                        strcmp(roundSeekingMode,'hybrid');
+                    if trackCandidateType
                         if hybridRange
                             info.RangeCandidateEvaluations=info.RangeCandidateEvaluations+1;
                         else
@@ -590,9 +664,19 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         seekSamples=[seekSamples value<parentCost];
                         seekSamples=seekSamples(max(1,end-sampleWindow+1):end);
                     end
+                    familySuccess=value<parentCost;
+                    if familyScheduler
+                        if hybridRange
+                            rangeSamples=[rangeSamples familySuccess];
+                            rangeSamples=rangeSamples(max(1,end-sampleWindow+1):end);
+                        else
+                            classicSamples=[classicSamples familySuccess];
+                            classicSamples=classicSamples(max(1,end-sampleWindow+1):end);
+                        end
+                    end
                     if value<successCost
                         roundSeekSuccess=roundSeekSuccess+1;
-                        if strcmp(seekingMode,'hybrid')
+                        if trackCandidateType
                             if hybridRange
                                 info.RangeCandidateSuccess=info.RangeCandidateSuccess+1;
                             else
@@ -609,7 +693,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
-                    if Best.Cost<oldCandidateBest && strcmp(seekingMode,'hybrid')
+                    if Best.Cost<oldCandidateBest && trackCandidateType
                         if hybridRange
                             info.RangeGlobalImprovements=info.RangeGlobalImprovements+1;
                         else
@@ -715,6 +799,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         if useRL
             nextProgress=(info.Evaluations-sizepop)/max(1,budget-sizepop);
             nextRatio=newDiversity/max(initialDiversity,eps);
+            if familyScheduler
+                nextFamilyStatus=FamilyStatus(classicSamples,rangeSamples, ...
+                    minimumSamples,modeThreshold);
+            else
+                nextFamilyStatus=2;
+            end
             if modeSampleV3
                 nextModeStatus=SampleModeStatus(seekSamples,traceSamples, ...
                     minimumSamples,modeThreshold);
@@ -724,7 +814,15 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     traceEvaluationHistory,seekGainHistory, ...
                     traceGainHistory,modeWindow,modeThreshold,modeAwareV2);
             end
-            if (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
+            if familyScheduler
+                if useFamilySignal
+                    nextState=ModeAwareStateIndex(nextProgress,stall, ...
+                        nextFamilyStatus);
+                else
+                    nextState=StateIndex(nextProgress,stall,nextRatio, ...
+                        false,diversityThreshold);
+                end
+            elseif (modeAware || modeAwareV2 || modeSampleV3) && useModeSignal
                 nextState=ModeAwareStateIndex(nextProgress,stall, ...
                     nextModeStatus);
             else
@@ -771,6 +869,20 @@ function [modeStatus,rates]=SampleModeStatus(seekSamples,traceSamples,minimum,th
         modeStatus=1;
     elseif rates(2)>rates(1)+threshold
         modeStatus=3;
+    end
+end
+
+function familyStatus=FamilyStatus(classicSamples,rangeSamples,minimum,threshold)
+    familyStatus=2;
+    if numel(classicSamples)<minimum || numel(rangeSamples)<minimum
+        return
+    end
+    classicRate=mean(classicSamples);
+    rangeRate=mean(rangeSamples);
+    if classicRate>rangeRate+threshold
+        familyStatus=1;
+    elseif rangeRate>classicRate+threshold
+        familyStatus=3;
     end
 end
 
