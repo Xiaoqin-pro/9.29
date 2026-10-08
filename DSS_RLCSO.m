@@ -13,6 +13,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     seekingMode='classic';
     candidateScheduler='none';
     useFamilySignal=true;
+    familyReward='legacy';
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -37,6 +38,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'useFamilySignal')
         useFamilySignal=state.useFamilySignal;
+    end
+    if isfield(state,'familyReward')
+        familyReward=state.familyReward;
     end
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
@@ -131,6 +135,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SeekingMode=seekingMode;
     info.CandidateScheduler=candidateScheduler;
     info.UseFamilySignal=useFamilySignal;
+    info.FamilyReward=familyReward;
     info.FamilyScheduler=familyScheduler;
     info.RecoveryEnabled=recoveryEnabled;
     info.RecoveryInterval=recoveryInterval;
@@ -347,6 +352,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         roundTraceSuccess=0;
         roundSeekGain=0;
         roundTraceGain=0;
+        seekingImproved=false;
         if recoveryEnabled
             if modeAwareV41
                 recoveryActive=stall>=recoveryThreshold && ...
@@ -693,6 +699,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
+                    if Best.Cost<oldCandidateBest
+                        seekingImproved=true;
+                    end
                     if Best.Cost<oldCandidateBest && trackCandidateType
                         if hybridRange
                             info.RangeGlobalImprovements=info.RangeGlobalImprovements+1;
@@ -755,7 +764,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             max(1,roundTraceEvaluations);
         info.ModeSuccessRateHistory(end+1)=modeSuccessRate;
         info.ModeEfficiencyHistory(end+1)=modeEfficiency;
-        if modeAwareV2
+        if familyScheduler && useRL && strcmp(familyReward,'seeking')
+            reward=2*roundSeekSuccess/max(1,roundSeekEvaluations)-1;
+            if seekingImproved
+                reward=10;
+            end
+        elseif modeAwareV2
             globalEfficiency=max(0,(oldBest-Best.Cost)/ ...
                 (abs(oldBest)+abs(Best.Cost)+eps));
             reward=5*globalEfficiency+modeEfficiency;
