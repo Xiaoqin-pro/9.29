@@ -14,6 +14,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     candidateScheduler='none';
     useFamilySignal=true;
     familyReward='legacy';
+    seekSelection='legacy';
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -42,6 +43,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     if isfield(state,'familyReward')
         familyReward=state.familyReward;
     end
+    if isfield(state,'seekSelection')
+        seekSelection=state.seekSelection;
+    end
+    frozenSelection=~strcmp(seekSelection,'legacy');
+    globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -137,6 +143,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.UseFamilySignal=useFamilySignal;
     info.FamilyReward=familyReward;
     info.FamilyScheduler=familyScheduler;
+    info.SeekSelection=seekSelection;
+    info.SeekingParentCoverage=[];
+    info.SeekingConcentration=[];
+    info.SeekingMaxParentEvaluations=[];
+    info.SeekingGlobalImprovementCounts=[];
+    info.TracingGlobalImprovementCounts=[];
+    info.SeekingGlobalGain=[];
+    info.TracingGlobalGain=[];
     info.RecoveryEnabled=recoveryEnabled;
     info.RecoveryInterval=recoveryInterval;
     info.WasExploration=[];
@@ -343,6 +357,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
         end
         oldBest=Best.Cost;
+        roundBest=Best.Vector;
         modeBestBefore=oldBest;
         oldFitness=fitness;
         evaluated=false(sizepop,1);
@@ -353,6 +368,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         roundSeekGain=0;
         roundTraceGain=0;
         seekingImproved=false;
+        seekParentCounts=zeros(sizepop,1);
+        seekGlobalCount=0;
+        traceGlobalCount=0;
+        seekGlobalGain=0;
+        traceGlobalGain=0;
         if recoveryEnabled
             if modeAwareV41
                 recoveryActive=stall>=recoveryThreshold && ...
@@ -492,7 +512,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 else
                     traceCats=[];
                 end
-                if targetSeek>0
+                if targetSeek>0 && ~globalSelection
                     seekBest=zeros(numel(seekIds),1);
                     seekCenter=zeros(numel(seekIds),1);
                     for q=1:numel(seekIds)
@@ -516,6 +536,27 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             end
             traceCats=traceCats(randperm(numel(traceCats)));
             seekCats=seekCats(randperm(numel(seekCats)));
+            if frozenSelection
+                seekPlan=cell(sizepop,1);
+                if globalSelection
+                    parentCap=SMP-1;
+                    if strcmp(seekSelection,'globalCap2')
+                        parentCap=2;
+                    end
+                    seekPlan=GlobalCandidateScreen(seekingPool,seekIds, ...
+                        roundBest,center,targetSeek,parentCap);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                else
+                    slots=targetSeek;
+                    for q=1:numel(seekCats)
+                        i=seekCats(q);
+                        quota=min(2,slots);
+                        seekPlan{i}=CandidateScreen(seekingPool{i}, ...
+                            roundBest,center,quota);
+                        slots=slots-numel(seekPlan{i});
+                    end
+                end
+            end
             cats=[traceCats;seekCats];
             info.OpportunitySelectionChanged(end+1)=true;
             info.TargetTracingEvaluations(end+1)=targetTrace;
@@ -615,6 +656,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 fitness(i)=value;
                 oldCandidateBest=Best.Cost;
                 Best=UpdateBest(Best,trial(i,:),value);
+                traceGlobalCount=traceGlobalCount+double(Best.Cost<oldCandidateBest);
+                traceGlobalGain=traceGlobalGain+oldCandidateBest-Best.Cost;
                 if Best.Cost<oldCandidateBest && isnan(info.FirstImprovementEvaluation)
                     info.FirstImprovementEvaluation=info.Evaluations;
                 end
@@ -624,7 +667,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     continue;
                 end
                 copies=seekingPool{i};
-                if useCandidateScreen
+                if frozenSelection
+                    selected=seekPlan{i};
+                elseif useCandidateScreen
                     quota=min(2,remaining);
                     selected=CandidateScreen(copies,Best.Vector,center,quota);
                 else
@@ -646,6 +691,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         break;
                     end
                     value=f(copies(j,:));
+                    seekParentCounts(i)=seekParentCounts(i)+1;
                     hybridRange=strcmp(roundSeekingMode,'range') || ...
                         (strcmp(roundSeekingMode,'hybrid') && j>3);
                     trackCandidateType=familyScheduler || ...
@@ -699,6 +745,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
+                    seekGlobalCount=seekGlobalCount+double(Best.Cost<oldCandidateBest);
+                    seekGlobalGain=seekGlobalGain+oldCandidateBest-Best.Cost;
                     if Best.Cost<oldCandidateBest
                         seekingImproved=true;
                     end
@@ -728,6 +776,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 max(1,budgetThisRound);
             info.ModeAllocationError(end+1,:)=[roundTraceEvaluations-targetTrace ...
                 roundSeekEvaluations-targetSeek];
+        end
+        if frozenSelection
+            info.SeekingParentCoverage(end+1)=nnz(seekParentCounts);
+            info.SeekingConcentration(end+1)=sum((seekParentCounts/ ...
+                max(1,roundSeekEvaluations)).^2);
+            info.SeekingMaxParentEvaluations(end+1)=max(seekParentCounts);
+            info.SeekingGlobalImprovementCounts(end+1)=seekGlobalCount;
+            info.TracingGlobalImprovementCounts(end+1)=traceGlobalCount;
+            info.SeekingGlobalGain(end+1)=seekGlobalGain;
+            info.TracingGlobalGain(end+1)=traceGlobalGain;
         end
         modeImproved=Best.Cost<modeBestBefore;
         improved=Best.Cost<oldBest;
@@ -1027,6 +1085,45 @@ function selected=CandidateScreen(copies,best,center,quota)
     order=unique([candidates(near),candidates(far)],'stable');
     order=[order,setdiff(candidates,order,'stable')];
     selected=order(1:min(quota,numel(order)));
+end
+
+function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
+    plan=cell(numel(pool),1);
+    if quota==0
+        return
+    end
+    points=cell(numel(catIds),1);
+    for q=1:numel(catIds)
+        points{q}=pool{catIds(q)}(2:end,:);
+    end
+    points=vertcat(points{:});
+    perCat=size(pool{catIds(1)},1)-1;
+    parents=repelem(catIds,perCat);
+    candidates=repmat((2:perCat+1)',numel(catIds),1);
+    [~,near]=sort(sum((points-best).^2,2));
+    [~,far]=sort(sum((points-center).^2,2),'descend');
+    selected=false(size(parents));
+    counts=zeros(numel(pool),1);
+    % 先选 ceil(B/2) 个近优候选，再选剩余的远中心候选。
+    orders={near,far};
+    targets=[ceil(quota/2),quota];
+    for phase=1:2
+        if nnz(selected)>=targets(phase)
+            continue
+        end
+        for q=1:numel(parents)
+            index=orders{phase}(q);
+            parent=parents(index);
+            if ~selected(index) && counts(parent)<parentCap
+                selected(index)=true;
+                counts(parent)=counts(parent)+1;
+                plan{parent}(end+1)=candidates(index);
+            end
+            if nnz(selected)>=targets(phase)
+                break
+            end
+        end
+    end
 end
 
 function Best=UpdateBest(Best,vector,cost)
