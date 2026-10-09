@@ -18,6 +18,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     useFamilySignal=true;
     familyReward='legacy';
     seekSelection='legacy';
+    feedbackSelection='none';
+    feedbackLogging=false;
     searchCore='base';
     eliteGuidance=[];
     tracingElitistAcceptance=[];
@@ -57,6 +59,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     if isfield(state,'seekSelection')
         seekSelection=state.seekSelection;
     end
+    if isfield(state,'feedbackSelection')
+        feedbackSelection=state.feedbackSelection;
+    end
+    if isfield(state,'feedbackLogging')
+        feedbackLogging=state.feedbackLogging;
+    end
     if isfield(state,'searchCore')
         searchCore=state.searchCore;
     end
@@ -91,6 +99,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
     randomSelection=strcmp(seekSelection,'randomCap2');
     matchedSelection=strcmp(seekSelection,'matchedRandomCap2');
+    compensationSelection=strcmp(seekSelection,'g2Random') || ...
+        strcmp(seekSelection,'g2Age');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -144,9 +154,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
 
     T=nan(budget,1);
     fitness=zeros(sizepop,1);
+    lastRealEvaluationFE=zeros(sizepop,1);
     Best.Cost=inf;
     for i=1:sizepop
         fitness(i)=f(pop(i,:));
+        lastRealEvaluationFE(i)=i;
         Best=UpdateBest(Best,pop(i,:),fitness(i));
         T(i)=Best.Cost;
     end
@@ -201,6 +213,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SMP=SMP;
     info.SeekingParentCoverage=[];
     info.SeekingConcentration=[];
+    info.FeedbackSeekingAgeFE=[];
+    info.FeedbackSeekingVirtualOffset=[];
+    info.FeedbackSeekingSuccess=[];
+    info.FeedbackSeekingGlobalImprovement=[];
+    info.FeedbackSelection=feedbackSelection;
+    info.FeedbackLogging=feedbackLogging;
     info.MatchedReferenceCoverage=[];
     info.MatchedReferenceConcentration=[];
     info.SeekingMaxParentEvaluations=[];
@@ -624,7 +642,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 else
                     traceCats=[];
                 end
-                if targetSeek>0 && ~globalSelection && ~matchedSelection
+                if targetSeek>0 && ~globalSelection && ~matchedSelection && ...
+                        ~compensationSelection
                     seekBest=zeros(numel(seekIds),1);
                     seekCenter=zeros(numel(seekIds),1);
                     for q=1:numel(seekIds)
@@ -671,6 +690,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     info.MatchedReferenceCoverage(end+1)=nnz(referenceCounts);
                     info.MatchedReferenceConcentration(end+1)= ...
                         sum((referenceCounts/max(1,targetSeek)).^2);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif compensationSelection
+                    basePlan=GlobalCandidateScreen(seekingPool,seekIds, ...
+                        roundBest,center,min(2,targetSeek),2);
+                    seekPlan=CompensationCandidateScreen(seekingPool,seekIds, ...
+                        basePlan,roundBest,lastRealEvaluationFE,info.Evaluations, ...
+                        seekSelection);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 else
                     slots=targetSeek;
@@ -761,6 +787,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 oldLocalCost=fitness(i);
                 value=f(trial(i,:));
                 info.Evaluations=info.Evaluations+1;
+                lastRealEvaluationFE(i)=info.Evaluations;
                 info.TracingEvaluations=info.TracingEvaluations+1;
                 info.CandidateEvaluations=info.CandidateEvaluations+1;
                 roundTraceEvaluations=roundTraceEvaluations+1;
@@ -831,6 +858,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     if modePreserving && remainingSeek<=0
                         break;
                     end
+                    feedbackAgeFE=info.Evaluations-lastRealEvaluationFE(i);
+                    feedbackOffset=norm(pop(i,:)-realPop(i,:))/max(norm(ub-lb),eps);
                     value=f(copies(j,:));
                     if stagnationCandidate(i) && j==2
                         info.StagnationCandidateEvaluations= ...
@@ -853,6 +882,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         end
                     end
                     info.Evaluations=info.Evaluations+1;
+                    lastRealEvaluationFE(i)=info.Evaluations;
                     info.SeekingEvaluations=info.SeekingEvaluations+1;
                     info.CandidateEvaluations=info.CandidateEvaluations+1;
                     roundSeekEvaluations=roundSeekEvaluations+1;
@@ -903,9 +933,16 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     oldCandidateBest=Best.Cost;
                     Best=UpdateBest(Best,copies(j,:),value);
-                    seekGlobalCount=seekGlobalCount+double(Best.Cost<oldCandidateBest);
+                    globalImproved=Best.Cost<oldCandidateBest;
+                    seekGlobalCount=seekGlobalCount+double(globalImproved);
                     seekGlobalGain=seekGlobalGain+oldCandidateBest-Best.Cost;
-                    if Best.Cost<oldCandidateBest
+                    if feedbackLogging
+                        info.FeedbackSeekingAgeFE(end+1)=feedbackAgeFE;
+                        info.FeedbackSeekingVirtualOffset(end+1)=feedbackOffset;
+                        info.FeedbackSeekingSuccess(end+1)=double(value<parentCost);
+                        info.FeedbackSeekingGlobalImprovement(end+1)=double(globalImproved);
+                    end
+                    if globalImproved
                         seekingImproved=true;
                     end
                     if Best.Cost<oldCandidateBest && trackCandidateType
@@ -1291,6 +1328,31 @@ function plan=MatchedRandomScreen(pool,catIds,referencePlan)
         i=parents(q);
         plan{i}=1+randperm(size(pool{i},1)-1,counts(q));
     end
+end
+
+function plan=CompensationCandidateScreen(pool,catIds,basePlan,best, ...
+        lastRealEvaluationFE,currentFE,selectionMode)
+    plan=basePlan;
+    counts=cellfun(@numel,plan);
+    eligible=catIds(counts(catIds)<2);
+    available=false(size(eligible));
+    for q=1:numel(eligible)
+        available(q)=numel(setdiff(2:size(pool{eligible(q)},1),plan{eligible(q)}))>0;
+    end
+    eligible=eligible(available);
+    if isempty(eligible)
+        return
+    end
+    if strcmp(selectionMode,'g2Age')
+        age=currentFE-lastRealEvaluationFE(eligible);
+        bestAge=max(age);
+        eligible=eligible(age==bestAge);
+    end
+    parent=eligible(randi(numel(eligible)));
+    candidates=setdiff(2:size(pool{parent},1),plan{parent});
+    distances=sum((pool{parent}(candidates,:)-best).^2,2);
+    [~,index]=min(distances);
+    plan{parent}(end+1)=candidates(index);
 end
 
 function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
