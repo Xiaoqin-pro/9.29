@@ -24,6 +24,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     stagnationExemplar=false;
     stagnationThreshold=10;
     stagnationLambda=0.50;
+    tracingDecay=false;
+    virtualTracing=false;
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -72,6 +74,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'stagnationLambda')
         stagnationLambda=state.stagnationLambda;
+    end
+    if isfield(state,'tracingDecay')
+        tracingDecay=state.tracingDecay;
+    end
+    if isfield(state,'virtualTracing')
+        virtualTracing=state.virtualTracing;
     end
     if isempty(eliteGuidance)
         eliteGuidance=~strcmp(searchCore,'base');
@@ -145,6 +153,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.InitialPopulation=state.initialPopulation;
     personalBest=pop;
     personalBestCost=fitness;
+    realPop=pop;
     info.FirstImprovementEvaluation=NaN;
     info.ActionCounts=[];
     info.ActionHistory=[];
@@ -185,6 +194,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.StagnationExemplar=stagnationExemplar;
     info.StagnationThreshold=stagnationThreshold;
     info.StagnationLambda=stagnationLambda;
+    info.TracingDecay=tracingDecay;
+    info.VirtualTracing=virtualTracing;
     info.SMP=SMP;
     info.SeekingParentCoverage=[];
     info.SeekingConcentration=[];
@@ -486,15 +497,23 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 tracing(i)=true;
                 if paperMode && peerLearn
                     peer=OtherCat(i,sizepop);
-                    trialVelocity(i,:)=0.9*V(i,:)+1.5*rand(1,D).* ...
+                    baseTracingInertia=0.9;
+                    trialVelocity(i,:)=baseTracingInertia*V(i,:)+1.5*rand(1,D).* ...
                         (pop(peer,:)-pop(i,:));
                 elseif paperMode && action==1
-                    trialVelocity(i,:)=0.4*V(i,:)+ ...
+                    baseTracingInertia=0.4;
+                    trialVelocity(i,:)=baseTracingInertia*V(i,:)+ ...
                         1.0*rand(1,D).*(Best.Vector-pop(i,:))+ ...
                         2.5*rand(1,D).*(Best.Vector-pop(i,:));
                 else
-                    trialVelocity(i,:)=V(i,:)+2*rand(1,D).* ...
+                    baseTracingInertia=1.0;
+                    trialVelocity(i,:)=baseTracingInertia*V(i,:)+2*rand(1,D).* ...
                         (eliteVector-pop(i,:));
+                end
+                if tracingDecay
+                    tracingInertia=0.9-0.5*progress;
+                    trialVelocity(i,:)=tracingInertia*V(i,:)+ ...
+                        trialVelocity(i,:)-baseTracingInertia*V(i,:);
                 end
                 trialVelocity(i,:)=max(-Vmax,min(Vmax,trialVelocity(i,:)));
                 if opposition
@@ -569,6 +588,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 end
                 seekingPool{i}=copies;
             end
+        end
+
+        if virtualTracing
+            tracingIds=find(tracing);
+            pop(tracingIds,:)=trial(tracingIds,:);
+            V(tracingIds,:)=trialVelocity(tracingIds,:);
         end
 
         modeBudget=budgetThisRound-double(recoveryActive);
@@ -738,9 +763,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     (abs(oldLocalCost)+abs(value)+eps));
                 remaining=remaining-1;
                 V(i,:)=trialVelocity(i,:);
-                if ~tracingElitistAcceptance || value<oldLocalCost
-                    pop(i,:)=trial(i,:);
+                tracingAccepted=~tracingElitistAcceptance || value<oldLocalCost;
+                if tracingAccepted
+                    realPop(i,:)=trial(i,:);
                     fitness(i)=value;
+                    pop(i,:)=trial(i,:);
+                elseif virtualTracing
+                    % A rejected virtual trial must return to its last real position.
+                    pop(i,:)=realPop(i,:);
                 end
                 if value<personalBestCost(i)
                     personalBest(i,:)=trial(i,:);
@@ -775,6 +805,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 localCost=fitness(i);
                 parentCost=fitness(i);
                 localVector=pop(i,:);
+                wasVirtual=virtualTracing && any(pop(i,:)~=realPop(i,:));
                 for j=selected
                     if remaining<=0
                         break;
@@ -872,6 +903,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     T(info.Evaluations)=Best.Cost;
                 end
                 pop(i,:)=localVector;
+                if localCost<parentCost
+                    realPop(i,:)=localVector;
+                elseif wasVirtual && ~isempty(selected)
+                    % Do not keep a virtual parent after a real evaluation fails.
+                    pop(i,:)=realPop(i,:);
+                end
                 fitness(i)=localCost;
             end
         end
