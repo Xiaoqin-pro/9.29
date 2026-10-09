@@ -10,6 +10,10 @@ function [Best,T,info] = LSHADE_CEC(f,state,~,Particle_Number,seed)
     pBestRate=0.11;
     archiveRate=1.4;
     memorySize=5;
+    if isfield(state,'lshadeProfile') && strcmp(state.lshadeProfile,'standard')
+        archiveRate=2.6;
+        memorySize=6;
+    end
     lb=state.lowerBound;
     ub=state.upperBound;
     budget=state.maxEvaluations;
