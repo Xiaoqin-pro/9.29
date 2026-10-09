@@ -90,6 +90,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     frozenSelection=~strcmp(seekSelection,'legacy');
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
     randomSelection=strcmp(seekSelection,'randomCap2');
+    matchedSelection=strcmp(seekSelection,'matchedRandomCap2');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -200,6 +201,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SMP=SMP;
     info.SeekingParentCoverage=[];
     info.SeekingConcentration=[];
+    info.MatchedReferenceCoverage=[];
+    info.MatchedReferenceConcentration=[];
     info.SeekingMaxParentEvaluations=[];
     info.SeekingGlobalImprovementCounts=[];
     info.TracingGlobalImprovementCounts=[];
@@ -621,7 +624,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 else
                     traceCats=[];
                 end
-                if targetSeek>0 && ~globalSelection
+                if targetSeek>0 && ~globalSelection && ~matchedSelection
                     seekBest=zeros(numel(seekIds),1);
                     seekCenter=zeros(numel(seekIds),1);
                     for q=1:numel(seekIds)
@@ -657,6 +660,17 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 elseif randomSelection
                     seekPlan=RandomCandidateScreen(seekingPool,seekIds,targetSeek,2);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif matchedSelection
+                    referencePlan=GlobalCandidateScreen(seekingPool,seekIds, ...
+                        roundBest,center,targetSeek,2);
+                    seekPlan=MatchedRandomScreen(seekingPool,seekIds,referencePlan);
+                    referenceCounts=cellfun(@numel,referencePlan);
+                    actualCounts=cellfun(@numel,seekPlan);
+                    assert(isequal(sort(referenceCounts),sort(actualCounts)))
+                    info.MatchedReferenceCoverage(end+1)=nnz(referenceCounts);
+                    info.MatchedReferenceConcentration(end+1)= ...
+                        sum((referenceCounts/max(1,targetSeek)).^2);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 else
                     slots=targetSeek;
@@ -1262,6 +1276,20 @@ function plan=RandomCandidateScreen(pool,catIds,quota,parentCap)
         if selectedCount>=quota
             break
         end
+    end
+end
+
+function plan=MatchedRandomScreen(pool,catIds,referencePlan)
+    plan=cell(numel(pool),1);
+    counts=sort(cellfun(@numel,referencePlan),'descend');
+    counts=counts(counts>0);
+    if isempty(counts)
+        return
+    end
+    parents=catIds(randperm(numel(catIds),numel(counts)));
+    for q=1:numel(counts)
+        i=parents(q);
+        plan{i}=1+randperm(size(pool{i},1)-1,counts(q));
     end
 end
 
