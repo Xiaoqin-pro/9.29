@@ -12,9 +12,9 @@ The script checks exact FE accounting and the 2 Tracing + 3 Seeking allocation f
 
 ## Preliminary result
 
-The two V1 components are complementary rather than uniformly dominant. Across the five diagnostic functions, V1-A is better on F3 and F12, while V1-B is better on F1, F9 and F22. The complete V1 reference is not uniformly best either: it is better than V1-A on F1, F9 and F22, and better than V1-B on F3 and F12.
+The two V1 components have different function preferences. V1-A is better on F3 and F12, while V1-B is better on F1, F9 and F22. Complete V1 has a better mean than V1-A on F1, F9 and F22, but a better mean than V1-B only on F3. Complete V1 does not beat the better of A and B on any of these five functions. On F12 neither component, nor complete V1, improves the V0 mean.
 
-This means the current evidence supports keeping both mechanisms in the V1 search core, but it does not support claiming that either component alone explains the improvement. The function-level comparison is recorded in `mechanism_comparison.csv`; the V0 and complete V1 rows come from the paired `cec2017_search_core_20261009_091923` reference runs.
+These results do not establish positive synergy when the mechanisms are enabled together, or show that switching during one run would combine their strengths. A and B remain separate research candidates, with complete V1 retained as a combination control. The function-level comparison is recorded in `mechanism_comparison.csv`; the V0 and complete V1 rows come from the paired `cec2017_search_core_20261009_091923` reference runs.
 
 The experiment also confirms that the two component variants are materially different: V1-A is faster (about 42.8 s on average) than V1-B (about 50.7 s), while their quality strengths depend on the function. No new Recovery or Q-learning module was introduced.
 

@@ -168,6 +168,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.FamilyScheduler=familyScheduler;
     info.SeekSelection=seekSelection;
     info.SearchCore=searchCore;
+    info.EliteGuidance=eliteGuidance;
+    info.TracingElitistAcceptance=tracingElitistAcceptance;
     info.SMP=SMP;
     info.SeekingParentCoverage=[];
     info.SeekingConcentration=[];
@@ -513,7 +515,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         stepScale=1-progress;
                         eliteStep=0;
                         differenceStep=0;
-                        if strcmp(searchCore,'elite') || strcmp(searchCore,'eliteDiff')
+                        if eliteGuidance
                             eliteStep=0.25*(eliteVector(d)-pop(i,d));
                         end
                         if strcmp(searchCore,'eliteDiff')
