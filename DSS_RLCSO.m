@@ -108,6 +108,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     matchedSelection=strcmp(seekSelection,'matchedRandomCap2');
     compensationSelection=strcmp(seekSelection,'g2Random') || ...
         strcmp(seekSelection,'g2Age');
+    sourceSelection=strcmp(seekSelection,'sourceAware');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -227,6 +228,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.FeedbackSeekingGlobalImprovement=[];
     info.FeedbackSeekingDistanceToBest=[];
     info.FeedbackSeekingDistanceToElite=[];
+    info.FeedbackSeekingSourceProgress=[];
     info.FeedbackSelection=feedbackSelection;
     info.FeedbackLogging=feedbackLogging;
     info.MatchedReferenceCoverage=[];
@@ -665,7 +667,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     traceCats=[];
                 end
                 if targetSeek>0 && ~globalSelection && ~matchedSelection && ...
-                        ~compensationSelection
+                        ~compensationSelection && ~sourceSelection
                     seekBest=zeros(numel(seekIds),1);
                     seekCenter=zeros(numel(seekIds),1);
                     for q=1:numel(seekIds)
@@ -719,6 +721,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     seekPlan=CompensationCandidateScreen(seekingPool,seekIds, ...
                         basePlan,roundBest,lastRealEvaluationFE,info.Evaluations, ...
                         seekSelection);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif sourceSelection
+                    basePlan=GlobalCandidateScreen(seekingPool,seekIds, ...
+                        roundBest,center,min(2,targetSeek),2);
+                    seekPlan=SourceAwareCandidateScreen(seekingPool,seekIds, ...
+                        basePlan,roundBest,center,pop,seekingEliteVectors,lb,ub);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 else
                     slots=targetSeek;
@@ -884,6 +892,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     feedbackOffset=norm(pop(i,:)-realPop(i,:))/max(norm(ub-lb),eps);
                     feedbackDistanceBest=norm(copies(j,:)-roundBest);
                     feedbackDistanceElite=norm(copies(j,:)-seekingEliteVectors(i,:));
+                    sourceDistance=norm(pop(i,:)-seekingEliteVectors(i,:));
+                    feedbackSourceProgress=(sourceDistance-feedbackDistanceElite)/ ...
+                        max(sourceDistance,1e-6*norm(ub-lb));
                     value=f(copies(j,:));
                     if stagnationCandidate(i) && j==2
                         info.StagnationCandidateEvaluations= ...
@@ -967,6 +978,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         info.FeedbackSeekingGlobalImprovement(end+1)=double(globalImproved);
                         info.FeedbackSeekingDistanceToBest(end+1)=feedbackDistanceBest;
                         info.FeedbackSeekingDistanceToElite(end+1)=feedbackDistanceElite;
+                        info.FeedbackSeekingSourceProgress(end+1)=feedbackSourceProgress;
                     end
                     if globalImproved
                         seekingImproved=true;
@@ -1379,6 +1391,40 @@ function plan=CompensationCandidateScreen(pool,catIds,basePlan,best, ...
     distances=sum((pool{parent}(candidates,:)-best).^2,2);
     [~,index]=min(distances);
     plan{parent}(end+1)=candidates(index);
+end
+
+function plan=SourceAwareCandidateScreen(pool,catIds,basePlan,best,center, ...
+        pop,eliteVectors,lb,ub)
+    plan=basePlan;
+    counts=cellfun(@numel,plan);
+    bestProgress=-inf;
+    bestParent=0;
+    bestCandidate=0;
+    for q=1:numel(catIds)
+        i=catIds(q);
+        if counts(i)>=2
+            continue
+        end
+        candidates=setdiff(2:size(pool{i},1),plan{i});
+        if isempty(candidates)
+            continue
+        end
+        parentDistance=norm(pop(i,:)-eliteVectors(i,:));
+        denominator=max(parentDistance,1e-6*norm(ub-lb));
+        candidateDistance=sqrt(sum((pool{i}(candidates,:)-eliteVectors(i,:)).^2,2));
+        progress=(parentDistance-candidateDistance)/denominator;
+        [value,index]=max(progress);
+        if value>bestProgress
+            bestProgress=value;
+            bestParent=i;
+            bestCandidate=candidates(index);
+        end
+    end
+    if bestParent==0
+        plan=GlobalCandidateScreen(pool,catIds,best,center,3,2);
+    else
+        plan{bestParent}(end+1)=bestCandidate;
+    end
 end
 
 function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
