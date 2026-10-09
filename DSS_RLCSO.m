@@ -21,6 +21,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     searchCore='base';
     eliteGuidance=[];
     tracingElitistAcceptance=[];
+    stagnationExemplar=false;
+    stagnationThreshold=10;
+    stagnationLambda=0.50;
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -60,6 +63,15 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'tracingElitistAcceptance')
         tracingElitistAcceptance=state.tracingElitistAcceptance;
+    end
+    if isfield(state,'stagnationExemplar')
+        stagnationExemplar=state.stagnationExemplar;
+    end
+    if isfield(state,'stagnationThreshold')
+        stagnationThreshold=state.stagnationThreshold;
+    end
+    if isfield(state,'stagnationLambda')
+        stagnationLambda=state.stagnationLambda;
     end
     if isempty(eliteGuidance)
         eliteGuidance=~strcmp(searchCore,'base');
@@ -170,6 +182,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SearchCore=searchCore;
     info.EliteGuidance=eliteGuidance;
     info.TracingElitistAcceptance=tracingElitistAcceptance;
+    info.StagnationExemplar=stagnationExemplar;
+    info.StagnationThreshold=stagnationThreshold;
+    info.StagnationLambda=stagnationLambda;
     info.SMP=SMP;
     info.SeekingParentCoverage=[];
     info.SeekingConcentration=[];
@@ -217,6 +232,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.RangeCandidateSuccess=0;
     info.ClassicGlobalImprovements=0;
     info.RangeGlobalImprovements=0;
+    info.StagnationCandidateGenerated=0;
+    info.StagnationCandidateEvaluations=0;
+    info.StagnationCandidateSuccess=0;
     info.StateHistory=[];
     info.StateVisitCounts=[];
     info.StateActionCounts=[];
@@ -251,6 +269,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     traceEvaluationHistory=[];
     seekGainHistory=[];
     traceGainHistory=[];
+    catStall=zeros(sizepop,1);
     modeWindow=5;
     modeThreshold=0.05;
     seekSamples=[];
@@ -454,6 +473,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         trial=pop;
         trialVelocity=V;
         tracing=false(sizepop,1);
+        stagnationCandidate=false(sizepop,1);
         seekingPool=cell(sizepop,1);
         for i=1:sizepop
             if ~eliteGuidance
@@ -498,7 +518,20 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     info.ClassicCandidateGenerated=info.ClassicCandidateGenerated+4;
                 end
                 for j=2:SMP
-                    if opposition
+                    if stagnationExemplar && catStall(i)>=stagnationThreshold && j==2
+                        d=randperm(D,max(1,round(cdc*D)));
+                        sourceIds=elitePool(randi(eliteCount,1,numel(d)))';
+                        sourceIds=sourceIds(:)';
+                        sourceIndex=sub2ind([sizepop D],sourceIds,d);
+                        exemplar=personalBest(sourceIndex);
+                        stepScale=max(0.25,1-progress);
+                        step=srd*(ub(d)-lb(d))/2*stepScale;
+                        copies(j,d)=pop(i,d)+stagnationLambda* ...
+                            (exemplar-pop(i,d))+step.*(2*rand(1,numel(d))-1);
+                        info.StagnationCandidateGenerated= ...
+                            info.StagnationCandidateGenerated+1;
+                        stagnationCandidate(i)=true;
+                    elseif opposition
                         sigma=0.05*(1-progress);
                         copies(j,:)=lb+ub-pop(i,:)+ ...
                             sigma*randn(1,D).*(ub-lb);
@@ -693,6 +726,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 end
                 if value<oldLocalCost
                     roundTraceSuccess=roundTraceSuccess+1;
+                    catStall(i)=0;
+                else
+                    catStall(i)=catStall(i)+1;
                 end
                 if modeSampleV3
                     traceSamples=[traceSamples value<oldLocalCost];
@@ -747,6 +783,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         break;
                     end
                     value=f(copies(j,:));
+                    if stagnationCandidate(i) && j==2
+                        info.StagnationCandidateEvaluations= ...
+                            info.StagnationCandidateEvaluations+1;
+                    end
                     if value<personalBestCost(i)
                         personalBest(i,:)=copies(j,:);
                         personalBestCost(i)=value;
@@ -788,6 +828,10 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     if value<successCost
                         roundSeekSuccess=roundSeekSuccess+1;
+                        if stagnationCandidate(i) && j==2
+                            info.StagnationCandidateSuccess= ...
+                                info.StagnationCandidateSuccess+1;
+                        end
                         if trackCandidateType
                             if hybridRange
                                 info.RangeCandidateSuccess=info.RangeCandidateSuccess+1;
@@ -799,6 +843,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     roundSeekGain=roundSeekGain+max(0,(successCost-value)/ ...
                         (abs(successCost)+abs(value)+eps));
                     remaining=remaining-1;
+                    if value<parentCost
+                        catStall(i)=0;
+                    else
+                        catStall(i)=catStall(i)+1;
+                    end
                     if value<localCost
                         localCost=value;
                         localVector=copies(j,:);
@@ -974,6 +1023,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.Seed=seed;
     info.Q=Q;
     info.Stall=stall;
+    info.CatStall=catStall;
     info.FinalSeekSamples=seekSamples;
     info.FinalTraceSamples=traceSamples;
     info.Seconds=toc(clockStart);
