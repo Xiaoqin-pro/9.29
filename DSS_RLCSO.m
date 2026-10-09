@@ -109,6 +109,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     compensationSelection=strcmp(seekSelection,'g2Random') || ...
         strcmp(seekSelection,'g2Age');
     sourceSelection=strcmp(seekSelection,'sourceAware');
+    coverageSourceSelection=strcmp(seekSelection,'coverageSource');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -667,7 +668,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     traceCats=[];
                 end
                 if targetSeek>0 && ~globalSelection && ~matchedSelection && ...
-                        ~compensationSelection && ~sourceSelection
+                        ~compensationSelection && ~sourceSelection && ...
+                        ~coverageSourceSelection
                     seekBest=zeros(numel(seekIds),1);
                     seekCenter=zeros(numel(seekIds),1);
                     for q=1:numel(seekIds)
@@ -727,6 +729,14 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         roundBest,center,min(2,targetSeek),2);
                     seekPlan=SourceAwareCandidateScreen(seekingPool,seekIds, ...
                         basePlan,roundBest,center,pop,seekingEliteVectors,lb,ub);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif coverageSourceSelection
+                    basePlan=GlobalCandidateScreen(seekingPool,seekIds, ...
+                        roundBest,center,min(2,targetSeek),2);
+                    sourcePlan=SourceAwareCandidateScreen(seekingPool,seekIds, ...
+                        basePlan,roundBest,center,pop,seekingEliteVectors,lb,ub);
+                    seekPlan=CoverageSourceAwareCandidateScreen(seekingPool,seekIds, ...
+                        basePlan,sourcePlan,pop,seekingEliteVectors,lb,ub);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 else
                     slots=targetSeek;
@@ -1425,6 +1435,42 @@ function plan=SourceAwareCandidateScreen(pool,catIds,basePlan,best,center, ...
     else
         plan{bestParent}(end+1)=bestCandidate;
     end
+end
+
+function plan=CoverageSourceAwareCandidateScreen(pool,catIds,basePlan, ...
+        sourcePlan,pop,eliteVectors,lb,ub)
+    plan=basePlan;
+    baseCounts=cellfun(@numel,basePlan);
+    sourceCounts=cellfun(@numel,sourcePlan);
+    added=find(sourceCounts>baseCounts);
+    if isempty(added)
+        return
+    end
+    sourceParent=added(1);
+    sourceWasUncovered=baseCounts(sourceParent)==0;
+    if sourceWasUncovered
+        eligible=catIds(baseCounts(catIds)==0);
+    else
+        eligible=catIds(baseCounts(catIds)>0 & baseCounts(catIds)<2);
+    end
+    if isempty(eligible)
+        eligible=catIds(baseCounts(catIds)<2);
+    end
+    if isempty(eligible)
+        return
+    end
+    parent=eligible(randperm(numel(eligible),1));
+    candidates=setdiff(2:size(pool{parent},1),plan{parent});
+    if isempty(candidates)
+        return
+    end
+    parentDistance=norm(pop(parent,:)-eliteVectors(parent,:));
+    denominator=max(parentDistance,1e-6*norm(ub-lb));
+    candidateDistance=sqrt(sum((pool{parent}(candidates,:)- ...
+        eliteVectors(parent,:)).^2,2));
+    progress=(parentDistance-candidateDistance)/denominator;
+    [~,index]=max(progress);
+    plan{parent}(end+1)=candidates(index);
 end
 
 function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
