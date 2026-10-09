@@ -29,6 +29,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     stagnationLambda=0.50;
     tracingDecay=false;
     virtualTracing=false;
+    evaluationQuota=[];
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -92,6 +93,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'virtualTracing')
         virtualTracing=state.virtualTracing;
+    end
+    if isfield(state,'evaluationQuota')
+        evaluationQuota=state.evaluationQuota;
     end
     if isempty(eliteGuidance)
         eliteGuidance=~strcmp(searchCore,'base');
@@ -649,7 +653,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
             traceIds=find(tracing);
             seekIds=find(~tracing);
             candidateLimit=2;
-            targetTrace=min(numel(traceIds),round(modeBudget*mr));
+            if isempty(evaluationQuota)
+                targetTrace=min(numel(traceIds),round(modeBudget*mr));
+            else
+                targetTrace=min(numel(traceIds),max(1,min(modeBudget-1, ...
+                    round(evaluationQuota))));
+            end
             targetSeek=min(candidateLimit*numel(seekIds), ...
                 modeBudget-targetTrace);
             leftover=modeBudget-targetTrace-targetSeek;
