@@ -22,6 +22,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     feedbackLogging=false;
     searchCore='base';
     eliteGuidance=[];
+    seekingEliteGuidance=[];
     tracingElitistAcceptance=[];
     stagnationExemplar=false;
     stagnationThreshold=10;
@@ -71,6 +72,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     if isfield(state,'eliteGuidance')
         eliteGuidance=state.eliteGuidance;
     end
+    if isfield(state,'seekingEliteGuidance')
+        seekingEliteGuidance=state.seekingEliteGuidance;
+    end
     if isfield(state,'tracingElitistAcceptance')
         tracingElitistAcceptance=state.tracingElitistAcceptance;
     end
@@ -91,6 +95,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isempty(eliteGuidance)
         eliteGuidance=~strcmp(searchCore,'base');
+    end
+    if isempty(seekingEliteGuidance)
+        seekingEliteGuidance=eliteGuidance;
     end
     if isempty(tracingElitistAcceptance)
         tracingElitistAcceptance=~strcmp(searchCore,'base');
@@ -204,6 +211,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.SeekSelection=seekSelection;
     info.SearchCore=searchCore;
     info.EliteGuidance=eliteGuidance;
+    info.SeekingEliteGuidance=seekingEliteGuidance;
     info.TracingElitistAcceptance=tracingElitistAcceptance;
     info.StagnationExemplar=stagnationExemplar;
     info.StagnationThreshold=stagnationThreshold;
@@ -217,6 +225,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.FeedbackSeekingVirtualOffset=[];
     info.FeedbackSeekingSuccess=[];
     info.FeedbackSeekingGlobalImprovement=[];
+    info.FeedbackSeekingDistanceToBest=[];
+    info.FeedbackSeekingDistanceToElite=[];
     info.FeedbackSelection=feedbackSelection;
     info.FeedbackLogging=feedbackLogging;
     info.MatchedReferenceCoverage=[];
@@ -508,13 +518,25 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         tracing=false(sizepop,1);
         stagnationCandidate=false(sizepop,1);
         seekingPool=cell(sizepop,1);
+        seekingEliteVectors=repmat(Best.Vector,sizepop,1);
         for i=1:sizepop
-            if ~eliteGuidance
-                eliteVector=Best.Vector;
-            else
+            if eliteGuidance
                 eliteIndex=elitePool(randi(eliteCount));
-                eliteVector=personalBest(eliteIndex,:);
+                tracingEliteVector=personalBest(eliteIndex,:);
+            else
+                tracingEliteVector=Best.Vector;
             end
+            if seekingEliteGuidance
+                if eliteGuidance
+                    seekingEliteVector=tracingEliteVector;
+                else
+                    eliteIndex=elitePool(randi(eliteCount));
+                    seekingEliteVector=personalBest(eliteIndex,:);
+                end
+            else
+                seekingEliteVector=Best.Vector;
+            end
+            seekingEliteVectors(i,:)=seekingEliteVector;
             if rand<mr
                 tracing(i)=true;
                 if paperMode && peerLearn
@@ -530,7 +552,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 else
                     baseTracingInertia=1.0;
                     trialVelocity(i,:)=baseTracingInertia*V(i,:)+2*rand(1,D).* ...
-                        (eliteVector-pop(i,:));
+                        (tracingEliteVector-pop(i,:));
                 end
                 if tracingDecay
                     tracingInertia=0.9-0.5*progress;
@@ -589,8 +611,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         stepScale=1-progress;
                         eliteStep=0;
                         differenceStep=0;
-                        if eliteGuidance
-                            eliteStep=0.25*(eliteVector(d)-pop(i,d));
+                        if seekingEliteGuidance
+                            eliteStep=0.25*(seekingEliteVector(d)-pop(i,d));
                         end
                         if strcmp(searchCore,'eliteDiff')
                             pair=setdiff(1:sizepop,i);
@@ -860,6 +882,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     feedbackAgeFE=info.Evaluations-lastRealEvaluationFE(i);
                     feedbackOffset=norm(pop(i,:)-realPop(i,:))/max(norm(ub-lb),eps);
+                    feedbackDistanceBest=norm(copies(j,:)-roundBest);
+                    feedbackDistanceElite=norm(copies(j,:)-seekingEliteVectors(i,:));
                     value=f(copies(j,:));
                     if stagnationCandidate(i) && j==2
                         info.StagnationCandidateEvaluations= ...
@@ -941,6 +965,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                         info.FeedbackSeekingVirtualOffset(end+1)=feedbackOffset;
                         info.FeedbackSeekingSuccess(end+1)=double(value<parentCost);
                         info.FeedbackSeekingGlobalImprovement(end+1)=double(globalImproved);
+                        info.FeedbackSeekingDistanceToBest(end+1)=feedbackDistanceBest;
+                        info.FeedbackSeekingDistanceToElite(end+1)=feedbackDistanceElite;
                     end
                     if globalImproved
                         seekingImproved=true;
