@@ -89,6 +89,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     frozenSelection=~strcmp(seekSelection,'legacy');
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
+    randomSelection=strcmp(seekSelection,'randomCap2');
     useContinuousReward=strcmp(rlMode,'continuous') || strcmp(rlMode,'v3');
     useDiversityState=strcmp(rlMode,'diversity') || strcmp(rlMode,'v3');
     paperMode=strcmp(rlMode,'paper');
@@ -653,6 +654,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     seekPlan=GlobalCandidateScreen(seekingPool,seekIds, ...
                         roundBest,center,targetSeek,parentCap);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif randomSelection
+                    seekPlan=RandomCandidateScreen(seekingPool,seekIds,targetSeek,2);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 else
                     slots=targetSeek;
@@ -1232,6 +1236,33 @@ function selected=CandidateScreen(copies,best,center,quota)
     order=unique([candidates(near),candidates(far)],'stable');
     order=[order,setdiff(candidates,order,'stable')];
     selected=order(1:min(quota,numel(order)));
+end
+
+function plan=RandomCandidateScreen(pool,catIds,quota,parentCap)
+    plan=cell(numel(pool),1);
+    if quota==0 || isempty(catIds)
+        return
+    end
+    pairs=zeros(0,2);
+    for i=catIds(:)'
+        candidateIds=2:size(pool{i},1);
+        pairs=[pairs;repmat(i,numel(candidateIds),1),candidateIds(:)]; %#ok<AGROW>
+    end
+    pairs=pairs(randperm(size(pairs,1)),:);
+    counts=zeros(numel(pool),1);
+    selectedCount=0;
+    for q=1:size(pairs,1)
+        i=pairs(q,1);
+        if counts(i)>=parentCap
+            continue
+        end
+        plan{i}(end+1)=pairs(q,2); %#ok<AGROW>
+        counts(i)=counts(i)+1;
+        selectedCount=selectedCount+1;
+        if selectedCount>=quota
+            break
+        end
+    end
 end
 
 function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
