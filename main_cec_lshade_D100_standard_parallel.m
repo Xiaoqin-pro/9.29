@@ -1,0 +1,139 @@
+clc
+clear
+close all
+
+root=fileparts(mfilename('fullpath'));
+addpath(root,fullfile(root,'data','cec2017'))
+cd(fullfile(root,'data','cec2017'))
+
+functionIDs=[1 3:30];
+repeatIDs=101:103;
+D=100;
+population=18*D;
+maxEvaluations=60000;
+seedBase=20271004;
+lb=-100*ones(1,D);
+ub=100*ones(1,D);
+workerCount=4;
+batchSize=4;
+d3ResultDir=fullfile(root,'results','cec', ...
+    'cec2017_d3_vs_clpso_D100_20261009_214003');
+assert(isfile(fullfile(d3ResultDir,'raw_runs.csv')))
+
+stamp=char(datetime('now','Format','yyyyMMdd_HHmmss'));
+resultDir=fullfile(root,'results','cec', ...
+    ['cec2017_lshade_D100_standard_' stamp]);
+mkdir(resultDir);
+
+jobs=struct('FunctionID',{},'Run',{},'InitSeed',{},'SearchSeed',{}, ...
+    'InitialPopulation',{});
+count=0;
+for functionID=functionIDs
+    for repeat=repeatIDs
+        initSeed=seedBase+repeat;
+        rng(initSeed,'twister')
+        count=count+1;
+        jobs(count)=struct('FunctionID',functionID,'Run',repeat, ...
+            'InitSeed',initSeed,'SearchSeed',initSeed+200000, ...
+            'InitialPopulation',lb+rand(population,D).*(ub-lb));
+    end
+end
+
+pool=gcp('nocreate');
+if isempty(pool)
+    parpool('local',workerCount);
+elseif pool.NumWorkers~=workerCount
+    delete(pool);
+    parpool('local',workerCount);
+end
+
+records=cell(numel(jobs),1);
+curves=cell(numel(jobs),1);
+for first=1:batchSize:numel(jobs)
+    last=min(first+batchSize-1,numel(jobs));
+    batch=jobs(first:last);
+    batchResults=cell(numel(batch),1);
+    parfor j=1:numel(batch)
+        job=batch(j);
+        f=@(x)CEC2017Function(x,job.FunctionID);
+        state=struct('lowerBound',lb,'upperBound',ub, ...
+            'maxEvaluations',maxEvaluations,'initialPopulation',job.InitialPopulation, ...
+            'lshadeProfile','standard');
+        [Best,T,info]=LSHADE_CEC(f,state,ceil(maxEvaluations/population), ...
+            population,job.SearchSeed);
+        assert(info.Evaluations==maxEvaluations && numel(T)==maxEvaluations)
+        assert(all(isfinite(T)) && all(diff(T)<=0))
+        functionValue=100*job.FunctionID;
+        batchResults{j}=struct('Function',sprintf('F%02d',job.FunctionID), ...
+            'FunctionID',job.FunctionID,'Algorithm','L-SHADE-standard', ...
+            'Run',job.Run,'InitSeed',job.InitSeed,'SearchSeed',job.SearchSeed, ...
+            'Dimension',D,'InitialPopulation',population, ...
+            'MinPopulation',4,'ArchiveRate',2.6,'MemorySize',6, ...
+            'Evaluations',info.Evaluations,'BestCost',Best.Cost, ...
+            'BestError',max(0,Best.Cost-functionValue),'Seconds',info.Seconds, ...
+            'FinalPopulationSize',info.FinalPopulationSize);
+        nodes=(3000:3000:maxEvaluations)';
+        curves{j}=table(repmat(job.FunctionID,numel(nodes),1), ...
+            repmat({'L-SHADE-standard'},numel(nodes),1),repmat(job.Run,numel(nodes),1), ...
+            nodes,max(0,T(nodes)-functionValue), ...
+            'VariableNames',{'FunctionID','Algorithm','Run','FE','BestError'});
+    end
+    for j=1:numel(batch)
+        records{first+j-1}=batchResults{j};
+    end
+    writetable(struct2table([records{1:last}]), ...
+        fullfile(resultDir,'raw_runs_checkpoint.csv'));
+    writetable(vertcat(curves{1:last}), ...
+        fullfile(resultDir,'convergence_checkpoint.csv'));
+    fprintf('Completed %d/%d runs with %d workers\n',last,numel(jobs),workerCount);
+end
+
+rawRuns=struct2table([records{:}]);
+writetable(rawRuns,fullfile(resultDir,'raw_runs.csv'));
+writetable(vertcat(curves{:}),fullfile(resultDir,'convergence.csv'));
+
+d3=readtable(fullfile(d3ResultDir,'raw_runs.csv'));
+comparisonRecords=cell(numel(functionIDs),1);
+summaryRecords=cell(numel(functionIDs),1);
+for q=1:numel(functionIDs)
+    functionID=functionIDs(q);
+    lshade=sortrows(rawRuns(rawRuns.FunctionID==functionID,:),'Run');
+    d3Rows=sortrows(d3(d3.FunctionID==functionID & ...
+        strcmp(d3.Algorithm,'D3-Both'),:),'Run');
+    comparisonRecords{q}=struct('Function',sprintf('F%02d',functionID), ...
+        'FunctionID',functionID,'D3MeanError',mean(d3Rows.BestError), ...
+        'LSHADEMeanError',mean(lshade.BestError),'D3StdError',std(d3Rows.BestError), ...
+        'LSHADEStdError',std(lshade.BestError),'D3MedianError',median(d3Rows.BestError), ...
+        'LSHADEMedianError',median(lshade.BestError), ...
+        'D3Wins',sum(d3Rows.BestError<lshade.BestError), ...
+        'LSHADEWins',sum(d3Rows.BestError>lshade.BestError), ...
+        'Ties',sum(d3Rows.BestError==lshade.BestError), ...
+        'D3MeanSeconds',mean(d3Rows.Seconds),'LSHADEMeanSeconds',mean(lshade.Seconds));
+    summaryRecords{q}=struct('Function',sprintf('F%02d',functionID), ...
+        'FunctionID',functionID,'Algorithm','L-SHADE-standard','Runs',height(lshade), ...
+        'MeanError',mean(lshade.BestError),'StdError',std(lshade.BestError), ...
+        'MedianError',median(lshade.BestError),'MeanSeconds',mean(lshade.Seconds), ...
+        'FinalPopulationSize',mean(lshade.FinalPopulationSize));
+end
+writetable(struct2table([comparisonRecords{:}]),fullfile(resultDir,'comparison.csv'));
+writetable(struct2table([summaryRecords{:}]),fullfile(resultDir,'summary.csv'));
+readme={ ...
+    '# Standard L-SHADE versus D3 at D100, 60k FE', ...
+    '', ...
+    '- Functions: F1, F3-F30 (29 functions); dimension: 100; budget: 60,000 FE.', ...
+    '- Repeats: 101:103; L-SHADE uses independent NP0=18D=1800 initial points because its standard population protocol differs from D3.', ...
+    '- Standard profile: NPmin=4, archive rate=2.6, memory size H=6, p-best rate=0.11.', ...
+    '- Initialization evaluations are included in the 60,000 FE budget.', ...
+    '- `comparison.csv` pairs L-SHADE with the existing D3 runs by function and repeat ID; it is a quality comparison under the same FE budget, not identical initialization.', ...
+    '- This is a D100 standard-baseline pretest, not a formal 30-run statistical validation.', ...
+    ''};
+fid=fopen(fullfile(resultDir,'README.md'),'w');
+fprintf(fid,'%s\n',readme{:});
+fclose(fid);
+delete(gcp('nocreate'))
+fprintf('D100 standard L-SHADE comparison saved to %s\n',resultDir);
+
+function value=CEC2017Function(x,functionID)
+    value=cec17_func(x',functionID);
+    value=value(1);
+end
