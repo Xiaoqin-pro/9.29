@@ -19,6 +19,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     familyReward='legacy';
     seekSelection='legacy';
     searchCore='base';
+    eliteGuidance=[];
+    tracingElitistAcceptance=[];
     actionMode='qlearning';
     rlMode='legacy';
     if isfield(state,'ablation')
@@ -52,6 +54,18 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     if isfield(state,'searchCore')
         searchCore=state.searchCore;
+    end
+    if isfield(state,'eliteGuidance')
+        eliteGuidance=state.eliteGuidance;
+    end
+    if isfield(state,'tracingElitistAcceptance')
+        tracingElitistAcceptance=state.tracingElitistAcceptance;
+    end
+    if isempty(eliteGuidance)
+        eliteGuidance=~strcmp(searchCore,'base');
+    end
+    if isempty(tracingElitistAcceptance)
+        tracingElitistAcceptance=~strcmp(searchCore,'base');
     end
     frozenSelection=~strcmp(seekSelection,'legacy');
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
@@ -440,7 +454,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         tracing=false(sizepop,1);
         seekingPool=cell(sizepop,1);
         for i=1:sizepop
-            if strcmp(searchCore,'base')
+            if ~eliteGuidance
                 eliteVector=Best.Vector;
             else
                 eliteIndex=elitePool(randi(eliteCount));
@@ -686,7 +700,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     (abs(oldLocalCost)+abs(value)+eps));
                 remaining=remaining-1;
                 V(i,:)=trialVelocity(i,:);
-                if strcmp(searchCore,'base') || value<oldLocalCost
+                if ~tracingElitistAcceptance || value<oldLocalCost
                     pop(i,:)=trial(i,:);
                     fitness(i)=value;
                 end
