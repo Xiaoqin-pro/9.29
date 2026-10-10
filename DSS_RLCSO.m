@@ -108,6 +108,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     end
     frozenSelection=~strcmp(seekSelection,'legacy');
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
+    jointSelection=strcmp(seekSelection,'jointCap2');
     randomSelection=strcmp(seekSelection,'randomCap2');
     matchedSelection=strcmp(seekSelection,'matchedRandomCap2');
     compensationSelection=strcmp(seekSelection,'g2Random') || ...
@@ -711,6 +712,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     end
                     seekPlan=GlobalCandidateScreen(seekingPool,seekIds, ...
                         roundBest,center,targetSeek,parentCap);
+                    seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif jointSelection
+                    % Select a small parent shortlist first, then let all
+                    % candidates in that shortlist compete jointly.
+                    seekPlan=GlobalCandidateScreen(seekingPool,seekCats, ...
+                        roundBest,center,targetSeek,2);
                     seekCats=find(~cellfun(@isempty,seekPlan));
                 elseif randomSelection
                     seekPlan=RandomCandidateScreen(seekingPool,seekIds,targetSeek,2);
