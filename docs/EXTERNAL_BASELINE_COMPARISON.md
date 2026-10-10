@@ -29,11 +29,12 @@ for an unseen CEC2017 test. The MetaBox NRLPSO implementation is explicitly a
 third-party implementation and is integrated with MetaBox's own problem
 interfaces rather than this repository's CEC2017 MATLAB wrapper.
 
-Therefore a four-way numerical table will not be produced until NRLPSO and
-RLPSO/RLAM pass a source and function-call audit. CLPSO is included as the
-fourth executable comparator and is already available locally. A paper result
-copied from either PDF would be labelled as historical reference, never as an
-ASE-CSO head-to-head result.
+The corrected NRLPSO reproduction has now passed a 24-run smoke audit and a
+29-function x 10-seed CEC2017 batch. It remains a paper-aligned independent
+reproduction, not an official source release. Its `NP=40` protocol differs from
+the earlier `NP=50` ASE/CLPSO exploratory batch, so those batches must not be
+presented as paired or as one formal four-way table. RLPSO/RLAM still has no
+frozen actor checkpoint and remains blocked for a numerical comparison.
 
 ## Required comparable protocol
 
@@ -48,8 +49,8 @@ Primary comparison:
   FE protocol.
 - Each baseline keeps its published population and algorithm parameters, with
   those differences reported explicitly.
-- NRLPSO is marked `third_party_reimplementation` unless an author release is
-  obtained.
+- NRLPSO is marked `paper_aligned_independent_reproduction`; it is not an
+  official author release.
 - RLPSO is run with a frozen model trained without touching the CEC2017 test
   functions. Training evaluations, training time, model hash, and inference
   time are reported separately. A same-function training reproduction, if
@@ -65,11 +66,9 @@ Secondary protocol:
 ## Current status
 
 The two public checkouts are kept outside the repository under
-`work/external_baselines/` and are not copied into the paper source tree. A
-MATLAB preflight has now run ASE-CSO and CLPSO on the same CEC2017 F1 initial
-population and 6,000 counted evaluations (seed 101); both completed the FE
-assertion. This is only an adapter smoke test, not a reported result. The next
-executable milestone is an eight-function, three-seed four-way CEC2017 smoke
-comparison after the NRLPSO adapter and RLAM model provenance are resolved.
-Until then, the defensible conclusion is a mechanism-level comparison, not a
-numerical claim that ASE-CSO beats either published method.
+`work/external_baselines/` and are not copied into the paper source tree. The
+corrected NRLPSO adapter passed 24 smoke runs and all 290 runs in the new
+29-function, 10-seed batch. Its output and source snapshot are under
+`results/external_nrlpso_paperaligned_29f_10seed_20261010/`. The older NRLPSO
+adapter output remains exploratory. RLPSO/RLAM still lacks a frozen actor
+checkpoint, so no four-way numerical claim is made.

@@ -1,0 +1,3 @@
+Corrected paper-aligned NRLPSO independent reproduction
+D=30, FE=60000, functions F1,F3-F30, seeds 101:110, NP=40, k=8, c2=1.9, 4 workers.
+This is not an official author implementation. It uses distinct NP=40 initial populations, so old NP=50 results are exploratory and not paired.

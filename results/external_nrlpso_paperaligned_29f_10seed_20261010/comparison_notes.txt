@@ -1,0 +1,7 @@
+ASE-CSO: 4/29 function means
+CLPSO: 17/29 function means
+old NRLPSO: 9/29 function means
+corrected NRLPSO mean runtime: 3.297 s
+old ASE mean runtime: 7.978 s
+old CLPSO mean runtime: 0.711 s
+old NRLPSO mean runtime: 3.634 s

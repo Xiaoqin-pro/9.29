@@ -22,11 +22,19 @@ is reported as a head-to-head comparison.
 ### NRLPSO
 
 The public MetaBox checkout is a third-party implementation. Its package-level
-import currently requires optional `xgboost` and `tianshou` dependencies, and
-it exposes MetaBox problem interfaces rather than the repository's CEC2017
-MATLAB function. A CEC2017 adapter and dependency-isolated execution path are
-still required. It must be labelled `third_party_reimplementation` unless an
-author release is supplied.
+import requires optional dependencies and it exposes MetaBox problem interfaces
+rather than this repository's CEC2017 MATLAB function. A dependency-isolated
+MATLAB adapter has now been added as a **paper-aligned independent reproduction**
+(`results/external_nrlpso_paperaligned_29f_10seed_20261010`). It is not an
+official author release and must not be described as an exact source port.
+
+The corrected adapter uses the paper-aligned `NP=40`, `k=8`, and `c2=1.9`,
+audits every objective call, and fixes the DOW inertia expression, neighborhood
+population source, next-particle Q state, FE-aligned learning rate, and Best/T
+updates after mutation. A 24-run smoke test passed all budget and trace checks;
+the full 29-function, 10-seed batch contains 290/290 valid records. The earlier
+`external_threeway_29f_10seed_20261010` NRLPSO values are exploratory adapter
+results and remain separate.
 
 ### RLPSO/RLAM
 
