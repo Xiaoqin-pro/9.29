@@ -1,0 +1,4 @@
+method_a,method_b,function_mean_a_wins,function_mean_b_wins,function_mean_ties,paired_seed_a_wins,paired_seed_b_wins,paired_seed_ties
+ASE-CSO,CLPSO,28,1,0,273,17,0
+ASE-CSO,NRLPSO-PaperAligned,25,4,0,232,58,0
+CLPSO,NRLPSO-PaperAligned,8,21,0,82,208,0

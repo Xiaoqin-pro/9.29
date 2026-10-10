@@ -32,7 +32,11 @@ The corrected adapter uses the paper-aligned `NP=40`, `k=8`, and `c2=1.9`,
 audits every objective call, and fixes the DOW inertia expression, neighborhood
 population source, next-particle Q state, FE-aligned learning rate, and Best/T
 updates after mutation. A 24-run smoke test passed all budget and trace checks;
-the full 29-function, 10-seed batch contains 290/290 valid records. The earlier
+the full 29-function, 10-seed batch contains 290/290 valid records. The global
+mutation branch was then corrected to compare against the pre-mutation global
+best, and a new detailed three-way batch reran ASE-CSO, CLPSO, and the corrected
+NRLPSO together: 870/870 records passed independent objective-call, trace, and
+Best recheck audits. The earlier
 `external_threeway_29f_10seed_20261010` NRLPSO values are exploratory adapter
 results and remain separate.
 

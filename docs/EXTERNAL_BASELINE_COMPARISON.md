@@ -29,12 +29,14 @@ for an unseen CEC2017 test. The MetaBox NRLPSO implementation is explicitly a
 third-party implementation and is integrated with MetaBox's own problem
 interfaces rather than this repository's CEC2017 MATLAB wrapper.
 
-The corrected NRLPSO reproduction has now passed a 24-run smoke audit and a
-29-function x 10-seed CEC2017 batch. It remains a paper-aligned independent
-reproduction, not an official source release. Its `NP=40` protocol differs from
-the earlier `NP=50` ASE/CLPSO exploratory batch, so those batches must not be
-presented as paired or as one formal four-way table. RLPSO/RLAM still has no
-frozen actor checkpoint and remains blocked for a numerical comparison.
+The corrected NRLPSO reproduction has now passed a 24-run smoke audit. After
+fixing the global mutation branch, a detailed 29-function x 10-seed batch was
+rerun for ASE-CSO, CLPSO, and NRLPSO together (870 valid records). It remains a
+paper-aligned independent reproduction, not an official source release. Its
+`NP=40` protocol differs from ASE-CSO/CLPSO's `NP=50`, so the comparison is
+FE-matched with a shared 40-point prefix rather than an identical-population
+paired experiment. RLPSO/RLAM still has no frozen actor checkpoint and remains
+blocked for a numerical comparison.
 
 ## Required comparable protocol
 
