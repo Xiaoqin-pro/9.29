@@ -109,6 +109,7 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     frozenSelection=~strcmp(seekSelection,'legacy');
     globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
     jointSelection=strcmp(seekSelection,'jointCap2');
+    roleSelection=strcmp(seekSelection,'roleCap2');
     randomSelection=strcmp(seekSelection,'randomCap2');
     matchedSelection=strcmp(seekSelection,'matchedRandomCap2');
     compensationSelection=strcmp(seekSelection,'g2Random') || ...
@@ -279,6 +280,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.RangeCandidateGenerated=0;
     info.ClassicCandidateEvaluations=0;
     info.RangeCandidateEvaluations=0;
+    info.RoleDeveloperCandidateSelected=[];
+    info.RoleExplorerCandidateSelected=[];
     info.ClassicCandidateSuccess=0;
     info.RangeCandidateSuccess=0;
     info.ClassicGlobalImprovements=0;
@@ -719,6 +722,11 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     seekPlan=GlobalCandidateScreen(seekingPool,seekCats, ...
                         roundBest,center,targetSeek,2);
                     seekCats=find(~cellfun(@isempty,seekPlan));
+                elseif roleSelection
+                    [seekPlan,roleMeta]=RoleConsistentCandidateScreen( ...
+                        seekingPool,seekCats,roundBest,center,targetSeek,2);
+                    info.RoleDeveloperCandidateSelected(end+1)=roleMeta.DeveloperSelected;
+                    info.RoleExplorerCandidateSelected(end+1)=roleMeta.ExplorerSelected;
                 elseif randomSelection
                     seekPlan=RandomCandidateScreen(seekingPool,seekIds,targetSeek,2);
                     seekCats=find(~cellfun(@isempty,seekPlan));
@@ -1525,6 +1533,64 @@ function plan=GlobalCandidateScreen(pool,catIds,best,center,quota,parentCap)
                 break
             end
         end
+    end
+end
+
+function [plan,meta]=RoleConsistentCandidateScreen(pool,catIds,best,center,quota,parentCap)
+% Preserve one near-best developer and one far-from-center explorer slot.
+% The third slot competes among remaining candidates without exceeding the
+% per-parent cap. All distances use the frozen round-start references.
+    plan=cell(numel(pool),1);
+    meta=struct('DeveloperSelected',false,'ExplorerSelected',false);
+    if quota==0 || isempty(catIds),return,end
+    nearScore=inf(numel(catIds),1); farScore=-inf(numel(catIds),1);
+    for q=1:numel(catIds)
+        points=pool{catIds(q)}(2:end,:);
+        nearScore(q)=min(sum((points-best).^2,2));
+        farScore(q)=max(sum((points-center).^2,2));
+    end
+    [~,developerOrder]=sort(nearScore,'ascend');
+    [~,explorerOrder]=sort(farScore,'descend');
+    developer=catIds(developerOrder(1));
+    explorer=catIds(explorerOrder(1));
+    if explorer==developer && numel(explorerOrder)>1
+        explorer=catIds(explorerOrder(2));
+    end
+    counts=zeros(numel(pool),1);
+    devCandidates=2:size(pool{developer},1);
+    [~,near]=sort(sum((pool{developer}(devCandidates,:)-best).^2,2),'ascend');
+    if ~isempty(near)
+        plan{developer}(end+1)=devCandidates(near(1));
+        counts(developer)=1; meta.DeveloperSelected=true;
+    end
+    if quota>1 && explorer~=developer
+        expCandidates=2:size(pool{explorer},1);
+        [~,far]=sort(sum((pool{explorer}(expCandidates,:)-center).^2,2),'descend');
+        if ~isempty(far)
+            plan{explorer}(end+1)=expCandidates(far(1));
+            counts(explorer)=1; meta.ExplorerSelected=true;
+        end
+    end
+    if sum(cellfun(@numel,plan))>=quota,return,end
+    pairs=zeros(0,2);
+    for i=catIds(:)'
+        if counts(i)>=parentCap,continue,end
+        ids=2:size(pool{i},1);
+        pairs=[pairs;repmat(i,numel(ids),1),ids(:)]; %#ok<AGROW>
+    end
+    if isempty(pairs),return,end
+    pairPoints=zeros(size(pairs,1),size(pool{catIds(1)},2));
+    for q=1:size(pairs,1)
+        pairPoints(q,:)=pool{pairs(q,1)}(pairs(q,2),:);
+    end
+    dBest=sum((pairPoints-best).^2,2);
+    dCenter=sum((pairPoints-center).^2,2);
+    [~,order]=sortrows([dBest,-dCenter],[1 2]);
+    for q=order(:)'
+        parent=pairs(q,1); candidate=pairs(q,2);
+        if counts(parent)>=parentCap || any(plan{parent}==candidate),continue,end
+        plan{parent}(end+1)=candidate; counts(parent)=counts(parent)+1;
+        if sum(cellfun(@numel,plan))>=quota,break,end
     end
 end
 
