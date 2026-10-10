@@ -1,0 +1,53 @@
+{
+  "expected_rows": 870,
+  "actual_rows": 870,
+  "duplicate_keys": 0,
+  "missing_keys": [],
+  "unexpected_keys": [],
+  "status_counts": {
+    "ok": 870
+  },
+  "reported_FE_counts": {
+    "60000": 870
+  },
+  "all_endpoints_finite": true,
+  "dimension": 30,
+  "budget": 60000,
+  "workers": 4,
+  "seeds": [
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110
+  ],
+  "reported_FE_not_independently_instrumented": true,
+  "convergence_saved": false,
+  "initial_populations_saved": false,
+  "nrlpso_baseline_validated": false,
+  "nrlpso_label": "unvalidated_MATLAB_adaptation_N50_k5",
+  "RLAM_included": false,
+  "metabox_source_commit": "5565a281ce4e03efc1f6a41230507d5b66637ace",
+  "source_snapshot_time": "post_run",
+  "ase_clpso_significant_functions_after_Holm": 0,
+  "mean_seconds": {
+    "ASE-CSO": 7.978224900689654,
+    "CLPSO": 0.7105703744827586,
+    "NRLPSO": 3.6336471117241382
+  },
+  "files_sha256": {
+    "raw_runs.csv": "3d413c667d38e0ac094b03c7dfeebe111dd469935f6bf91aeb044ee421ef9172",
+    "raw_runs_typed.csv": "3d413c667d38e0ac094b03c7dfeebe111dd469935f6bf91aeb044ee421ef9172",
+    "summary.csv": "741b04c9ad30a0b7cf272bd6f99dfe816bf3de8ee4d5184d7345a2ab3784cd69",
+    "analyze_results.py": "6ba912f6dacad45fba7e619d68288537d50d6819e4fbc6759a0bd3fab67401e2",
+    "source_snapshot/ASE_CSO.m": "791fc8795056be75124136e54a86487cc8b7ef8a467f5fd39b08d08ed62da805",
+    "source_snapshot/CLPSO_CEC.m": "611c06e8f87a53a8fd05374d46674df484d6abd9de960a7bfe857280ad24c74f",
+    "source_snapshot/NRLPSO_CEC.m": "1cede4bf54be56a50835207e6f35d3bb7fc230a3a2ecae52ada01a5d55096433",
+    "source_snapshot/run_threeway_29f_10seed_4workers.m": "b9ac284954d6bc75a526fef68736e07faf58bccef5855a1fd38f0e6e394bad27"
+  }
+}

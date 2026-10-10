@@ -1,0 +1,4 @@
+method_a,method_b,scope,function_mean_wins,function_mean_losses,function_mean_ties,paired_wins,paired_losses,paired_ties
+ASE-CSO,CLPSO,repository_comparison,28,1,0,273,17,0
+ASE-CSO,NRLPSO,exploratory_adapter_only,18,11,0,164,126,0
+NRLPSO,CLPSO,exploratory_adapter_only,23,6,0,229,61,0
