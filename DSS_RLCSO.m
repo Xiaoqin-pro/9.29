@@ -107,7 +107,8 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
         tracingElitistAcceptance=~strcmp(searchCore,'base');
     end
     frozenSelection=~strcmp(seekSelection,'legacy');
-    globalSelection=strcmp(seekSelection,'global') || strcmp(seekSelection,'globalCap2');
+    globalSelection=strcmp(seekSelection,'global') || ...
+        strcmp(seekSelection,'globalCap1') || strcmp(seekSelection,'globalCap2');
     jointSelection=strcmp(seekSelection,'jointCap2');
     roleSelection=strcmp(seekSelection,'roleCap2');
     randomSelection=strcmp(seekSelection,'randomCap2');
@@ -710,6 +711,9 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                 seekPlan=cell(sizepop,1);
                 if globalSelection
                     parentCap=SMP-1;
+                    if strcmp(seekSelection,'globalCap1')
+                        parentCap=1;
+                    end
                     if strcmp(seekSelection,'globalCap2')
                         parentCap=2;
                     end
