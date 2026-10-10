@@ -237,6 +237,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
     info.FeedbackSeekingDistanceToBest=[];
     info.FeedbackSeekingDistanceToElite=[];
     info.FeedbackSeekingSourceProgress=[];
+    info.FeedbackSeekingRound=[];
+    info.FeedbackSeekingParent=[];
+    info.FeedbackSeekingOrdinal=[];
+    info.FeedbackSeekingValue=[];
+    info.FeedbackSeekingAnchorCost=[];
+    info.FeedbackSeekingMarginalImprovement=[];
+    info.FeedbackSeekingMarginalGain=[];
     info.FeedbackSelection=feedbackSelection;
     info.FeedbackLogging=feedbackLogging;
     info.MatchedReferenceCoverage=[];
@@ -933,7 +940,12 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     sourceDistance=norm(pop(i,:)-seekingEliteVectors(i,:));
                     feedbackSourceProgress=(sourceDistance-feedbackDistanceElite)/ ...
                         max(sourceDistance,1e-6*norm(ub-lb));
+                    feedbackOrdinal=seekParentCounts(i)+1;
+                    feedbackAnchorCost=localCost;
                     value=f(copies(j,:));
+                    feedbackMarginalImprovement=feedbackOrdinal>1 && value<feedbackAnchorCost;
+                    feedbackMarginalGain=max(0,(feedbackAnchorCost-value)/ ...
+                        (abs(feedbackAnchorCost)+abs(value)+eps));
                     if stagnationCandidate(i) && j==2
                         info.StagnationCandidateEvaluations= ...
                             info.StagnationCandidateEvaluations+1;
@@ -1010,6 +1022,13 @@ function [Best,T,info] = DSS_RLCSO(f,state,~,Particle_Number,seed)
                     seekGlobalCount=seekGlobalCount+double(globalImproved);
                     seekGlobalGain=seekGlobalGain+oldCandidateBest-Best.Cost;
                     if feedbackLogging
+                        info.FeedbackSeekingRound(end+1)=numel(info.EvaluationsPerRound)+1;
+                        info.FeedbackSeekingParent(end+1)=i;
+                        info.FeedbackSeekingOrdinal(end+1)=feedbackOrdinal;
+                        info.FeedbackSeekingValue(end+1)=value;
+                        info.FeedbackSeekingAnchorCost(end+1)=feedbackAnchorCost;
+                        info.FeedbackSeekingMarginalImprovement(end+1)=double(feedbackMarginalImprovement);
+                        info.FeedbackSeekingMarginalGain(end+1)=feedbackMarginalGain;
                         info.FeedbackSeekingAgeFE(end+1)=feedbackAgeFE;
                         info.FeedbackSeekingVirtualOffset(end+1)=feedbackOffset;
                         info.FeedbackSeekingSuccess(end+1)=double(value<parentCost);
