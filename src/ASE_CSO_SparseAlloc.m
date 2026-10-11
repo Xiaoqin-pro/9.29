@@ -5,6 +5,10 @@ function [Best,T,info]=ASE_CSO_SparseAlloc(f,state,~,N,seed)
 % of continue, switch, random or q. Q has four states and two actions.
 pop=state.initialPopulation; D=size(pop,2); lb=state.lowerBound; ub=state.upperBound;
 budget=state.maxEvaluations; policy=state.policy; started=tic;
+alpha=.2; gamma=.9; epsilon=.1;
+if isfield(state,'alpha'), alpha=state.alpha; end
+if isfield(state,'gamma'), gamma=state.gamma; end
+if isfield(state,'epsilon'), epsilon=state.epsilon; end
 assert(N==50 && budget>=N && ismember(policy,{'continue','switch','random','q'}));
 rng(seed,'twister');
 V=.01*(2*rand(N,D)-1).*(ub-lb); Vmax=.2*(ub-lb); dimCount=max(1,round(.2*D));
@@ -16,7 +20,7 @@ for i=1:N
 end
 fe=N; realPop=pop; personalBest=pop; personalCost=fitness; buffer=zeros(N*5,D);
 evalCost=fitness; evalVector=realPop;
-Q=zeros(4,2); alpha=.2; gamma=.9; epsilon=.1;
+Q=zeros(4,2);
 seekFE=0; traceFE=0; rounds=0; actionCount=zeros(1,2); qVisits=zeros(4,1);
 parentCoverage=0; concentration=0; maxParent=0; traceRollbacks=0; traceSuccess=0;
 while fe<budget
@@ -105,7 +109,8 @@ end
 T=T(1:fe); info=struct('Algorithm',['SparseAlloc-' policy],'Seed',seed,'Evaluations',fe,'Seconds',toc(started),...
     'SeekingEvaluations',seekFE,'TracingEvaluations',traceFE,'Rounds',rounds,'QTable',Q,'QVisits',qVisits,...
     'ContinueActions',actionCount(1),'SwitchActions',actionCount(2),'MeanParentCoverage',parentCoverage/max(1,rounds),...
-    'MeanConcentration',concentration/max(1,rounds),'MaxParentEvaluations',maxParent,'TraceSuccesses',traceSuccess,'TraceRollbacks',traceRollbacks);
+    'MeanConcentration',concentration/max(1,rounds),'MaxParentEvaluations',maxParent,'TraceSuccesses',traceSuccess,'TraceRollbacks',traceRollbacks,...
+    'Alpha',alpha,'Gamma',gamma,'Epsilon',epsilon);
 
 end
 
