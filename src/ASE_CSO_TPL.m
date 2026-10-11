@@ -20,6 +20,9 @@ alpha=.3; gamma=.9; epsilon=.1;
 if isfield(state,'alpha'), alpha=state.alpha; end
 if isfield(state,'gamma'), gamma=state.gamma; end
 if isfield(state,'epsilon'), epsilon=state.epsilon; end
+reuseProposals=true; marginalCoverage=true;
+if isfield(state,'reuseProposals'), reuseProposals=logical(state.reuseProposals); end
+if isfield(state,'marginalCoverage'), marginalCoverage=logical(state.marginalCoverage); end
 assert(N==50 && size(pop,1)==N,'TPL-CSO uses a population of 50.');
 assert(budget>=N && budget==floor(budget));
 assert(ismember(policy,{'fixed','q','random'}));
@@ -59,7 +62,7 @@ while fe<budget
             % Reuse a proposal briefly.  Expired proposals are regenerated;
             % no unevaluated proposal is assigned a fitness value.
             for s=1:proposalCount
-                if proposalAge(i,s)>=maxAge
+                if ~reuseProposals || proposalAge(i,s)>=maxAge
                     dims=randperm(D,seekDimCount);
                     proposal=pop(i,:);
                     eliteStep=.25*(elite(dims)-pop(i,dims));
@@ -110,7 +113,7 @@ while fe<budget
         end
         if action==1, actionCount(1)=actionCount(1)+1; end
         if action==2, actionCount(2)=actionCount(2)+1; end
-        [rows,parents]=selectTPLProposals(proposalPool,proposalAge,proposalCredit,seekIds,nSeek,Best.Vector,realPop,action,proposalCount,N);
+        [rows,parents]=selectTPLProposals(proposalPool,proposalAge,proposalCredit,seekIds,nSeek,Best.Vector,realPop,action,proposalCount,N,marginalCoverage);
         selectedImprovement=false; selectedParents=false(N,1); counts=zeros(N,1);
         for k=1:numel(rows)
             row=rows(k); i=parents(k); s=mod(row-1,proposalCount)+1;
@@ -146,10 +149,11 @@ info=struct('Algorithm',['TPL-CSO-' policy],'Seed',seed,'Evaluations',fe,'Second
     'ActionCount',actionCount,'QUpdates',qUpdates,'MeanParentCoverage',parentCoverage/max(1,rounds),...
     'MeanConcentration',concentration/max(1,rounds),'TraceSuccesses',traceSuccess,'SeekSuccesses',seekSuccess,...
     'TraceRollbacks',traceRollbacks,'ProposalGenerated',proposalGenerated,'ProposalEvaluated',proposalEvaluated,...
+    'ReuseProposals',reuseProposals,'MarginalCoverage',marginalCoverage,...
     'ProposalExpired',proposalExpired,'Alpha',alpha,'Gamma',gamma,'Epsilon',epsilon);
 end
 
-function [rows,parents]=selectTPLProposals(pool,age,credit,catIds,quota,best,anchors,action,K,N)
+function [rows,parents]=selectTPLProposals(pool,age,credit,catIds,quota,best,anchors,action,K,N,marginalCoverage)
 % Greedy set selection: marginal coverage is recomputed after each choice.
 rows=zeros(quota,1); parents=zeros(quota,1); used=false(N,K); counts=zeros(N,1);
 points=reshape(pool(catIds,:,:),numel(catIds)*K,size(pool,3));
@@ -166,9 +170,12 @@ while n<quota
     if action==3
         pick=candidates(randi(numel(candidates)));
     else
-        novelty=ones(size(points,1),1);
-        if ~isempty(selectedPoints)
-            novelty(candidates)=min(pdist2(points(candidates,:),selectedPoints),[],2)/sqrt(scale);
+        novelty=zeros(size(points,1),1);
+        if marginalCoverage
+            novelty(:)=1;
+            if ~isempty(selectedPoints)
+                novelty(candidates)=min(pdist2(points(candidates,:),selectedPoints),[],2)/sqrt(scale);
+            end
         end
         lambda=.5;
         if action==1, lambda=.75; elseif action==2, lambda=.25; end
