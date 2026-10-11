@@ -1,12 +1,14 @@
-function run_quality_pool_pilot
+function run_quality_pool_pilot(seedStart,seedEnd)
 % Predeclared D30 mechanism pilot. Save completed runs every four jobs.
+if nargin<1, seedStart=101; end
+if nargin<2, seedEnd=103; end
 root=fileparts(fileparts(mfilename('fullpath')));
 addpath(fullfile(root,'src')); addpath(fullfile(root,'archive','legacy'));
 cd(fullfile(root,'data','cec2017'));
-fids=[1 3 6 9 12 13 22 30]; seeds=101:103;
+fids=[1 3 6 9 12 13 22 30]; seeds=seedStart:seedEnd;
 methods={'geometry','random','reserved','credit'};
 D=30; N=50; budget=60000; seedBase=20271012;
-out=fullfile(root,'results','cec',['ase_quality_pool_pilot_' char(datetime('now','Format','yyyyMMdd_HHmmss'))]);
+out=fullfile(root,'results','cec',['ase_quality_pool_pilot_s' num2str(seedStart) '_' num2str(seedEnd) '_' char(datetime('now','Format','yyyyMMdd_HHmmss'))]);
 mkdir(out); mkdir(fullfile(out,'source'));
 copyfile(fullfile(root,'src','ASE_CSO_QualityPool.m'),fullfile(out,'source'));
 copyfile([mfilename('fullpath') '.m'],fullfile(out,'source'));
