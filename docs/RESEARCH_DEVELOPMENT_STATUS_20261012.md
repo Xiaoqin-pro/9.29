@@ -95,3 +95,11 @@ MR仍.4，Q纯配额。145matched原Q日志healthy约65.5%、healthyFixed6仅36.
 
 ## 本轮最终修正360run结束（覆盖前一候选建议）
 新增smooth40后共360new/36MFE，18smoke全部检查通过，无运行任务。VisitRate F30mean约Fixed64倍；Smooth仍F30seed大退化且门未过，因此最终保留较稳Bonus10-100固定α.1为开发候选。它vsoldQ6:2/27:13、Fixed6=5:3/20:20，但同Random4:4/16:24与Eps3:5/18:22未胜，不能说Q修好。撤下visit/smooth/held500作主候选、保留全失败数据；详见QUOTA_Q_REPAIR_FINAL_20261012.md。
+
+
+## 简洁优先的机制删除批启动
+用户强调简单易消融。仅删门控（全程phase/stall6×3 +10Q）、再删stallbit（phase3×3），原search/MR/radius/reward/alpha/gamma/eps不改，新增全程Random/Phase/Eps匹配控制。D50/100k八函数五原seed2201–2205共200new/20MFE，120旧quality缓存；213old精确回归/140deletion cases/10logneutral及10smoke通过，当前四worker运行。协议QUOTA_Q_SIMPLICITY_PROTOCOL_20261012.md先写，不用简单=成功归因。
+
+
+## 简洁删除实验结束与无损3×3入口
+有效新run360/36MFE（Simple200+Compact160），18smoke单列；首Compact12记录因两branchrandi3越界自动停止，6failed/6已完整excluded/774000recordedcalls全部公开，不并有效quality。重跑修正版160全核验；去gateQ6、去stallbitQ3、删2T8S的Compact3×2均未过强门。可采用的无损简化是删除healthy恒0的Q行，保持threequota，candidate入口ASE_CSO_QuotaQ_Candidate固定一次stall触发+phase3×3表，40CEC exactentry回归。旧candidate质量不提升也不降低，仍未过同Random/Eps强门，无运行任务；详见QUOTA_Q_SIMPLICITY_FINAL_20261012.md。

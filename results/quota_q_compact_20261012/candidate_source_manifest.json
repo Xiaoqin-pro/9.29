@@ -1,0 +1,35 @@
+{
+  "Scope": "Pinned three-action compressed research candidate; exact older-gated trajectory regression, no new performance claim.",
+  "QShape": [
+    3,
+    3
+  ],
+  "ExactCandidatePairs": 40,
+  "Files": [
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Candidate.m",
+      "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a",
+      "SHA256NormalizedLF": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Compact.m",
+      "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b",
+      "SHA256NormalizedLF": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Candidate_README.md",
+      "SHA256": "0257fa1b56a9e29e87b97a97120865c9adaf90912ac2b7ce5a7eb4d41a50fb25",
+      "SHA256NormalizedLF": "0257fa1b56a9e29e87b97a97120865c9adaf90912ac2b7ce5a7eb4d41a50fb25"
+    },
+    {
+      "Path": "tests/test_CSO_quota_candidate.m",
+      "SHA256": "05a767ee6811d607dcd0ec18c249d97016b8ac8c378e2c72d248b9e03c57dec4",
+      "SHA256NormalizedLF": "05a767ee6811d607dcd0ec18c249d97016b8ac8c378e2c72d248b9e03c57dec4"
+    },
+    {
+      "Path": "docs/QUOTA_Q_SIMPLICITY_FINAL_20261012.md",
+      "SHA256": "0ccda75c0bfc0f37fb827a16a6a16c733c083afbaa2f82e7c98104ef851eacc4",
+      "SHA256NormalizedLF": "0ccda75c0bfc0f37fb827a16a6a16c733c083afbaa2f82e7c98104ef851eacc4"
+    }
+  ]
+}

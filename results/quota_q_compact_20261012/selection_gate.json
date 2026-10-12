@@ -1,0 +1,12 @@
+{
+  "Candidate": "Compact-Q",
+  "EffectiveQShape": [
+    3,
+    2
+  ],
+  "NewRuns": 160,
+  "ActualObjectiveCalls": 16000000,
+  "CachedRows": 320,
+  "GatePassed": false,
+  "Scope": "same-seed two-deletion development; not independent confirmation"
+}

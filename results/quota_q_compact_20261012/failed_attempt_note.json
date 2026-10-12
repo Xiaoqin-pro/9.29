@@ -1,0 +1,7 @@
+{
+  "ExcludedAttemptRecords": 12,
+  "FailedRecords": 6,
+  "CompletedButExcludedRecords": 6,
+  "ActualObjectiveCallsRecorded": 774000,
+  "Reason": "Bad subscript in two-action exploration branches; batch stopped; entire run set restarted under fixed immutable source. No failed/excluded rows enter quality table."
+}

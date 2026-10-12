@@ -1,0 +1,13 @@
+Condition,Rank
+Compact-Eps6,4.375
+Gated-Q6-Bonus10,4.875
+Compact-Random,5.0
+Fixed6,5.25
+Phase,5.375
+Compact-Rule4,6.5
+Random,6.625
+Compact-Q,6.875
+Simple-Q6,7.0
+EpsFixed6,8.0
+Original-Q6-Bonus1,8.625
+Simple-Q3,9.5
