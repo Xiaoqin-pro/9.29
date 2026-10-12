@@ -1,0 +1,6 @@
+{
+  "LegacyExactPairs": 10,
+  "SourceOracleExactPairs": 13,
+  "BehaviorCases": 31,
+  "Passed": true
+}

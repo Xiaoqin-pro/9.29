@@ -1,0 +1,6 @@
+{
+  "Runs": 108,
+  "SharedInitialGroups": 18,
+  "Passed": true,
+  "Scope": "All MAT/CSV, actual FE, legal evaluations, monotone complete trace and common initial-prefix audit. Author source variants are adapters, not exact 2006-table reproductions."
+}

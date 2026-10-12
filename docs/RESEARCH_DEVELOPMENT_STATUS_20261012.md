@@ -67,3 +67,7 @@ A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过�
 
 ## Q学习行为诊断和uniform lower init结束
 原/新各40run/40kdecision RandStream+Q精确重放；uniform−10初值40新run/4MFE，111 default等价/109cases通过。greedy换动作63.8%→10.9%，但相对原effQ函数4:4/seed18:22、Fixed6=1:7/13:27，联合门未过。行为稳定不等于优化成功，恢复原zero init，不扫描更多初值；无运行任务。公开results/cso_q_learning_20261012/与CSO_Q_LEARNING_RESULTS_20261012.md。
+
+
+## CLPSO来源审计与100k全函数比较
+用户质疑CLPSO异常差距。旧adapter与多batchhash完全一致，逐维学习/Pc/gap基本符合论文文字，但边界clip偏离论文skip；作者公开源码profile参数与paper不同。108小诊断19.44MFE完成：作者source显著收敛改善（均值票数，不统计显著），300k三个函数各CLPSO均强于B10。旧“全面远超CLPSO”身份须更正。用户授权完整29函数五seed100k，选择CSO固定6T4S/NP50 vs作者代码profileCLPSO/NP40，D50共290run；当前运行中，所有强对照source不随结果改变。

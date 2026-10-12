@@ -1,0 +1,64 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\clpso_audit_study_20261012_192029",
+  "NewRuns": 108,
+  "ActualObjectiveCalls": 19440000,
+  "ExtraBestRechecks": 108,
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "archive/legacy/CLPSO_CEC.m",
+      "SHA256": "611c06e8f87a53a8fd05374d46674df484d6abd9de960a7bfe857280ad24c74f",
+      "SHA256NormalizedLF": "1beef61d50ffa8bcfd05efbd06b65c7e63e8ab39fab501430357e192c52f5d41"
+    },
+    {
+      "Path": "docs/CLPSO_AUDIT_PROTOCOL_20261012.md",
+      "SHA256": "c1f9493397328304ae091b7cc6c76b7e79a8f91ad36f0791444da29ab06b7759",
+      "SHA256NormalizedLF": "c1f9493397328304ae091b7cc6c76b7e79a8f91ad36f0791444da29ab06b7759"
+    },
+    {
+      "Path": "experiments/run_clpso_audit.m",
+      "SHA256": "3409ad81ee5a4301d95c09966399600d397aca29b8ab4fa7d4a2c67d6e38fd01",
+      "SHA256NormalizedLF": "3409ad81ee5a4301d95c09966399600d397aca29b8ab4fa7d4a2c67d6e38fd01"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/CLPSO_CEC_Audit.m",
+      "SHA256": "6d900fc8f73e779f2b5b12805f35430946ef2d21a6017ff131f664f214b4d586",
+      "SHA256NormalizedLF": "f314c048b41c5ddf81f303affd0eb1a4ac25cbbd3de0266dd7e128b27d2f3262"
+    },
+    {
+      "Path": "src/CLPSO_CEC_AuthorSource.m",
+      "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5",
+      "SHA256NormalizedLF": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+    },
+    {
+      "Path": "tests/test_CLPSO_audit.m",
+      "SHA256": "e3c6e5df1b318870b29fe4abc0f85f8fc47cb05cb5ff96e422d27b4e953b5a45",
+      "SHA256NormalizedLF": "e3c6e5df1b318870b29fe4abc0f85f8fc47cb05cb5ff96e422d27b4e953b5a45"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "experiments/analyze_clpso_audit.py",
+      "SHA256": "4a4c779dbd70cdf067d021e148b5659411777e958c4cc28920a82fb99b2db207"
+    },
+    {
+      "Path": "work/clpso_audit_20261012/author_bundle/TEC matlab code/CLPSO_new_func.m",
+      "SHA256": "a5e901d8a2b21a34b5ae7f463805d2000da8e807271233d2991c5327283d21aa"
+    },
+    {
+      "Path": "work/clpso_audit_20261012/CLPSO_AuthorOracle.m",
+      "SHA256": "e75430b1498655e28cfa0fe29cd815096183c470c93ef559c5b34de923a5d2ff"
+    }
+  ]
+}

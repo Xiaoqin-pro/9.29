@@ -12,3 +12,7 @@ L-SHADE：Tanabe and Fukunaga, Improving the Search Performance of SHADE Using L
 五算法共享问题、每次运行的初始化随机点池和 FE 上限。PSO、CSO、CLPSO、DSS-RLCSO 使用池中前 50 个点；L-SHADE 使用全部 540 个点，并按算法规则缩减。不能把这个协议描述为所有算法始终使用相同种群。
 
 SS-RLPSO 和 CMA-ES 不在正式比较中。历史实验文件中的名称和数字属于当时版本；正式包装 `DSS_RLCSO_CEC.m` 固定使用 MAQL-V1，`DSS_MAQLCSO.m` 仅保留历史兼容。
+
+
+## 2026-10-12 CLPSO来源审计补注（覆盖旧身份说法）
+旧CLPSO_CEC.m是项目/UAV迁移适配，不等于作者源码。作者仓库P-N-Suganthan/CODES公开2006-IEEE-TEC-CLPSO.zip（SHA256 e79250ea6a9fc18a5976e19906f58ea6b8418352aa5a173087ee28a4e29f11a9）；其中CLPSO_new_func与原论文的Pc、gap等设置不一致，需区分。CLPSO_CEC_AuthorSource.m基于这个public codeprofile，仅做CEC接口/seed/p0/hard真实FE/trace/guard适配，并与机械原source oracle逐点评价/RNG回归。paper-only边界差异单因素另由CLPSO_CEC_Audit.m记录。后续对照不能把旧clip基线或新codeprofile标为“完整论文复现”。详情docs/CLPSO_AUDIT_RESULTS_20261012.md及CLPSO_FULL_100K_PROTOCOL_20261012.md。
