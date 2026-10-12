@@ -1,0 +1,74 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_mode_efficiency_study_20261012_171424",
+  "NewRuns": 440,
+  "ExtraBestRechecks": 440,
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/CSO_MODE_EFFICIENCY_PROTOCOL_20261012.md",
+      "SHA256": "dda3b8a372d3e8dcf9e2d661288218242d2562d79e040d6117a3d2ef780be5ba",
+      "SHA256NormalizedLF": "dda3b8a372d3e8dcf9e2d661288218242d2562d79e040d6117a3d2ef780be5ba"
+    },
+    {
+      "Path": "experiments/run_cso_mode_efficiency_study.m",
+      "SHA256": "692d0e53265ea9e32fa5cbf2983baa6b91e942d7006437d289715891358d34bd",
+      "SHA256NormalizedLF": "692d0e53265ea9e32fa5cbf2983baa6b91e942d7006437d289715891358d34bd"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ.m",
+      "SHA256": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7",
+      "SHA256NormalizedLF": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_Efficiency.m",
+      "SHA256": "d9eeafd8cf37d78f2cdb213468f77d10af4d240e40b2e31caf2779f854adcd86",
+      "SHA256NormalizedLF": "d9eeafd8cf37d78f2cdb213468f77d10af4d240e40b2e31caf2779f854adcd86"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_Progress.m",
+      "SHA256": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace",
+      "SHA256NormalizedLF": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_State.m",
+      "SHA256": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b",
+      "SHA256NormalizedLF": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_mode_efficiency.m",
+      "SHA256": "df77dde8a7773556d5b09374ca5ba9a5922d7db3e3d4c9a27362a6110dc0f419",
+      "SHA256NormalizedLF": "df77dde8a7773556d5b09374ca5ba9a5922d7db3e3d4c9a27362a6110dc0f419"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "experiments/analyze_cso_mode_efficiency.py",
+      "SHA256": "ca13d83d9b6c917369ae1aac530e21c3458d97313e49bf9ffdb4fbcd07524658"
+    },
+    {
+      "Path": "experiments/verify_cso_mode_efficiency.py",
+      "SHA256": "922081b9eb015d115ef28b165a240ae857207ec0dcbf635405038135c03d766d"
+    }
+  ]
+}

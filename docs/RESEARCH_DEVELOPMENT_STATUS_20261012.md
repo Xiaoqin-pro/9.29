@@ -59,3 +59,7 @@ A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过�
 
 ## 纯配额相对模式效率状态开发启动
 原random日志离线观察local常偏Seeking但随后Fixed6常更好，global模式增益反馈ties多。仅替换一个state bit=过去1000FE实际Trace gbset gain/FE > Seek gain/FE；搜索公式、半径、reward和6×3表不变。十一组含旧Q/stallQ/全部固定/Random/Phase/EpsFixed/同反馈直接和反向规则，五新seed1801–1805，440新run；230旧策略精确回归、66历史反馈case及22smoke通过。当前四worker运行，协议CSO_MODE_EFFICIENCY_PROTOCOL_20261012.md先写。
+
+
+## 模式效率state 440run已完成
+44MFE+440Best recheck，22smoke另列；全独立窗口/state/Q检查通过。effQ vsFixed4函数7:1/seed25:15、vsRandom5:3/25:15，vsFixed6仅1:7/18:22，vs同effrule2:6/16:24；rank5.375，联合门未过，保持pure配额原骨架。effrule局部有用但未胜EpsFixed，不能说Q必要。无当前运行任务，不追加window/阈值网格；详见CSO_MODE_EFFICIENCY_RESULTS_20261012.md。

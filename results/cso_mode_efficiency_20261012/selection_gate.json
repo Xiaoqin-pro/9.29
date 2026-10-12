@@ -1,0 +1,15 @@
+{
+  "Candidate": "effQ",
+  "RequiredControls": [
+    "fixed6",
+    "random",
+    "phase",
+    "epsfixed",
+    "effrule"
+  ],
+  "BestUnifiedFixed": "fixed6",
+  "DevelopmentGate": false,
+  "NewRuns": 440,
+  "ObjectiveCalls": 44000000,
+  "Scope": "five-seed development; pure FE quota; original search equations; no new-seed confirmation automatically triggered"
+}
