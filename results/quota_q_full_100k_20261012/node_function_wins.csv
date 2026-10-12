@@ -1,0 +1,9 @@
+Control,Node,QFunctionWins,ControlFunctionWins
+CLPSO-AuthorSource40,MeanError20FE,27,2
+CLPSO-AuthorSource40,MeanError60FE,22,7
+CLPSO-AuthorSource40,MeanError80FE,22,7
+CLPSO-AuthorSource40,MeanError,21,8
+CSO-Fixed6,MeanError20FE,15,14
+CSO-Fixed6,MeanError60FE,8,21
+CSO-Fixed6,MeanError80FE,10,19
+CSO-Fixed6,MeanError,13,16

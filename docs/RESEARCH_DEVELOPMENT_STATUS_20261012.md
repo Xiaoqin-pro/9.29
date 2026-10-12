@@ -75,3 +75,7 @@ A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过�
 
 ## 作者profileCLPSO完整29函数100k已完成
 D50/100k五新seed共290run/29MFE，CSO固定6T4S无Q N50 vs作者代码profileCLPSO N40；全独立artifact/p0prefix/真实FE通过。CSO函数均值与中位22:7、seed102:43，平均7.968秒vsCLPSO2.193秒，不能说更快或Q贡献；五seed精确双侧检验最低p.0625，Holm无显著。CLPSO胜F6/7/10/15/17/19/29，所有结果公开。无运行任务。详见docs/CLPSO_FULL_100K_RESULTS_20261012.md。
+
+
+## 带Q完整29函数同格100k比较已完成
+选择原B10+stall1000小Q原样，D50/100k同seed2201–2205新增145run/14.5MFE，cachedCLPSO+Fixed6各145质量（非新增）全实际p0 prefix290pairs匹配。Q vs作者CLPSO均值/中位21:8、seed96:49；vs无QFixed6均值13:16、seed59:86（中位12:17），不支持新增Q整体收益。Q平均8.775秒vsCLPSO2.193秒，缓存时间界限注明。五seed无0.05显著，全部检查/曲线公开；无运行任务。详见QUOTA_Q_FULL_100K_RESULTS_20261012.md。

@@ -1,0 +1,11 @@
+{
+  "FilesMatched": [
+    "src/ASE_CSO_ModeQ_State.m",
+    "src/ASE_CSO_ModeBudget.m",
+    "src/CLPSO_CEC_AuthorSource.m",
+    "data/cec2017/cec17_func.mexw64",
+    "data/cec2017/D50_manifest.csv"
+  ],
+  "CachedQualityRuns": 290,
+  "Passed": true
+}

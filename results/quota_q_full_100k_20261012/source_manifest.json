@@ -1,0 +1,86 @@
+{
+  "NewRunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\quota_q_full_100k_study_20261012_194957",
+  "CachedRunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\clpso_full_100k_study_20261012_193032",
+  "CachedRowsAreNotNewRuns": true,
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "archive/legacy/CLPSO_CEC.m",
+      "SHA256": "611c06e8f87a53a8fd05374d46674df484d6abd9de960a7bfe857280ad24c74f",
+      "SHA256NormalizedLF": "1beef61d50ffa8bcfd05efbd06b65c7e63e8ab39fab501430357e192c52f5d41"
+    },
+    {
+      "Path": "docs/QUOTA_Q_FULL_100K_PROTOCOL_20261012.md",
+      "SHA256": "0829379227a57a63a6b8ee55e0f70a80b2813afb881d54c819561bd19cb6c2c0",
+      "SHA256NormalizedLF": "0829379227a57a63a6b8ee55e0f70a80b2813afb881d54c819561bd19cb6c2c0"
+    },
+    {
+      "Path": "experiments/run_quota_q_full_100k.m",
+      "SHA256": "39b4d6a803aef68af939529d6f99ee4171bf7f7a8552ff25cbd8f8482952d756",
+      "SHA256NormalizedLF": "39b4d6a803aef68af939529d6f99ee4171bf7f7a8552ff25cbd8f8482952d756"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_State.m",
+      "SHA256": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b",
+      "SHA256NormalizedLF": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b"
+    },
+    {
+      "Path": "src/CLPSO_CEC_Audit.m",
+      "SHA256": "6d900fc8f73e779f2b5b12805f35430946ef2d21a6017ff131f664f214b4d586",
+      "SHA256NormalizedLF": "f314c048b41c5ddf81f303affd0eb1a4ac25cbbd3de0266dd7e128b27d2f3262"
+    },
+    {
+      "Path": "src/CLPSO_CEC_AuthorSource.m",
+      "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5",
+      "SHA256NormalizedLF": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+    },
+    {
+      "Path": "tests/test_CLPSO_audit.m",
+      "SHA256": "e3c6e5df1b318870b29fe4abc0f85f8fc47cb05cb5ff96e422d27b4e953b5a45",
+      "SHA256NormalizedLF": "e3c6e5df1b318870b29fe4abc0f85f8fc47cb05cb5ff96e422d27b4e953b5a45"
+    },
+    {
+      "Path": "tests/test_CLPSO_D50_adapter.m",
+      "SHA256": "0d5c8bd00f5dac843b819470ac1d540c01673c49e6c3388a199126a53157126b",
+      "SHA256NormalizedLF": "0d5c8bd00f5dac843b819470ac1d540c01673c49e6c3388a199126a53157126b"
+    },
+    {
+      "Path": "results/clpso_full_100k_20261012/raw_runs.csv",
+      "SHA256": "b60ec1495e66990c34bee73365f4cc4bb80f4823c966b5b554a15936505b2d2b"
+    },
+    {
+      "Path": "results/clpso_full_100k_20261012/source_manifest.json",
+      "SHA256": "7b190d64ab25478c75a39a40d4936ba85b339b84d2917e4ad5cb5a19931353b4"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "data/cec2017/D50_manifest.csv",
+      "SHA256": "ed7ff721a569b8b85721424217ddc5f75a80d685061f3b617841ed9210cbee10"
+    },
+    {
+      "Path": "experiments/analyze_quota_q_full_100k.py",
+      "SHA256": "8b42df14dfeab27399a90220f7b5c3d55e59a80311a4d3fdc39a3238d7743575"
+    },
+    {
+      "Path": "experiments/verify_quota_q_full_100k.py",
+      "SHA256": "841ec93ade97919689384587ac4e91d0daa2a6cefb6385668738b628ac98f02a"
+    }
+  ]
+}

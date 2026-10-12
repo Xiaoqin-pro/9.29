@@ -1,0 +1,58 @@
+{
+  "Dimension": 50,
+  "Budget": 100000,
+  "Functions": 29,
+  "Seeds": 5,
+  "NewQOptimizationRuns": 145,
+  "NewObjectiveCalls": 14500000,
+  "ExtraBestRechecks": 145,
+  "CachedQualityRows": 290,
+  "AllQualityRows": 435,
+  "Comparisons": [
+    {
+      "Control": "CLPSO-AuthorSource40",
+      "QFunctionWins": 21,
+      "ControlFunctionWins": 8,
+      "FunctionTies": 0,
+      "QSeedWins": 96,
+      "ControlSeedWins": 49,
+      "SeedTies": 0,
+      "QMedianFunctionWins": 21,
+      "ControlMedianFunctionWins": 8,
+      "MedianFunctionErrorRatio": 0.8106911456507859,
+      "GeometricMeanFunctionErrorRatio": 0.6620980178219158,
+      "QAverageRank": 1.8275862068965518,
+      "ControlAverageRank": 2.4827586206896552,
+      "QMeanSeconds": 8.774611123448276,
+      "ControlMeanSeconds": 2.193029244137931,
+      "MedianMatchedTimeRatio": 5.169586424689016
+    },
+    {
+      "Control": "CSO-Fixed6",
+      "QFunctionWins": 13,
+      "ControlFunctionWins": 16,
+      "FunctionTies": 0,
+      "QSeedWins": 59,
+      "ControlSeedWins": 86,
+      "SeedTies": 0,
+      "QMedianFunctionWins": 12,
+      "ControlMedianFunctionWins": 17,
+      "MedianFunctionErrorRatio": 1.042682392412291,
+      "GeometricMeanFunctionErrorRatio": 1.100859811128505,
+      "QAverageRank": 1.8275862068965518,
+      "ControlAverageRank": 1.6896551724137931,
+      "QMeanSeconds": 8.774611123448276,
+      "ControlMeanSeconds": 7.96794635724138,
+      "MedianMatchedTimeRatio": 1.0702195876914724
+    }
+  ],
+  "QPolicy": {
+    "PositiveRewardBlocks": 173.2896551724138,
+    "Action1Share": 0.30462758620689656,
+    "Action2Share": 0.33500689655172416,
+    "Action3Share": 0.36036551724137933,
+    "QuotaFallbackRounds": 0.013793103448275862
+  },
+  "HolmSignificantFunctions": 0,
+  "Scope": "Full-suite five-seed low-budget screening; comparisons to no-Q and author-profile CLPSO; timing cached across batches"
+}
