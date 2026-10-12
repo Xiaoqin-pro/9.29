@@ -1,0 +1,13 @@
+{
+  "ConfirmationGate": false,
+  "Candidate": "stag1000",
+  "NewRuns": 640,
+  "ObjectiveCalls": 64000000,
+  "RequiredControls": [
+    "fixed6",
+    "random",
+    "phase",
+    "epsfixed"
+  ],
+  "Scope": "independent ten-seed eight-function D50/100k confirmation; not full suite or standard-budget evidence"
+}

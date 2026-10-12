@@ -43,3 +43,7 @@ D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时�
 
 ## 用户授权保持此版小Q后继续
 32同seed中性div/停滞回放与原轨迹完全等价（3.2M诊断FE不算独立效果）；80奖励单因素均未过，保持binary。80持续停滞state实验中1000FE标记过四强控制开发门、500未过；仍6×3表、三配额、原搜索公式。已冻结1000并独立十新seed八条件确认640run（D50/100k），当前运行中，不宣称成功。结果与协议分别docs/CSO_MODE_Q_TREND_RESULTS、STATE_RESULTS、STATE_CONFIRM_PROTOCOL_20261012.md。
+
+
+## 当前状态覆盖上文（纯配额Q主线）
+640持续停滞Q独立确认已结束，联合强控制门未过；全部证据results/cso_mode_q_state_confirm_20261012/公开。用户明确Q只控制评价配额，绑定半径action的草案撤回，预检退出且未执行smoke或正式半径优化；runner禁止自动启动。后续半径只可所有对照共享的骨架改进。下一项优先检查真实模式相对收益反馈与配额决策，保持小表/纯动作，不运行未写新协议的批次。当前无MATLAB实验进程。详见docs/CSO_QUOTA_Q_ANCHOR_20261012.md。

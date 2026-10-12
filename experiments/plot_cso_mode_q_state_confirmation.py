@@ -13,10 +13,18 @@ fig,ax=plt.subplots(figsize=(11,5.5),constrained_layout=True);im=ax.imshow(v,cma
 for i in range(len(controls)):
     for j in range(len(t)):ax.text(j,i,f'{ratio[i,j]:.3g}x',ha='center',va='center',color='white' if abs(v[i,j])>.6 else '#1f2937',fontsize=9)
 ax.set_title('Independent confirmation: stall-Q mean error / control (10 fresh seeds)');fig.colorbar(im,ax=ax,label='log10 error ratio (blue: candidate lower)');fig.savefig(out/'confirmation_error_ratios.png',dpi=180);plt.close(fig)
-raw=pd.read_csv(out/'raw_runs.csv');selected=['fixed6','phase','binaryQ','stag1000'];records=[]
+raw=pd.read_csv(out/'raw_runs.csv');selected=['fixed6','phase','binaryQ','stag1000'];records=[];actions=[]
 for row in raw[raw.Condition.isin(selected)].itertuples():
     d=loadmat(run/'runs'/f'job_{row.JobID:04d}.mat',simplify_cells=True);L=np.asarray(d['I']['TrendLog']).reshape(-1,7)
+    D=np.asarray(d['I']['DecisionLog']).reshape(-1,14);S=np.asarray(d['I']['StateLog']).reshape(-1,3)
+    for ph in range(3):
+        mask=D[:,5]==ph
+        for flag in [0,1]:
+            ix=mask & (S[:,1]==flag)
+            if not ix.any():continue
+            for ac in [1,2,3]:actions.append(dict(FunctionID=row.FunctionID,Seed=row.Seed,Condition=row.Condition,Phase=ph,Signal=flag,Action=ac,DecisionShare=float((D[ix,3]==ac).mean()),Blocks=int(ix.sum()),PositiveRate=float((D[ix,9]>0).mean())))
     for z in L:records.append(dict(FunctionID=row.FunctionID,Seed=row.Seed,Condition=row.Condition,FE=int(z[0]),Error=z[5]-100*row.FunctionID,RealDiversityRatio=z[1]/z[6],StagnationFE=z[4]))
+pd.DataFrame(actions).to_csv(out/'confirmation_state_action_shares.csv',index=False)
 r=pd.DataFrame(records);agg=r.groupby(['FunctionID','Condition','FE']).mean(numeric_only=True).reset_index();agg.to_csv(out/'confirmation_mean_trends.csv',index=False)
 r['Phase']=np.minimum(2,np.floor(3*(r.FE-50)/99950)).astype(int);r.groupby(['FunctionID','Condition','Phase']).agg(MeanDiversityRatio=('RealDiversityRatio','mean'),MedianStagnationFE=('StagnationFE','median'),LongStallRate=('StagnationFE',lambda x:float((x>=1000).mean()))).to_csv(out/'confirmation_phase_trends.csv')
 colors={'fixed6':'#0f766e','phase':'#64748b','binaryQ':'#2563eb','stag1000':'#c2410c'};fig,axes=plt.subplots(8,3,figsize=(14,18),constrained_layout=True)
