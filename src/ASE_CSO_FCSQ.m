@@ -5,6 +5,8 @@ function [Best,T,info]=ASE_CSO_FCSQ(f,state,~,N,seed)
 % candidate order. B10 is a quality reference, not a one-factor ablation.
 % state.fcsPolicy: batch, continue, switch, random, success, reverse, or q.
 % state.auditDecisions enables point-level decision and round logs.
+% Development rewards: parent_binary, global_binary, or global_gain.
+% rewardBonus scales positive credit; gainScaleDecay updates past-positive gain scale.
 
 started=tic;
 pop=state.initialPopulation; D=size(pop,2); lb=state.lowerBound; ub=state.upperBound;
@@ -15,6 +17,14 @@ alpha=.10; gamma=.90; epsilon=.10;
 if isfield(state,'alpha'), alpha=state.alpha; end
 if isfield(state,'gamma'), gamma=state.gamma; end
 if isfield(state,'epsilon'), epsilon=state.epsilon; end
+rewardMode='parent_binary';rewardBonus=1;gainScaleDecay=.1;
+if isfield(state,'rewardMode'),rewardMode=char(state.rewardMode);end
+if isfield(state,'rewardBonus'),rewardBonus=state.rewardBonus;end
+if isfield(state,'gainScaleDecay'),gainScaleDecay=state.gainScaleDecay;end
+assert(ismember(rewardMode,{'parent_binary','global_binary','global_gain'}));
+assert(isscalar(rewardBonus) && isfinite(rewardBonus) && rewardBonus>0);
+assert(isscalar(gainScaleDecay) && gainScaleDecay>0 && gainScaleDecay<=1);
+assert(alpha>0 && alpha<=1 && gamma>=0 && gamma<=1 && epsilon>=0 && epsilon<=1);
 assert(N==50 && size(pop,1)==N,'FCS-CSO uses a population of 50.');
 assert(D>=1 && budget>=N && budget==floor(budget));
 assert(ismember(policy,{'batch','continue','switch','random','success','reverse','q'}));
@@ -37,11 +47,12 @@ parentCoverageTotal=0; starterCountTotal=0;
 executedCounts=zeros(1,2); fallbackCount=0; mismatchCount=0; qFallbackUpdates=0;
 sameParentSecond=0; otherParentSecond=0; openedParents=0; actualMaxParentCount=0; firstVisits=0;
 conditionalCounts=zeros(6,2); conditionalSuccesses=zeros(6,2); conditionalGain=zeros(6,2);
+conditionalGlobalSuccesses=zeros(6,2);conditionalGlobalGain=zeros(6,2);gainScale=0;rewardTotal=0;positiveRewards=0;negativeRewards=0;
 decisionColumns={'Round','StarterFE','State','StarterParent','StarterRow','StarterSuccess','RequestedAction','ExecutedAction','FollowParent','FollowRow','FollowCountBefore','Fallback','FollowSuccess','Reward','NextState','FollowFE','StarterAnchor','StarterCost','FollowAnchor','FollowCost','StarterCountBefore'};
-decisionLog=zeros(0,numel(decisionColumns));starterPoints=zeros(0,D);followPoints=zeros(0,D);roundLog=zeros(0,7);decisionNumber=0;
+decisionLog=zeros(0,numel(decisionColumns));starterPoints=zeros(0,D);followPoints=zeros(0,D);roundLog=zeros(0,7);rewardLog=zeros(0,6);decisionNumber=0;
 if auditDecisions
  decisionLog=zeros(ceil(budget/2),numel(decisionColumns));starterPoints=zeros(ceil(budget/2),D);followPoints=zeros(ceil(budget/2),D);
- roundLog=zeros(max(1,ceil((budget-N)/10)),7);
+ roundLog=zeros(max(1,ceil((budget-N)/10)),7);rewardLog=zeros(ceil(budget/2),6);
 end
 
 while fe<budget
@@ -117,11 +128,26 @@ while fe<budget
                     usedFallback=(nextRow==0);
                     if usedFallback, [nextRow,nextParent]=findAny(orderedRows,orderedParents,usedRows,counts); end
                     if nextRow==0, error('FCS:Quota','Unable to fill paired Seeking quota.'); end
-                    followCountBefore=counts(nextParent);
+                    followCountBefore=counts(nextParent);followBestBefore=Best.Cost;
                     [Best,fitness,realPop,pop,personalBest,personalBestCost,T,fe,seekEvalTotal,seekSuccess,followImproved,followCost,followAnchor]=evaluateOne(f,nextRow,nextParent,seekBuffer,fitness,realPop,pop,personalBest,personalBestCost,Best,T,fe,seekEvalTotal,seekSuccess);
                     selectedMask(nextParent)=true; counts(nextParent)=counts(nextParent)+1; usedRows(nextRow)=true;
                     secondEvalSuccess=secondEvalSuccess+followImproved;
-                    reward=2*double(followImproved)-1;
+                    globalGain=max(0,followBestBefore-Best.Cost);globalHit=(globalGain>0);scaleBefore=gainScale;
+                    switch rewardMode
+                        case 'parent_binary'
+                            reward=rewardBonus*double(followImproved)-double(~followImproved);rewardModeID=0;
+                        case 'global_binary'
+                            reward=rewardBonus*double(globalHit)-double(~globalHit);rewardModeID=1;
+                        case 'global_gain'
+                            if globalHit
+                                if scaleBefore>0,reward=rewardBonus*min(1,globalGain/scaleBefore);else,reward=rewardBonus;end
+                            else,reward=-1;end
+                            rewardModeID=2;
+                    end
+                    if globalHit
+                        if gainScale==0,gainScale=globalGain;else,gainScale=(1-gainScaleDecay)*gainScale+gainScaleDecay*globalGain;end
+                    end
+                    rewardTotal=rewardTotal+reward;positiveRewards=positiveRewards+double(reward>0);negativeRewards=negativeRewards+double(reward<0);
                     nextState=1+2*min(2,floor(3*((fe-N)/max(1,budget-N))))+double(~followImproved);
                     actualAction=1+double(nextParent~=i);executedCounts(actualAction)=executedCounts(actualAction)+1;
                     fallbackCount=fallbackCount+usedFallback;mismatchCount=mismatchCount+double(actualAction~=action);
@@ -131,6 +157,8 @@ while fe<budget
                     conditionalCounts(stateIndex,actualAction)=conditionalCounts(stateIndex,actualAction)+1;
                     conditionalSuccesses(stateIndex,actualAction)=conditionalSuccesses(stateIndex,actualAction)+followImproved;
                     conditionalGain(stateIndex,actualAction)=conditionalGain(stateIndex,actualAction)+max(0,followAnchor-followCost);
+                    conditionalGlobalSuccesses(stateIndex,actualAction)=conditionalGlobalSuccesses(stateIndex,actualAction)+globalHit;
+                    conditionalGlobalGain(stateIndex,actualAction)=conditionalGlobalGain(stateIndex,actualAction)+globalGain;
                     if strcmp(policy,'q')
                         Q(stateIndex,action)=Q(stateIndex,action)+alpha*(reward+gamma*max(Q(nextState,:))-Q(stateIndex,action));
                         qFallbackUpdates=qFallbackUpdates+usedFallback;
@@ -139,6 +167,7 @@ while fe<budget
                         decisionNumber=decisionNumber+1;
                         decisionLog(decisionNumber,:)=[rounds starterFE stateIndex i row improved action actualAction nextParent nextRow followCountBefore usedFallback followImproved reward nextState fe starterAnchor starterCost followAnchor followCost starterCountBefore];
                         starterPoints(decisionNumber,:)=seekBuffer(row,:);followPoints(decisionNumber,:)=seekBuffer(nextRow,:);
+                        rewardLog(decisionNumber,:)=[followBestBefore Best.Cost globalGain scaleBefore gainScale rewardModeID];
                     end
                 end
             end
@@ -155,7 +184,7 @@ while fe<budget
     assert(fe-roundStart==quota && roundTraceActual==targetTrace && actualSeek==targetSeek,'FCS:RoundQuota','Round did not consume its declared real FE quota.');
     if auditDecisions,roundLog(rounds,:)=[rounds roundStart quota targetTrace targetSeek roundTraceActual actualSeek];end
 end
-if auditDecisions,decisionLog=decisionLog(1:decisionNumber,:);starterPoints=starterPoints(1:decisionNumber,:);followPoints=followPoints(1:decisionNumber,:);roundLog=roundLog(1:rounds,:);end
+if auditDecisions,decisionLog=decisionLog(1:decisionNumber,:);starterPoints=starterPoints(1:decisionNumber,:);followPoints=followPoints(1:decisionNumber,:);roundLog=roundLog(1:rounds,:);rewardLog=rewardLog(1:decisionNumber,:);end
 T=T(1:fe);
 info=struct('Algorithm',['FCS-CSO-' policy],'Seed',seed,'Evaluations',fe,'Seconds',toc(started),...
     'SeekingEvaluations',seekEvalTotal,'TracingEvaluations',traceEvalTotal,'Rounds',rounds,...
@@ -163,9 +192,13 @@ info=struct('Algorithm',['FCS-CSO-' policy],'Seed',seed,'Evaluations',fe,'Second
     'ContinueCount',continueCount,'SwitchCount',switchCount,'SecondEvaluationSuccesses',secondEvalSuccess,...
     'StarterEvaluations',starterCountTotal,'MeanParentCoverage',parentCoverageTotal/max(1,rounds),...
     'TraceSuccesses',traceSuccess,'SeekSuccesses',seekSuccess,'TraceRollbacks',traceRollbacks,...
-    'Version','actual-counts-and-odd-tail-v1','ExecutedActionCounts',executedCounts,'FallbackCount',fallbackCount,'ActionMismatchCount',mismatchCount,...
+    'Version','reward-development-v2','ExecutedActionCounts',executedCounts,'FallbackCount',fallbackCount,'ActionMismatchCount',mismatchCount,...
     'QFallbackUpdates',qFallbackUpdates,'SameParentSecondEvaluations',sameParentSecond,'OtherParentSecondEvaluations',otherParentSecond,...
     'OpenedParentEvaluations',openedParents,'FirstVisitEvaluations',firstVisits,'ActualMaxParentEvaluations',actualMaxParentCount,...
+    'RewardMode',rewardMode,'RewardBonus',rewardBonus,'GainScaleDecay',gainScaleDecay,'GainScale',gainScale,...
+    'RewardTotal',rewardTotal,'PositiveRewards',positiveRewards,'NegativeRewards',negativeRewards,...
+    'ConditionalFollowGlobalSuccesses',conditionalGlobalSuccesses,'ConditionalFollowGlobalGain',conditionalGlobalGain,...
+    'RewardColumns',{{'BestBefore','BestAfter','GlobalGain','ScaleBefore','ScaleAfter','ModeID'}},'RewardLog',rewardLog,...
     'ConditionalFollowCounts',conditionalCounts,'ConditionalFollowSuccesses',conditionalSuccesses,'ConditionalFollowGain',conditionalGain,...
     'DecisionColumns',{decisionColumns},'DecisionLog',decisionLog,'StarterPoints',starterPoints,'FollowPoints',followPoints,...
     'RoundColumns',{{'Round','StartFE','Quota','TargetTracing','TargetSeeking','ActualTracing','ActualSeeking'}},'RoundLog',roundLog);

@@ -1,0 +1,7 @@
+{
+  "date": "2026-10-12",
+  "sourceCommit": "931e52a",
+  "resultsCommit": "2efb00c",
+  "sourceSHA256": "a1dba4295cbc57b1384550f299e11877978cda8dcfe37c920ffa93aede301a61",
+  "scope": "Counter-repaired baseline before reward development; algorithm options unchanged"
+}
