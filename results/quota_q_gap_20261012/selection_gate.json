@@ -1,0 +1,7 @@
+{
+  "NewRuns": 200,
+  "ObjectiveCalls": 20000000,
+  "CachedRows": 80,
+  "GatePassesAllControls": false,
+  "Scope": "same-seed eight-function one-intervention development; not new-seed confirmation"
+}

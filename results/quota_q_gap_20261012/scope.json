@@ -1,0 +1,7 @@
+{
+  "Runs": 145,
+  "SourceQ": "D:\\111\\Desktop\\\u565c\u565c\\9.29\\results\\cec\\quota_q_full_100k_study_20261012_194957",
+  "SourceFixed6": "D:\\111\\Desktop\\\u565c\u565c\\9.29\\results\\cec\\clpso_full_100k_study_20261012_193032",
+  "NoNewOptimizationRuns": true,
+  "Scope": "descriptive past-action outcomes; confounded with search state and earlier choices; no counterfactual causality"
+}

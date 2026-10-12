@@ -79,3 +79,11 @@ D50/100k五新seed共290run/29MFE，CSO固定6T4S无Q N50 vs作者代码profileC
 
 ## 带Q完整29函数同格100k比较已完成
 选择原B10+stall1000小Q原样，D50/100k同seed2201–2205新增145run/14.5MFE，cachedCLPSO+Fixed6各145质量（非新增）全实际p0 prefix290pairs匹配。Q vs作者CLPSO均值/中位21:8、seed96:49；vs无QFixed6均值13:16、seed59:86（中位12:17），不支持新增Q整体收益。Q平均8.775秒vsCLPSO2.193秒，缓存时间界限注明。五seed无0.05显著，全部检查/曲线公开；无运行任务。详见QUOTA_Q_FULL_100K_RESULTS_20261012.md。
+
+
+## 全29带Q性能差距诊断与stallgate开发
+MR仍.4，Q纯配额。145matched原Q日志healthy约65.5%、healthyFixed6仅36.4%；20%15:14到60%8:21对Fixed6中段落后，F11/F30健康块多数。只改触发：healthy固定6，stall才Q，奖励/状态表/搜索公式不变；同触发random/fixed2/fixed4/epsfixed各公平控制，8函数×5原seed200newrun/20MFE，缓存80old质量单列。59原版精确回归/75行为与10smoke通过，当前四worker运行。协议QUOTA_Q_STALL_GATE_PROTOCOL_20261012.md先写。
+
+
+## Q失分定位与stall-only试验完成
+原全29Q TraceFE41.1%vsFixed660%，65.5%healthy决策中Fixed6仅36.4%，中段开始落后。仅healthy固定6/stallQ共200newrun/20MFE、80cache质量；59等价/75case/10smoke及全Q独立核验通过。gateQ vs旧Q7:1/23:17有改善，仍vsFixed6=3:5/15:25、同gateRandom3:5/16:24、GateEps6=0:8/16:24，门未过，不能把gate规则收益归Q。当前无运行任务。详见QUOTA_Q_GAP_ANALYSIS_20261012.md。
