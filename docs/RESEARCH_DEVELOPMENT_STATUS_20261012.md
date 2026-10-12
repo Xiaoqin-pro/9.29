@@ -55,3 +55,7 @@ D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时�
 
 ## 两路线520run已完成
 A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过，无运行任务。A统一半径适配Q相对A-fixed6函数3:5/seed18:22，B动作绑定恢复Q相对同Rule2:6/19:21、同Random2:6/14:26，两路线均未过Q必要性门。B比A好但不是Q成功；保留原纯配额Q/B10锚点，搜索改进暂不定版。公开results/cso_two_routes_20261012/及docs/CSO_TWO_ROUTES_RESULTS_20261012.md。GitHub曾DNS失败，保存本地提交后再推。
+
+
+## 纯配额相对模式效率状态开发启动
+原random日志离线观察local常偏Seeking但随后Fixed6常更好，global模式增益反馈ties多。仅替换一个state bit=过去1000FE实际Trace gbset gain/FE > Seek gain/FE；搜索公式、半径、reward和6×3表不变。十一组含旧Q/stallQ/全部固定/Random/Phase/EpsFixed/同反馈直接和反向规则，五新seed1801–1805，440新run；230旧策略精确回归、66历史反馈case及22smoke通过。当前四worker运行，协议CSO_MODE_EFFICIENCY_PROTOCOL_20261012.md先写。
