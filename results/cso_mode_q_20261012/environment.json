@@ -1,0 +1,20 @@
+{
+  "Mode": "study",
+  "Jobs": 280,
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "Computer": "PCWIN64",
+  "Workers": 4,
+  "ThreadsPerWorker": 1,
+  "SourceFiles": [
+    "src/ASE_CSO_Simplify.m",
+    "src/ASE_CSO_ModeBudget.m",
+    "src/ASE_CSO_ModeQ.m",
+    "src/ASE_CSO_Lean_B10.m",
+    "archive/legacy/CEC2017Function.m",
+    "experiments/run_cso_mode_q_pilot.m",
+    "docs/CSO_MODE_Q_PROTOCOL_20261012.md",
+    "tests/test_CSO_mode_q.m"
+  ],
+  "ObjectiveBinary": "D:\\111\\Desktop\\噜噜\\9.29\\data\\cec2017\\cec17_func.mexw64",
+  "Created": "2026-10-12 14:17:36"
+}

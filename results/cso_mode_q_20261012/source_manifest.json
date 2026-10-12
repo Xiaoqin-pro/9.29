@@ -1,0 +1,59 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_mode_q_study_20261012_141736",
+  "NewRuns": 280,
+  "ExtraBestRechecks": 280,
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/CSO_MODE_Q_PROTOCOL_20261012.md",
+      "SHA256": "69f4c82d46d816c31055f342dd8b2757b7eecbab076285f67e97bb4a6f1939e5",
+      "SHA256NormalizedLF": "69f4c82d46d816c31055f342dd8b2757b7eecbab076285f67e97bb4a6f1939e5"
+    },
+    {
+      "Path": "experiments/run_cso_mode_q_pilot.m",
+      "SHA256": "761893d29a00b4f8e73a984ead8cc34ac95b23f4e7e84f01d217daa80379a1d1",
+      "SHA256NormalizedLF": "761893d29a00b4f8e73a984ead8cc34ac95b23f4e7e84f01d217daa80379a1d1"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ.m",
+      "SHA256": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7",
+      "SHA256NormalizedLF": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_mode_q.m",
+      "SHA256": "49fc7baf21c1a152af38f2f19f11065603241304b28226251d23894140371c46",
+      "SHA256NormalizedLF": "49fc7baf21c1a152af38f2f19f11065603241304b28226251d23894140371c46"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "experiments/analyze_cso_mode_q.py",
+      "SHA256": "22cdffdb045e9d15728e299d2b6df31e7285d9dea992475f67f6df59117b00be"
+    },
+    {
+      "Path": "experiments/verify_cso_mode_q.py",
+      "SHA256": "469d00ac9354c98ef00d315e3be146cb0fab76a83e95238219c108f3e21a9ef8"
+    }
+  ]
+}

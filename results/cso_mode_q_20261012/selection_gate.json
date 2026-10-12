@@ -1,0 +1,12 @@
+{
+  "RequiredControls": [
+    "fixed6",
+    "random",
+    "phase",
+    "epsfixed"
+  ],
+  "QPassesDevelopmentGate": false,
+  "NewRuns": 280,
+  "ActualObjectiveCalls": 28000000,
+  "Scope": "five-seed development; gate is not significance/noninferiority; no parameter sweep or new-seed confirmation automatically triggered"
+}

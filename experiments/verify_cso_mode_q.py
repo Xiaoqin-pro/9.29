@@ -46,6 +46,17 @@ for row in raw.itertuples():
     assert np.array_equal(updates[:-1,3],decisions[1:,2]) and updates[-1,3]==0 and updates[-1,4]==1 and np.all(updates[:-1,4]==0)
     assert np.array_equal(updates[:,7],(decisions[:,12]==0).astype(int)) and not bool(I['PendingAtEnd'])
     assert np.all(decisions[:,4]==2*decisions[:,3])
+    assert lo[0]==50 and hi[-1]==row.Budget and np.array_equal(lo[1:],hi[:-1])
+    # Map every real round to its actual decision; validate executed quotas/fallback masks.
+    block_index=np.searchsorted(hi,R[:,0],side='right')
+    quotas=decisions[block_index,4]
+    quota_size=R[:,1]-R[:,0];expected_trace=np.minimum(quotas,np.maximum(1,quota_size-1))
+    fallback=(R[:,2]!=expected_trace)|(R[:,3]!=quota_size-expected_trace)
+    assert np.array_equal(np.bincount(block_index,weights=R[:,2],minlength=len(decisions)),decisions[:,10])
+    assert np.array_equal(np.bincount(block_index,weights=R[:,3],minlength=len(decisions)),decisions[:,11])
+    assert np.array_equal(np.bincount(block_index,weights=fallback.astype(int),minlength=len(decisions)),decisions[:,12])
+    assert row.QuotaFallbackRounds==int(fallback.sum())
+    assert np.array_equal(R[:,0],np.r_[50,R[:-1,1]]) and R[-1,1]==row.Budget
     assert row.PositiveRewardBlocks==int((reward>0).sum()) and row.Decisions==len(decisions)
     replay=np.zeros((6,3));visits=np.zeros((6,3),dtype=int)
     if row.ModePolicy=='q':
