@@ -1,0 +1,17 @@
+{
+  "combined_quality_runs.csv": "6232d8799166af9629903b5638d2ffd189f4dc5b35d361b6d1e64017b395c9da",
+  "confirmation_gate.csv": "4f6e33d2cc24caaea7ad90ceaa99076fffc8d833964310166255f6f28fd4e40a",
+  "integrity_checks.json": "c3e1a633769276fb207c5665196d30d728c0bf4913077a0ea33936816d9fa21f",
+  "INTERPRETATION.md": "cce0d61d93db065f301ecb1a4f68d98ff571bd4371ba196b5fc8d3e032762ca9",
+  "job_manifest.csv": "dbb22f013300400b241098a2b4cd34475da1398b203161b7e36b3a6e6bc6d7aa",
+  "mean_error_table.csv": "4fd96e9c00fcab730148a4209ac144c0fafce983f933891fdda677277e192826",
+  "overall_summary.csv": "e18a4aee3ddcf5f78e0b96fad4acccc1244aa501e96036184f4d983f687fe08c",
+  "pairwise_comparison.csv": "0a9a0e618fc98a2186a199b170fe34109920018d2663691da4bb826fc456861e",
+  "raw_runs.csv": "648296508ed9732b21d73fff8f1cd53ea9fe4a739eb3044678846bc407f7d9cb",
+  "README.md": "9a96699456bf32df0ed5f569a6decf9a8f16dea855eadb85154c1401abcc3c35",
+  "RESULTS_REPORT.md": "e076c390e2a0b45d33f1330a9ce5bbbec995a7813e250531195439dc6e1911a2",
+  "reward_checks.json": "934d36a233cd82beab9beaa87e68cfc7921b5e9674a1474b894bf53838594280",
+  "selection.json": "745bc3729f9c535b19d74e744179b4a3727ec6b4919a0efdf8eeefc5bccc6d9c",
+  "source_manifest.json": "868fc1934b725560aec1593ead9b78aec2573fd1177866a9f859af532ae54d67",
+  "summary_by_function.csv": "2ac9ec57ec53efaaacacb33acd494fd9fb3a0dc6aef12399fb1f57ea850385f8"
+}

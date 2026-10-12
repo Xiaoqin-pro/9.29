@@ -1,0 +1,16 @@
+Condition,AverageFunctionRank,FunctionsBest,Source
+Batch,5.25,2,S0-cache
+G1-g0,5.375,1,new-study
+G10-g9,5.875,1,new-study
+P-g0,6.875,0,new-study
+P-g9,7.25,0,S0-cache
+Random,7.25,2,S0-cache
+B10,7.25,2,S0-cache
+Success,8.25,0,S0-cache
+M10-g9,8.625,0,new-study
+G1-g9,9.0,0,new-study
+Continue,9.25,0,S0-cache
+G10-g0,9.25,0,new-study
+Reverse,9.375,0,S0-cache
+M10-g0,10.25,0,new-study
+Switch,10.875,0,S0-cache

@@ -1,0 +1,10 @@
+{
+  "NewRuns": 280,
+  "InitialPopulationsChecked": 40,
+  "ActualCalls": 16800000,
+  "GridAndTracePassed": true,
+  "RewardModeAndPositiveCreditCountsPassed": true,
+  "AllDomainChecksPassed": true,
+  "Fallbacks": 0,
+  "ActionMismatches": 0
+}
