@@ -1,0 +1,17 @@
+{
+  "combined_quality_runs.csv": "4f885801616f026a4898fb7b3aace4623a8cb605de5b66d14f5a971d6f7d8c7d",
+  "confirmation_gate.csv": "cf1887f18f06350e9178bb391fe458143de61cd9ada2fd54dcb82827da12850f",
+  "integrity_checks.json": "1abd84e50fb050898a34842f0d8c0b41cf95234ba2ed7f10306017d52efec7d0",
+  "INTERPRETATION.md": "e93f17cfc54046fba4e8eeed78f6ae196bea3564c162f50f5bf1e4f17b1e652f",
+  "job_manifest.csv": "2ab04baac4c5d7206d38924cb1f42193df432e5d28c09fe5c5bd91c028e1f068",
+  "mean_error_table.csv": "a6d688f74d469bead82ccd2cbd34a40e49d5045de88ffa28665e71414eb9b08e",
+  "overall_summary.csv": "6a0d1e57878b93e27b13a3ce99ace8e042d9445eadb7571102d8ce115e65f6f1",
+  "pairwise_comparison.csv": "7ffa44cf0664e60938b3da1a348c913d4b584fd511408827ed925eb9e460d7f0",
+  "raw_runs.csv": "4e1b601f866fa2c1bf01508c494781c5933afb2c619371d945b4eb5a956eaa20",
+  "README.md": "19bf2efeef76101c7807ea7c92df2cee413d2915846ee0fe62255be39f76bdac",
+  "reserved_checks.json": "db38aae57c40d5a207f7fab6ade7e30ad7f6c3087e395a2d042649060d53bf95",
+  "RESULTS_REPORT.md": "a71e90e94d3530bbaa9532ff1839aaa5c6bb7024d5d7111f16f439e8714a0e02",
+  "selection.json": "04edeca2a7226d1359c1d068a9c3c2c8d9aed1bec2c7fb370ef95dd0171a581b",
+  "source_manifest.json": "19dbc767e05cb97a63f403b37417cbfc1ab55343b5a0b3f6912ac33219147ce4",
+  "summary_by_function.csv": "3659998222b0b6bfa280be17c72ca478713b75181d8c00f58001478d4614f3aa"
+}

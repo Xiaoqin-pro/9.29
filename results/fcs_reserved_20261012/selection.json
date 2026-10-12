@@ -1,0 +1,9 @@
+{
+  "Mode": "study",
+  "NewRuns": 320,
+  "CachedRuns": 80,
+  "SelectedCondition": null,
+  "EligibleConditions": [],
+  "Rule": "Strictly more function-mean and paired-seed wins than losses against Keep, Random AND Progress; tie-break sum function wins, seed wins, then smaller bonus/gamma.",
+  "ClaimStatus": "Development selection only; requires independent-seed confirmation"
+}

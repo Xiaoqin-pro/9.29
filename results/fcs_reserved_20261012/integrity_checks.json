@@ -1,0 +1,10 @@
+{
+  "NewRuns": 320,
+  "InitialPopulationsChecked": 40,
+  "ActualCalls": 19200000,
+  "GridAndTracePassed": true,
+  "QCreditAndLastFEMetricsPassed": true,
+  "AllDomainChecksPassed": true,
+  "Fallbacks": 0,
+  "ActionMismatches": 0
+}

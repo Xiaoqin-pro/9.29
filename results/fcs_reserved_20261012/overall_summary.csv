@@ -1,0 +1,11 @@
+Condition,AverageFunctionRank,FunctionsBest,Source
+Keep,3.5,2,exact-S0-cache
+Q1-g0,3.75,1,new-study
+Q1-g9,4.375,1,new-study
+Q10-g9,4.375,1,new-study
+Q10-g0,5.25,0,new-study
+B10,5.375,3,exact-S0-cache
+Random,6.75,0,new-study
+Progress,6.875,0,new-study
+Reverse,6.875,0,new-study
+Explore,7.875,0,new-study

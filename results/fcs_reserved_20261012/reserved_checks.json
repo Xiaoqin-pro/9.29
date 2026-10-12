@@ -1,0 +1,7 @@
+{
+  "BatchExactPairs": 40,
+  "Cases": 351,
+  "AuditNeutralReplays": 9,
+  "MaskedAndTerminalFixtures": 2,
+  "Passed": true
+}
