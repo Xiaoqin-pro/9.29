@@ -1,0 +1,15 @@
+Candidate,Control,FunctionWins,FunctionLosses,FunctionTies,SeedWins,SeedLosses,SeedTies,MedianFunctionErrorRatio,CandidateRank,ControlRank,ControlGate
+positive,fixed2,5,3,0,20,20,0,0.9076110622581315,4.625,5.75,True
+positive,fixed4,5,3,0,21,19,0,0.93060215325991,4.625,5.875,True
+positive,fixed6,4,4,0,19,21,0,0.9964391116267248,4.625,4.5,False
+positive,random,6,2,0,24,16,0,0.8016592668790088,4.625,6.0,True
+positive,phase,4,4,0,19,21,0,1.0452416219791132,4.625,4.5,False
+positive,epsfixed,4,4,0,22,18,0,1.001928274843002,4.625,4.875,True
+positive,binaryQ,3,5,0,16,24,0,1.087682295007888,4.625,4.0,False
+gain,fixed2,7,1,0,22,18,0,0.828445512163275,4.875,5.75,True
+gain,fixed4,5,3,0,19,21,0,0.9763932258073174,4.875,5.875,False
+gain,fixed6,3,5,0,19,21,0,1.0744967950569282,4.875,4.5,False
+gain,random,4,4,0,24,16,0,0.9318214302070763,4.875,6.0,True
+gain,phase,3,5,0,19,21,0,1.094571674799014,4.875,4.5,False
+gain,epsfixed,4,4,0,23,17,0,1.0710783252844727,4.875,4.875,False
+gain,binaryQ,3,5,0,19,21,0,1.1682270216353052,4.875,4.0,False

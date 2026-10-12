@@ -39,3 +39,7 @@ D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时�
 
 ## 本次继续执行已全部结束
 三阶段560新run、56MFE完成（160 SMP3确认+120固定配额+280小Q），24smoke单列；全部独立轨迹核验通过，Q表可逐更新重放。SMP3质量未过，保留B10；固定6T4S暂最佳统一控制；小Q均值平均排名3.25最优、胜B10和Random，但对Fixed6函数4:4/seed19:21、EpsFixed函数3:5/seed22:18，强对照联合门未过。不扩大参数网格、未运行全29函数正式确认。没有仍在运行的优化任务。详见docs/CSO_MODE_Q_RESULTS_20261012.md及results/cso_mode_q_20261012/。
+
+
+## 用户授权保持此版小Q后继续
+32同seed中性div/停滞回放与原轨迹完全等价（3.2M诊断FE不算独立效果）；80奖励单因素均未过，保持binary。80持续停滞state实验中1000FE标记过四强控制开发门、500未过；仍6×3表、三配额、原搜索公式。已冻结1000并独立十新seed八条件确认640run（D50/100k），当前运行中，不宣称成功。结果与协议分别docs/CSO_MODE_Q_TREND_RESULTS、STATE_RESULTS、STATE_CONFIRM_PROTOCOL_20261012.md。

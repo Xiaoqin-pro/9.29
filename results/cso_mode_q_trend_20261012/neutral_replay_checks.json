@@ -1,0 +1,7 @@
+{
+  "Replays": 32,
+  "ExactOriginalTrajectories": 32,
+  "ExactQTables": 32,
+  "Passed": true,
+  "Scope": "same-seed diagnostic reruns, not independent effect evidence"
+}
