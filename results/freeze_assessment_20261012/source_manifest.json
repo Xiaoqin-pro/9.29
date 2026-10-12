@@ -1,0 +1,21 @@
+{
+  "Scope": "Stored data reanalysis, no new optimization; each cohort remains separate; cached development is not independent confirmation.",
+  "Sources": [
+    {
+      "Path": "results/cso_mode_q_20261012/raw_runs.csv",
+      "SHA256": "3744a39ca08efc29abc331b0223ff055584e3387f8cbf3a6f1b1510e1d4cae70"
+    },
+    {
+      "Path": "results/cso_mode_q_state_20261012/raw_runs.csv",
+      "SHA256": "e97bbcf44abfbcb11107c63f665ff5ab4e8957876c2e46b2197ef91711b5d985"
+    },
+    {
+      "Path": "results/cso_mode_q_state_confirm_20261012/raw_runs.csv",
+      "SHA256": "45e5cfaea1c08552047983c5b8ef8b6964983c98f69036377652bd506772be4f"
+    },
+    {
+      "Path": "results/cso_mode_efficiency_20261012/raw_runs.csv",
+      "SHA256": "f2ec59268f9162752e389b0d95452a2cf1ae3989cec29809c3692003a12bdf75"
+    }
+  ]
+}
