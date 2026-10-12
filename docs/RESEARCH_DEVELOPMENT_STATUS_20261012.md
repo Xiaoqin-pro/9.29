@@ -51,3 +51,7 @@ D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时�
 
 ## 用户授权比较两路线
 用户保留Q配额主故事，同时允许比较原action1绑定半径候选。CSO_TWO_ROUTES_PROTOCOL_20261012.md已先写：A所有策略统一Seeking阶段幅度+后段真实停滞恢复，Q纯名额；B仅停滞且Seeking多动作恢复，Q/规则/随机同机会。同新seed1701–1705共520run（A360/B160），预检A59等价/63行为/flat238恢复轮、B59等价/171行为/flat9恢复块通过，A18/B8smoke通过，当前四worker运行。前次withdrawn runner不自动复用，新B入口独立授权。
+
+
+## 两路线520run已完成
+A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过，无运行任务。A统一半径适配Q相对A-fixed6函数3:5/seed18:22，B动作绑定恢复Q相对同Rule2:6/19:21、同Random2:6/14:26，两路线均未过Q必要性门。B比A好但不是Q成功；保留原纯配额Q/B10锚点，搜索改进暂不定版。公开results/cso_two_routes_20261012/及docs/CSO_TWO_ROUTES_RESULTS_20261012.md。GitHub曾DNS失败，保存本地提交后再推。

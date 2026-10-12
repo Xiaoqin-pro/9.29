@@ -1,0 +1,153 @@
+{
+  "RouteARunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_search_adapt_study_20261012_163808",
+  "RouteBRunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_linked_radius_study_20261012_165015",
+  "Sources": [
+    {
+      "Route": "A",
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Route": "A",
+      "Path": "docs/CSO_TWO_ROUTES_PROTOCOL_20261012.md",
+      "SHA256": "73bfa6104b99e3689fde0b447b9d449335f983376bee2d13f795e695188a0833",
+      "SHA256NormalizedLF": "73bfa6104b99e3689fde0b447b9d449335f983376bee2d13f795e695188a0833"
+    },
+    {
+      "Route": "A",
+      "Path": "experiments/run_cso_search_adapt_study.m",
+      "SHA256": "d0afa2ebff8a55450981e87f9ae75011a62c47ce8cf997acc29ff44f614e809b",
+      "SHA256NormalizedLF": "d0afa2ebff8a55450981e87f9ae75011a62c47ce8cf997acc29ff44f614e809b"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_ModeQ.m",
+      "SHA256": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7",
+      "SHA256NormalizedLF": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_ModeQ_Progress.m",
+      "SHA256": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace",
+      "SHA256NormalizedLF": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_ModeQ_SearchAdapt.m",
+      "SHA256": "71bf7bd7feb7d3eacf201541b86b3f5c36a0efbe362ebe2b8af78e4212827140",
+      "SHA256NormalizedLF": "71bf7bd7feb7d3eacf201541b86b3f5c36a0efbe362ebe2b8af78e4212827140"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_ModeQ_State.m",
+      "SHA256": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b",
+      "SHA256NormalizedLF": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b"
+    },
+    {
+      "Route": "A",
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Route": "A",
+      "Path": "tests/test_CSO_search_adapt.m",
+      "SHA256": "87a235000ea3acb40f86b6874da4be86db8047a5bebb12423bf7b73277a45ccb",
+      "SHA256NormalizedLF": "87a235000ea3acb40f86b6874da4be86db8047a5bebb12423bf7b73277a45ccb"
+    },
+    {
+      "Route": "B",
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Route": "B",
+      "Path": "docs/CSO_TWO_ROUTES_PROTOCOL_20261012.md",
+      "SHA256": "73bfa6104b99e3689fde0b447b9d449335f983376bee2d13f795e695188a0833",
+      "SHA256NormalizedLF": "73bfa6104b99e3689fde0b447b9d449335f983376bee2d13f795e695188a0833"
+    },
+    {
+      "Route": "B",
+      "Path": "experiments/run_cso_linked_radius_study.m",
+      "SHA256": "40e0cea7106580682723b46fa00abc8c333047e968e37ca29b0a9b89ed573b70",
+      "SHA256NormalizedLF": "40e0cea7106580682723b46fa00abc8c333047e968e37ca29b0a9b89ed573b70"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_ModeQ.m",
+      "SHA256": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7",
+      "SHA256NormalizedLF": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_ModeQ_Progress.m",
+      "SHA256": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace",
+      "SHA256NormalizedLF": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_ModeQ_Reheat.m",
+      "SHA256": "207956e24167daf1ae091b0ba51c7e908e955a35262ed0ebf2fab0f0a08b93d9",
+      "SHA256NormalizedLF": "207956e24167daf1ae091b0ba51c7e908e955a35262ed0ebf2fab0f0a08b93d9"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_ModeQ_State.m",
+      "SHA256": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b",
+      "SHA256NormalizedLF": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b"
+    },
+    {
+      "Route": "B",
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Route": "B",
+      "Path": "tests/test_CSO_mode_q_reheat.m",
+      "SHA256": "fa4f9d99a75819891fda242170c5110d63353f3e75ffed2db23ff2f1de68db46",
+      "SHA256NormalizedLF": "fa4f9d99a75819891fda242170c5110d63353f3e75ffed2db23ff2f1de68db46"
+    },
+    {
+      "Route": "analysis",
+      "Path": "experiments/analyze_cso_two_routes.py",
+      "SHA256": "33a7ecf7ef810d3fb8a6e825b6de8e35fed062eabd690f5f92adc0c0178e52db"
+    },
+    {
+      "Route": "analysis",
+      "Path": "experiments/verify_cso_two_routes.py",
+      "SHA256": "0e57088a4ab803941a7c83da8dbd9a647f80bdfc31fd2ddf2948f22db78d25fa"
+    },
+    {
+      "Route": "analysis",
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    }
+  ]
+}

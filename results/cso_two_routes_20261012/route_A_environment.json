@@ -1,0 +1,23 @@
+{
+  "Mode": "study",
+  "Jobs": 360,
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "Computer": "PCWIN64",
+  "Workers": 4,
+  "ThreadsPerWorker": 1,
+  "SourceFiles": [
+    "src/ASE_CSO_Simplify.m",
+    "src/ASE_CSO_ModeBudget.m",
+    "src/ASE_CSO_ModeQ.m",
+    "src/ASE_CSO_ModeQ_Progress.m",
+    "src/ASE_CSO_ModeQ_State.m",
+    "src/ASE_CSO_ModeQ_SearchAdapt.m",
+    "src/ASE_CSO_Lean_B10.m",
+    "archive/legacy/CEC2017Function.m",
+    "experiments/run_cso_search_adapt_study.m",
+    "docs/CSO_TWO_ROUTES_PROTOCOL_20261012.md",
+    "tests/test_CSO_search_adapt.m"
+  ],
+  "ObjectiveBinary": "D:\\111\\Desktop\\噜噜\\9.29\\data\\cec2017\\cec17_func.mexw64",
+  "Created": "2026-10-12 16:38:09"
+}

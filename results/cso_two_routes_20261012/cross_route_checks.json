@@ -1,0 +1,6 @@
+{
+  "CommonInitialGroups": 40,
+  "SourceSnapshots": 22,
+  "Passed": true,
+  "Scope": "matching actual p0 and unchanged source snapshots; routes may legitimately have different subsequent trajectories"
+}

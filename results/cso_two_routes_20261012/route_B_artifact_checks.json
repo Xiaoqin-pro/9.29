@@ -1,0 +1,7 @@
+{
+  "RunsChecked": 160,
+  "AllCompleted": true,
+  "SharedInitialGroups": 40,
+  "Passed": true,
+  "Checks": "CSV/MAT/FE/monotone-T/mode counters/every-round global successes/gain telescoping/initial populations/bounds/causal states/rewards/Q terminal replay/shared search scale/linked radius trigger"
+}

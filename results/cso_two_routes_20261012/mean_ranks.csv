@@ -1,0 +1,14 @@
+Condition,Rank
+Rule-reset,4.875
+Random-reset,5.5
+Adapt-epsfixed,5.625
+Old-Q,5.875
+EpsFixed-reset,6.25
+Q-reset,6.625
+Adapt-fixed6,6.875
+Old-fixed6,7.125
+Adapt-phase,7.25
+Adapt-Q,7.625
+Adapt-random,7.625
+Adapt-fixed2,9.75
+Adapt-fixed4,10.0

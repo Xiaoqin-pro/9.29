@@ -1,0 +1,33 @@
+{
+  "Routes": [
+    {
+      "Route": "A",
+      "Candidate": "Adapt-Q",
+      "RequiredControls": [
+        "Adapt-fixed6",
+        "Adapt-random",
+        "Adapt-phase",
+        "Adapt-epsfixed"
+      ],
+      "GatePassed": false,
+      "Rank": 7.625
+    },
+    {
+      "Route": "B",
+      "Candidate": "Q-reset",
+      "RequiredControls": [
+        "Rule-reset",
+        "Random-reset",
+        "EpsFixed-reset",
+        "Old-fixed6"
+      ],
+      "GatePassed": false,
+      "Rank": 6.625
+    }
+  ],
+  "SelectedRoute": null,
+  "BestUnifiedAdaptFixed": "Adapt-fixed6",
+  "NewRuns": 520,
+  "ObjectiveCalls": 52000000,
+  "Scope": "five-seed route development only; independent confirmation not yet run"
+}
