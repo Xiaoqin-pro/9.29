@@ -1,0 +1,2 @@
+Condition,Budget,FunctionWins,FunctionLosses,FunctionTies,SeedWins,SeedLosses,SeedTies,MedianFunctionErrorRatio,GeometricMeanFunctionErrorRatio,MedianPairedTimeRatio,MeanSMP3Seconds,MeanB10Seconds,SevereRegressionFunctions,QualityGate,TimeGate,ConfirmationGate,HolmSignificantSMP3Wins,HolmSignificantB10Wins
+SMP3,100000,2,6,0,34,46,0,1.1807556822926113,1.1620314896840536,0.6969038612148435,5.64713554,7.918946173749999,,False,True,False,0,0

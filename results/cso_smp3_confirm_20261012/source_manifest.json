@@ -1,0 +1,77 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_smp3_confirm_20261012_135517",
+  "NewRuns": 160,
+  "ActualObjectiveCalls": 16000000,
+  "ExtraBestRechecks": 160,
+  "IndependentSeeds": [
+    1201,
+    1202,
+    1203,
+    1204,
+    1205,
+    1206,
+    1207,
+    1208,
+    1209,
+    1210
+  ],
+  "Statistics": "Exact conditional signed-rank sign-flips; zeros removed; midranks on ties; two-sided; Holm over eight functions; uncorrected/adjusted p published. Selection gate is separate from significance.",
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "Bytes": 108,
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/CSO_SMP3_CONFIRM_PROTOCOL_20261012.md",
+      "Bytes": 2657,
+      "SHA256": "e3be3ad1a3236594431d6fe3a6e48d1174599b8971be942080706b3664c70536",
+      "SHA256NormalizedLF": "e3be3ad1a3236594431d6fe3a6e48d1174599b8971be942080706b3664c70536"
+    },
+    {
+      "Path": "experiments/run_cso_smp3_confirmation.m",
+      "Bytes": 6533,
+      "SHA256": "7895525b7f91679479189331057d1388eccb4c8fd7411e885556680d95576c24",
+      "SHA256NormalizedLF": "7895525b7f91679479189331057d1388eccb4c8fd7411e885556680d95576c24"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "Bytes": 7671,
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "Bytes": 10496,
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_simplify.m",
+      "Bytes": 4975,
+      "SHA256": "700f63d09ec85cb13cb4905431e9dab90c0ff13bddf2e71806613a6d7a96193a",
+      "SHA256NormalizedLF": "700f63d09ec85cb13cb4905431e9dab90c0ff13bddf2e71806613a6d7a96193a"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "Bytes": 51712,
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "data/cec2017/D50_manifest.csv",
+      "Bytes": 5391,
+      "SHA256": "ed7ff721a569b8b85721424217ddc5f75a80d685061f3b617841ed9210cbee10"
+    },
+    {
+      "Path": "experiments/analyze_cso_smp3_confirmation.py",
+      "Bytes": 8357,
+      "SHA256": "052036b2184138ff859730a50968a54d7d784ff28846d7412593e36510523628"
+    },
+    {
+      "Path": "experiments/verify_cso_smp3_confirmation.py",
+      "Bytes": 2599,
+      "SHA256": "b7fc6e5212972dfc7cb44b3c953e2fcedfeea726a7dff664a9825c2901881f56"
+    }
+  ]
+}
