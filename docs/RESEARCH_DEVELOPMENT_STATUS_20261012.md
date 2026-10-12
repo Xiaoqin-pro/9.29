@@ -71,3 +71,7 @@ A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过�
 
 ## CLPSO来源审计与100k全函数比较
 用户质疑CLPSO异常差距。旧adapter与多batchhash完全一致，逐维学习/Pc/gap基本符合论文文字，但边界clip偏离论文skip；作者公开源码profile参数与paper不同。108小诊断19.44MFE完成：作者source显著收敛改善（均值票数，不统计显著），300k三个函数各CLPSO均强于B10。旧“全面远超CLPSO”身份须更正。用户授权完整29函数五seed100k，选择CSO固定6T4S/NP50 vs作者代码profileCLPSO/NP40，D50共290run；当前运行中，所有强对照source不随结果改变。
+
+
+## 作者profileCLPSO完整29函数100k已完成
+D50/100k五新seed共290run/29MFE，CSO固定6T4S无Q N50 vs作者代码profileCLPSO N40；全独立artifact/p0prefix/真实FE通过。CSO函数均值与中位22:7、seed102:43，平均7.968秒vsCLPSO2.193秒，不能说更快或Q贡献；五seed精确双侧检验最低p.0625，Holm无显著。CLPSO胜F6/7/10/15/17/19/29，所有结果公开。无运行任务。详见docs/CLPSO_FULL_100K_RESULTS_20261012.md。

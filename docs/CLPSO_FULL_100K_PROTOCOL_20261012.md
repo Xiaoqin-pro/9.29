@@ -13,7 +13,7 @@ CLPSO入口CLPSO_CEC_AuthorSource.m，NP40：作者公开包CLPSO_new_func.m Pc0
 Seed标签2201–2205，InitSeed=21701012+fid*10000+seed，SearchSeed+1000000。两方法从同50点uniform池开始，CLPSO取前40共同前缀，不能写相同population。真实调用预算相同，所有越界CLPSO移动只记录skip不计FE（不调用objective）。guard50*nominalgen未满足预算则fail，不能把未满的结果写valid。
 
 ## 保存与运行
-先D50作者oracle48cases、29function有限值检查（检查调用不算优化run），然后F1/F13两方法600FE四smoke，才正式290run。每12个checkpoint，存jobmanifest、environment、实际运行源码快照、全MAT（T/Best/info/p0）。FE/Evaluations/trace length=100000，零域外真实调用，Best重查1单列。运行clock不含MAT存盘、额外Bestrecheck；CLPSO跳过域外移动仍算CPU时间。输入D50全60rotation/shuffle核对官方hash。
+先D50作者oracle24cases、29function有限值检查（检查调用不算优化run），然后F1/F13两方法600FE四smoke，才正式290run。每12个checkpoint，存jobmanifest、environment、实际运行源码快照、全MAT（T/Best/info/p0）。FE/Evaluations/trace length=100000，零域外真实调用，Best重查1单列。运行clock不含MAT存盘、额外Bestrecheck；CLPSO跳过域外移动仍算CPU时间。输入D50全60rotation/shuffle核对官方hash。
 
 ## 分析
 全29函数均值/标准差/中位数、five paired seed误差、函数均值/中位胜负、全rank、每次FE/first improvement/CPU/skip/iteration记录；逐节点20/60/80/100%曲线按实际FE。Independent Python核对每份MAT/CSV、shared p0 prefix、T单调、每节点、Best/域、模式FE账。精确条件符号秩（zeros剔除/tie中秩/双侧所有sign flips），29函数Holm校正；five seed最小双侧p=.0625，0.05不能检出，均值胜场不得写significant。

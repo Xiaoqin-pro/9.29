@@ -1,0 +1,8 @@
+{
+  "Runs": 290,
+  "CommonInitialPrefixGroups": 145,
+  "ActualObjectiveCalls": 29000000,
+  "ExtraBestRechecks": 290,
+  "Passed": true,
+  "Checks": "All MAT/CSV, source p0 prefix, legal objective calls, exact real-FE cap, monotone complete T, mode counts, Best/nodes"
+}
