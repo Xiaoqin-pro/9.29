@@ -1,0 +1,15 @@
+{
+  "NewRuns": 120,
+  "ActualObjectiveCalls": 12000000,
+  "DominatingQuota": [],
+  "BestFunctionCounts": {
+    "6T4S": 5,
+    "4T6S": 2,
+    "2T8S": 1
+  },
+  "FunctionsWithBestQuotaChangingAcrossNodes": 8,
+  "MultipleQuotasBestOnAtLeastTwoFunctions": true,
+  "ActionComplementarityGate": true,
+  "BestUnifiedFixedQuota": "6T4S",
+  "Scope": "five-seed development; mean-node changes do not prove learnable states or causal mode complementarity; no Q run yet"
+}

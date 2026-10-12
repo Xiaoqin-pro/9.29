@@ -1,0 +1,53 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_mode_quota_study_20261012_140543",
+  "ExtraBestRechecks": 120,
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/CSO_MODE_QUOTA_PROTOCOL_20261012.md",
+      "SHA256": "122cc711b7eb7d64cc036a6044531d25c7e10cc9b603b4e8c42822d528627b98",
+      "SHA256NormalizedLF": "122cc711b7eb7d64cc036a6044531d25c7e10cc9b603b4e8c42822d528627b98"
+    },
+    {
+      "Path": "experiments/run_cso_mode_quota_study.m",
+      "SHA256": "d36a74454d9899beac5144cc8d4ffb167da079e06690ad680d1593d19b928f8d",
+      "SHA256NormalizedLF": "d36a74454d9899beac5144cc8d4ffb167da079e06690ad680d1593d19b928f8d"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_mode_quota.m",
+      "SHA256": "14803684f5b24b4986862ddfa1de356b5de021336ae4840a3218c64ce8b469b4",
+      "SHA256NormalizedLF": "14803684f5b24b4986862ddfa1de356b5de021336ae4840a3218c64ce8b469b4"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "experiments/analyze_cso_mode_quota.py",
+      "SHA256": "8a956ec91a0e54860fb02dc586c8286190d09d95fca7f8e1011016b4f730a0d6"
+    },
+    {
+      "Path": "experiments/verify_cso_mode_quota.py",
+      "SHA256": "9da57f59a9edf502674f6d204ef3fd659b6c67f224f29786f293146a25667a54"
+    }
+  ]
+}

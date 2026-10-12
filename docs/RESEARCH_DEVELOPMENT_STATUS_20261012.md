@@ -31,3 +31,7 @@
 
 ## SMP3独立确认与固定配额继续
 D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时间中位少30.3%，未过质量门，仍用B10骨架；八函数Holm双方无显著，非等效证明。公开results/cso_smp3_confirm_20261012/。下一阶段无Q固定MR，只比较2T8S/4T6S/6T4S（D50/100k八函数五新seed共120run），协议CSO_MODE_QUOTA_PROTOCOL_20261012.md。
+
+
+## 固定配额完成，单小Q开发启动
+固定配额120run/12MFE：统一最佳6T4S（均值排名1.5），4T6S2.0、2T8S2.5；最优函数5/2/1，八函数节点最优改变，满足动作可调性预试门。已写单Q协议：100FE块、6×3表、global±1、alpha.1/gamma.9/eps.1，Fixed2/4/6、Random、Phase、EpsFixed、Q七组×八函数×五新seed=280run；测试111等价/238行为/7日志中性及14smoke通过，当前实验运行中。
