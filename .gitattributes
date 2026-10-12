@@ -1,0 +1,2 @@
+# Preserve official D50 benchmark data byte-for-byte for source hashes.
+data/cec2017/input_data/*_D50.txt -text
