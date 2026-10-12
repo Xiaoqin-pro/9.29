@@ -1,0 +1,7 @@
+Budget,Condition,MeanErrorRank
+100000,B10,1.875
+100000,NoSeekingElite,2.625
+100000,SMP3,1.5
+500000,B10,1.875
+500000,NoSeekingElite,2.875
+500000,SMP3,1.25

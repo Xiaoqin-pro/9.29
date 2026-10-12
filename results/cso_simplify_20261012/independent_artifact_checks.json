@@ -1,0 +1,7 @@
+{
+  "RunsChecked": 144,
+  "AllCompleted": true,
+  "SharedInitialGroups": 48,
+  "Passed": true,
+  "Checks": "CSV/MAT/FE/monotone-T/mode counters/every-round global successes/gain telescoping/initial populations/bounds"
+}

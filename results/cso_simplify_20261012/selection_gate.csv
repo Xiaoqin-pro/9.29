@@ -1,0 +1,3 @@
+Condition,BothBudgetGate,Evidence
+SMP3,False,development only; three seeds; not a noninferiority or significance test
+NoSeekingElite,False,development only; three seeds; not a noninferiority or significance test

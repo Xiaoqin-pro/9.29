@@ -28,6 +28,12 @@ shutil.copy2(run_dir/'raw_runs.csv',out/'raw_runs.csv')
 shutil.copy2(run_dir/'job_manifest.csv',out/'job_manifest.csv')
 shutil.copy2(run_dir/'environment.json',out/'environment.json')
 shutil.copy2(root/'work/cso_simplify_20261012/behavior_checks.json',out/'behavior_checks.json')
+artifact_checks=json.loads((run_dir/'independent_artifact_checks.json').read_text(encoding='utf-8'))
+assert artifact_checks['RunsChecked']==144 and artifact_checks['AllCompleted'] and artifact_checks['Passed']
+shutil.copy2(run_dir/'independent_artifact_checks.json',out/'independent_artifact_checks.json')
+smoke_dirs=sorted(run_dir.parent.glob('cso_simplify_smoke_*'))
+smoke_dir=smoke_dirs[-1];smoke=pd.read_csv(smoke_dir/'raw_runs.csv');assert len(smoke)==6 and smoke.Status.eq('ok').all()
+shutil.copy2(smoke_dir/'raw_runs.csv',out/'smoke_raw_runs.csv')
 summary=raw.groupby(['Budget','FunctionID','Condition']).agg(Runs=('FinalError','size'),MeanError=('FinalError','mean'),StdError=('FinalError','std'),MedianError=('FinalError','median'),MeanSeconds=('Seconds','mean'),MeanError20FE=('Error20FE','mean'),MeanError60FE=('Error60FE','mean'),MeanError80FE=('Error80FE','mean'),MeanSeekingCoverage=('MeanSeekCoverage','mean'),TraceGlobalSuccesses=('TraceGlobalSuccesses','mean'),SeekGlobalSuccesses=('SeekGlobalSuccesses','mean')).reset_index()
 summary['MeanErrorRank']=summary.groupby(['Budget','FunctionID']).MeanError.rank(method='average')
 summary.to_csv(out/'summary.csv',index=False)
@@ -44,7 +50,7 @@ for condition in ['SMP3','NoSeekingElite']:
         means=summary[(summary.Budget==budget)&(summary.Condition.isin([condition,'B10']))].pivot(index='FunctionID',columns='Condition',values='MeanError')
         ratio=(means[condition].clip(lower=0)+1e-12)/(means.B10.clip(lower=0)+1e-12)
         near=(means[condition]<=1e-8)&(means.B10<=1e-8)
-        severe=ratio.gt(10)&~near
+        severe=ratio.gt(10)&means[condition].gt(1e-8)&means.B10.gt(1e-8)
         fw=int((means[condition]<means.B10).sum());fl=int((means[condition]>means.B10).sum());ft=8-fw-fl
         sw=int((g.FinalError_candidate<g.FinalError_b10).sum());sl=int((g.FinalError_candidate>g.FinalError_b10).sum());st=len(g)-sw-sl
         median_ratio=float(ratio.median());time_ratio=float(g.TimeRatio.median())

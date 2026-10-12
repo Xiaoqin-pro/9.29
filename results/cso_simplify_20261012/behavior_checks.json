@@ -1,0 +1,7 @@
+{
+  "DefaultExactPairs": 86,
+  "BehaviorCases": 240,
+  "AuditNeutral": 3,
+  "DeletionWitnesses": 2,
+  "Passed": true
+}

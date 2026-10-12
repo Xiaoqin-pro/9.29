@@ -1,0 +1,61 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\cso_simplify_study_20261012_131853",
+  "NewOptimizationRuns": 144,
+  "SmokeRuns": 6,
+  "ActualObjectiveCalls": 43200000,
+  "ExtraBestRechecks": 144,
+  "ZeroErrorClipping": "Only ratios use max(error,0)+1e-12. Raw costs/errors unchanged.",
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "Bytes": 108,
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/CSO_SIMPLIFY_PROTOCOL_20261012.md",
+      "Bytes": 3734,
+      "SHA256": "5b2d36fc1124645e1698f3aa93b1ca12d1c6669b3d1e1dc97b3d02f72f95ad31",
+      "SHA256NormalizedLF": "5b2d36fc1124645e1698f3aa93b1ca12d1c6669b3d1e1dc97b3d02f72f95ad31"
+    },
+    {
+      "Path": "experiments/run_cso_simplify_study.m",
+      "Bytes": 6561,
+      "SHA256": "c2634bc5626d1fe48071e7c94661e7983c7ee81eb8aa95ab7cef46c0b2f84110",
+      "SHA256NormalizedLF": "c2634bc5626d1fe48071e7c94661e7983c7ee81eb8aa95ab7cef46c0b2f84110"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "Bytes": 7671,
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "Bytes": 10496,
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_simplify.m",
+      "Bytes": 4975,
+      "SHA256": "700f63d09ec85cb13cb4905431e9dab90c0ff13bddf2e71806613a6d7a96193a",
+      "SHA256NormalizedLF": "700f63d09ec85cb13cb4905431e9dab90c0ff13bddf2e71806613a6d7a96193a"
+    },
+    {
+      "Path": "data/cec2017/cec17_func.mexw64",
+      "Bytes": 51712,
+      "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+    },
+    {
+      "Path": "data/cec2017/D50_manifest.csv",
+      "Bytes": 5391,
+      "SHA256": "ed7ff721a569b8b85721424217ddc5f75a80d685061f3b617841ed9210cbee10"
+    },
+    {
+      "Path": "experiments/analyze_cso_simplify.py",
+      "Bytes": 8082,
+      "SHA256": "f328b466a878a979c4518c1c28fec1895a07215b1105c605f4aa22600dc5f409"
+    }
+  ]
+}
