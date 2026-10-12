@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-12",
+  "purpose": "Byte-for-byte local stored source snapshots for offline reassessment; no new optimization runs.",
+  "files": [
+    {
+      "original": "results/cec/cec2017_v41_fixed_mr_20261008_112746/raw_runs.csv",
+      "snapshot": "source_snapshots/legacy_fixed_mr_raw.csv",
+      "bytes": 7485,
+      "sha256": "1991f8eb95e9caec9e83fa90341bc42d15dc06abfe4fe990520d9a679dfbc436"
+    },
+    {
+      "original": "results/cec/cec2017_v41_state_ablation_20261008_110725/raw_runs.csv",
+      "snapshot": "source_snapshots/legacy_state_ablation_raw.csv",
+      "bytes": 5917,
+      "sha256": "13e016bb271c4a519bfb41c1d086d8d3b15d7570d60ac2f1e4b67b859c67fb31"
+    },
+    {
+      "original": "results/cec/cec2017_v41_baseline_norecovery_20261008_105500/raw_runs.csv",
+      "snapshot": "source_snapshots/legacy_no_recovery_raw.csv",
+      "bytes": 8551,
+      "sha256": "8ac6c29e926dc17c7bdd6fb91595f7a944a274b7af2c24c55bea6f60ee9aad11"
+    },
+    {
+      "original": "results/cec/cec2017_quota_pretest_20261009_210932/raw_runs.csv",
+      "snapshot": "source_snapshots/legacy_quota_raw.csv",
+      "bytes": 13381,
+      "sha256": "43f4e58dca6c840e652564f2ec9348b8227dba9e311c961a624dfca1c46b1a18"
+    },
+    {
+      "original": "results/cec/cec2017_smp3_20261009_103050/comparison_smp3_vs_smp5.csv",
+      "snapshot": "source_snapshots/legacy_smp3_comparison.csv",
+      "bytes": 721,
+      "sha256": "5e20fc0dd1b7b039d24068bbae43c456c61589e80ed4431a85bb11edcbbd9287"
+    },
+    {
+      "original": "results/cec/cec2017_smp3_20261009_103050/README.md",
+      "snapshot": "source_snapshots/legacy_smp3_report.md",
+      "bytes": 2754,
+      "sha256": "1f07c56580a97079acdadb888df079b572573b9441ce4c23d4262ec95a62dd9a"
+    }
+  ]
+}

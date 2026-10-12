@@ -1,0 +1,6 @@
+Control,Pairs,QFunctionWins,ControlFunctionWins,QSeedWins,ControlSeedWins
+Fixed-MR0.2,18,5,1,13,5
+Fixed-MR0.4,18,2,4,10,8
+Fixed-MR0.6,18,2,4,9,9
+V4.1-EpsFixed-NoRecovery,18,2,4,10,8
+V4.1-Random-NoRecovery,18,3,3,10,8

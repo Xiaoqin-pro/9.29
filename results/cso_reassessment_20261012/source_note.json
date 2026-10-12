@@ -1,0 +1,8 @@
+{
+  "analysis": "Historical stored observations; no new optimization runs; means and raw paired comparisons, not significance tests. Old latest source is not an immutable run snapshot; archived results are not new mechanism verification. MR changes both candidate-mode populations and true-FE quota in old V4.1.",
+  "source_raw": [
+    "results/cec/cec2017_v41_fixed_mr_20261008_112746/raw_runs.csv",
+    "results/cec/cec2017_v41_state_ablation_20261008_110725/raw_runs.csv",
+    "results/cec/cec2017_v41_baseline_norecovery_20261008_105500/raw_runs.csv"
+  ]
+}
