@@ -1,0 +1,6 @@
+Condition,Decisions,FreeDecisions,ForcedFixed6Decisions,QUpdates,PositiveRewardBlocks
+500-gate2,651.575,87.15,564.425,0.0,157.925
+500-gate4,675.8,81.075,594.725,0.0,161.975
+500-gateeps6,686.025,78.5,607.525,0.0,167.0
+500-gateq,683.05,79.325,603.725,79.325,162.875
+500-gaterandom,676.55,80.9,595.65,0.0,162.975

@@ -1,0 +1,92 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\quota_q_smooth_rate_study_20261012_220156",
+  "Sources": [
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "Path": "docs/QUOTA_Q_SMOOTH_RATE_PROTOCOL_20261012.md",
+      "SHA256": "4c8638d52bda36db46d8d71f190c47faf0052081b72115bd2c509943b12d01fe",
+      "SHA256NormalizedLF": "4c8638d52bda36db46d8d71f190c47faf0052081b72115bd2c509943b12d01fe"
+    },
+    {
+      "Path": "experiments/run_quota_q_smooth_rate_study.m",
+      "SHA256": "d567cdaebdba9a59b98a21dcf49255497b1090d1b6b86e2adee50e95460cf7e8",
+      "SHA256NormalizedLF": "d567cdaebdba9a59b98a21dcf49255497b1090d1b6b86e2adee50e95460cf7e8"
+    },
+    {
+      "Path": "src/ASE_CSO_Lean_B10.m",
+      "SHA256": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+      "SHA256NormalizedLF": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29",
+      "SHA256NormalizedLF": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ.m",
+      "SHA256": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7",
+      "SHA256NormalizedLF": "fb26ac25e82dcce51c4b081c9d9dddabd754fff83f81d3379fb49726fbe327b7"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_Episode.m",
+      "SHA256": "2c95c25adeeccd0c7ccf3c660d5d01e1690134c4979eb0b9f87a068ddf22e3cc",
+      "SHA256NormalizedLF": "2c95c25adeeccd0c7ccf3c660d5d01e1690134c4979eb0b9f87a068ddf22e3cc"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_EpisodeBonus.m",
+      "SHA256": "1ce116b89b56047474eeb5e89f87a2c9eb6667ab52e6b205579f379889ab4854",
+      "SHA256NormalizedLF": "1ce116b89b56047474eeb5e89f87a2c9eb6667ab52e6b205579f379889ab4854"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_Progress.m",
+      "SHA256": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace",
+      "SHA256NormalizedLF": "b7e234826ca819c78d1f6bd345c655b5457694b9e60aefbf5d85013329f7dace"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_SmoothRate.m",
+      "SHA256": "8ae4190ee58ca5956a9f8bc0a3f1ae8c2db796f7989924c2fc112fa6e3e1330a",
+      "SHA256NormalizedLF": "8ae4190ee58ca5956a9f8bc0a3f1ae8c2db796f7989924c2fc112fa6e3e1330a"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_StallGate.m",
+      "SHA256": "79b3a2abff3aa507f6e7a194e00215473a5395e20f8a8ccc09c1e55518174d12",
+      "SHA256NormalizedLF": "79b3a2abff3aa507f6e7a194e00215473a5395e20f8a8ccc09c1e55518174d12"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_State.m",
+      "SHA256": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b",
+      "SHA256NormalizedLF": "8a1969a944dcb0864a2aa595d2fc302556d05e98a0213d0ca86181b3f5043a1b"
+    },
+    {
+      "Path": "src/ASE_CSO_ModeQ_VisitRate.m",
+      "SHA256": "51b24ae3d07a5bfb200476de8935fcbb93939e9e1a4240620aec004377639477",
+      "SHA256NormalizedLF": "51b24ae3d07a5bfb200476de8935fcbb93939e9e1a4240620aec004377639477"
+    },
+    {
+      "Path": "src/ASE_CSO_Simplify.m",
+      "SHA256": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029",
+      "SHA256NormalizedLF": "85f618897dbb0798316cd8b556072c90cd03a1e448422aacae28d9d847048029"
+    },
+    {
+      "Path": "tests/test_CSO_quota_smooth_rate.m",
+      "SHA256": "296e32207848e0f220c09884354a3d2cc2e654ededff2daece79c6ff340c4e06",
+      "SHA256NormalizedLF": "296e32207848e0f220c09884354a3d2cc2e654ededff2daece79c6ff340c4e06"
+    },
+    {
+      "Path": "results/quota_q_visit_rate_20261012/all_quality_runs.csv",
+      "SHA256": "b4e7dd37774a9ad27287371078faafecbeb609a24b25a3bfd94036b12509eb8d"
+    },
+    {
+      "Path": "experiments/analyze_quota_q_smooth_rate.py",
+      "SHA256": "92e6ec3d9470a2c848bc7b98181bd477983edc1aeaf8e5ef5b895682082d6606"
+    },
+    {
+      "Path": "experiments/verify_quota_q_smooth_rate.py",
+      "SHA256": "31c3a0fee0969a30f4ec6df12709f4df9771d499cb07d0aed2e3aff341d84b33"
+    }
+  ]
+}

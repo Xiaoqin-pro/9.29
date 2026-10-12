@@ -1,0 +1,17 @@
+Condition,Rank
+500-gaterandom,5.125
+100-gateeps6,5.75
+VisitRate-Bonus10-100,6.625
+100-gaterandom,7.0
+Bonus10-100,7.0
+fixed6,7.75
+500-gate4,7.75
+500-gateeps6,8.0
+500-gateq,8.75
+100-gate4,9.0
+SmoothRate-Bonus10-100,9.375
+100-gate2,9.5
+500-gate2,10.0
+Bonus10-500,10.625
+100-gateq,10.875
+alwaysQ,12.875

@@ -1,0 +1,25 @@
+{
+  "Mode": "study",
+  "Jobs": 80,
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "Computer": "PCWIN64",
+  "Workers": 4,
+  "ThreadsPerWorker": 1,
+  "SourceFiles": [
+    "src/ASE_CSO_Simplify.m",
+    "src/ASE_CSO_ModeBudget.m",
+    "src/ASE_CSO_ModeQ.m",
+    "src/ASE_CSO_ModeQ_Progress.m",
+    "src/ASE_CSO_ModeQ_State.m",
+    "src/ASE_CSO_ModeQ_StallGate.m",
+    "src/ASE_CSO_ModeQ_Episode.m",
+    "src/ASE_CSO_ModeQ_EpisodeBonus.m",
+    "src/ASE_CSO_Lean_B10.m",
+    "archive/legacy/CEC2017Function.m",
+    "experiments/run_quota_q_episode_bonus.m",
+    "docs/QUOTA_Q_EPISODE_BONUS_PROTOCOL_20261012.md",
+    "tests/test_CSO_quota_episode_bonus.m"
+  ],
+  "ObjectiveBinary": "D:\\111\\Desktop\\噜噜\\9.29\\data\\cec2017\\cec17_func.mexw64",
+  "Created": "2026-10-12 21:30:13"
+}

@@ -87,3 +87,11 @@ MR仍.4，Q纯配额。145matched原Q日志healthy约65.5%、healthyFixed6仅36.
 
 ## Q失分定位与stall-only试验完成
 原全29Q TraceFE41.1%vsFixed660%，65.5%healthy决策中Fixed6仅36.4%，中段开始落后。仅healthy固定6/stallQ共200newrun/20MFE、80cache质量；59等价/75case/10smoke及全Q独立核验通过。gateQ vs旧Q7:1/23:17有改善，仍vsFixed6=3:5/15:25、同gateRandom3:5/16:24、GateEps6=0:8/16:24，门未过，不能把gate规则收益归Q。当前无运行任务。详见QUOTA_Q_GAP_ANALYSIS_20261012.md。
+
+
+## 本轮修Q三单因素320run结束
+500FEholding200/20M、真gain+10两setting80/8M、visit-countα短窗40/4M全部独立核验通过，16smoke单列。最新healthyFixed6/stallQ100FE/+10/visit-rate候选相对原Q6:2/25:15、上一gateQ7:1/27:13、Fixed6=4:4/24:16、同Random4:4/24:16，但仍未勝同Eps与500Random强rank，联合门未过。是有希望开发候选非修好/SCI验收，保留所有source/失败/缓存，未覆盖原全29Q；无运行任务。详见QUOTA_Q_REPAIR_PROGRESS_20261012.md。
+
+
+## 本轮最终修正360run结束（覆盖前一候选建议）
+新增smooth40后共360new/36MFE，18smoke全部检查通过，无运行任务。VisitRate F30mean约Fixed64倍；Smooth仍F30seed大退化且门未过，因此最终保留较稳Bonus10-100固定α.1为开发候选。它vsoldQ6:2/27:13、Fixed6=5:3/20:20，但同Random4:4/16:24与Eps3:5/18:22未胜，不能说Q修好。撤下visit/smooth/held500作主候选、保留全失败数据；详见QUOTA_Q_REPAIR_FINAL_20261012.md。

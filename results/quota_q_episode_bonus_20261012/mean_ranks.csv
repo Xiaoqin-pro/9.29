@@ -1,0 +1,15 @@
+Condition,Rank
+500-gaterandom,4.25
+100-gateeps6,5.125
+100-gaterandom,6.125
+Bonus10-100,6.25
+500-gateeps6,6.75
+fixed6,6.875
+500-gate4,7.0
+500-gateq,7.625
+100-gate4,7.875
+100-gate2,8.25
+500-gate2,8.75
+Bonus10-500,9.25
+100-gateq,9.5
+alwaysQ,11.375

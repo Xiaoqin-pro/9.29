@@ -1,0 +1,18 @@
+{
+  "NewRuns": 40,
+  "NewObjectiveCalls": 4000000,
+  "CachedRows": 560,
+  "RequiredControls": [
+    "fixed6",
+    "alwaysQ",
+    "100-gateq",
+    "Bonus10-100",
+    "100-gaterandom",
+    "100-gate2",
+    "100-gate4",
+    "100-gateeps6",
+    "500-gaterandom"
+  ],
+  "GatePassed": false,
+  "Scope": "same-seed visit-dependent update development, no independent confirmation yet"
+}

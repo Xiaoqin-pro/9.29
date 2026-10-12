@@ -1,0 +1,16 @@
+{
+  "NewRuns": 200,
+  "NewObjectiveCalls": 20000000,
+  "CachedRows": 280,
+  "RequiredControls": [
+    "fixed6",
+    "alwaysQ",
+    "100-gateq",
+    "500-gaterandom",
+    "500-gate2",
+    "500-gate4",
+    "500-gateeps6"
+  ],
+  "GatePassed": false,
+  "Scope": "same-seed held-action duration development; current Q is not assumed fixed"
+}
