@@ -1,0 +1,7 @@
+{
+  "Cases": 273,
+  "TailWitnesses": 2,
+  "BatchExactRegressions": 6,
+  "AuditNeutralReplays": 7,
+  "Passed": true
+}

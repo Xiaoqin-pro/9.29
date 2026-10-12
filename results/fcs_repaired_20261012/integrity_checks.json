@@ -1,0 +1,15 @@
+{
+  "Runs": 341,
+  "PilotRuns": 320,
+  "DiagnosticRuns": 21,
+  "AuditedDecisionRows": 64530,
+  "ActualCalls": 19452000,
+  "AllIndependentBudgetChecks": true,
+  "AllTraceAndBestChecks": true,
+  "AllDomainChecks": true,
+  "Fallbacks": 0,
+  "ActionMismatches": 0,
+  "QFallbackCredits": 0,
+  "ExecutionRepair": "passed",
+  "ClaimStatus": "development pilot; not a confirmed paper innovation"
+}

@@ -1,0 +1,30 @@
+{
+  "docs\\FCS_REPAIR_PROTOCOL_20261012.md": {
+    "sha256_execution_bytes": "acf281431f8caa105edc543fef3ef58400a9ced33be1524b453afe6cf6919cde",
+    "sha256_LF_normalized": "acf281431f8caa105edc543fef3ef58400a9ced33be1524b453afe6cf6919cde"
+  },
+  "experiments\\analyze_fcs_repaired.py": {
+    "sha256_execution_bytes": "26b5dcfcda32c8d7d05b09ca98f518ff8d8205545012018835c58b79b315bde4",
+    "sha256_LF_normalized": "26b5dcfcda32c8d7d05b09ca98f518ff8d8205545012018835c58b79b315bde4"
+  },
+  "experiments\\run_fcs_repaired_pilot.m": {
+    "sha256_execution_bytes": "a027877dbd0b3fca5b52415a8052c30a92c04033da212ebf93c5ad076a49b025",
+    "sha256_LF_normalized": "a027877dbd0b3fca5b52415a8052c30a92c04033da212ebf93c5ad076a49b025"
+  },
+  "src\\ASE_CSO_FCSQ.m": {
+    "sha256_execution_bytes": "a1dba4295cbc57b1384550f299e11877978cda8dcfe37c920ffa93aede301a61",
+    "sha256_LF_normalized": "ac997b9c34a979c48aa0c7a90478849943d55df750d04be41af46313959e08cf"
+  },
+  "src\\ASE_CSO_Lean_B10.m": {
+    "sha256_execution_bytes": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+    "sha256_LF_normalized": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+  },
+  "tests\\test_FCS_repair.m": {
+    "sha256_execution_bytes": "eaed10f41467277db91f1b51a364a8dd34c55f1cdd8e15e9dd5591a1134f00a3",
+    "sha256_LF_normalized": "eaed10f41467277db91f1b51a364a8dd34c55f1cdd8e15e9dd5591a1134f00a3"
+  },
+  "archive\\legacy\\CEC2017Function.m": {
+    "sha256_execution_bytes": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+    "sha256_LF_normalized": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  }
+}
