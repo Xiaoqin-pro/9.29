@@ -63,3 +63,7 @@ A360/B160共52MFE，26smoke单列；全artifact/cross40p0/22源码检查通过�
 
 ## 模式效率state 440run已完成
 44MFE+440Best recheck，22smoke另列；全独立窗口/state/Q检查通过。effQ vsFixed4函数7:1/seed25:15、vsRandom5:3/25:15，vsFixed6仅1:7/18:22，vs同effrule2:6/16:24；rank5.375，联合门未过，保持pure配额原骨架。effrule局部有用但未胜EpsFixed，不能说Q必要。无当前运行任务，不追加window/阈值网格；详见CSO_MODE_EFFICIENCY_RESULTS_20261012.md。
+
+
+## Q学习行为诊断和uniform lower init结束
+原/新各40run/40kdecision RandStream+Q精确重放；uniform−10初值40新run/4MFE，111 default等价/109cases通过。greedy换动作63.8%→10.9%，但相对原effQ函数4:4/seed18:22、Fixed6=1:7/13:27，联合门未过。行为稳定不等于优化成功，恢复原zero init，不扫描更多初值；无运行任务。公开results/cso_q_learning_20261012/与CSO_Q_LEARNING_RESULTS_20261012.md。

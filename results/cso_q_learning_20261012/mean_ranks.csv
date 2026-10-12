@@ -1,0 +1,13 @@
+Condition,Rank
+epsfixed,3.5
+fixed6,4.5
+effrule,4.625
+effQ,5.875
+stallQ,5.875
+phase,6.125
+previousQ,6.875
+LowerInit-effQ,7.0
+fixed4,7.375
+random,8.0
+fixed2,8.875
+reverseeff,9.375

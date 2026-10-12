@@ -1,0 +1,16 @@
+{
+  "Candidate": "LowerInit-effQ",
+  "InitialQ": -10,
+  "RequiredControls": [
+    "fixed6",
+    "random",
+    "phase",
+    "epsfixed",
+    "effrule"
+  ],
+  "GatePassed": false,
+  "NewRuns": 40,
+  "NewObjectiveCalls": 4000000,
+  "CachedRows": 440,
+  "Scope": "same-seed single-factor development; not independent confirmation"
+}

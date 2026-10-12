@@ -1,0 +1,6 @@
+{
+  "ZeroInitExactPairs": 111,
+  "Cases": 109,
+  "FlatBellmanLowerBound": true,
+  "Passed": true
+}

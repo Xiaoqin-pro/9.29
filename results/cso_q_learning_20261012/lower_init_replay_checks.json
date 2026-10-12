@@ -1,0 +1,6 @@
+{
+  "Runs": 40,
+  "Decisions": 40000,
+  "ExactPolicyRNGReplay": true,
+  "ExactQReplay": true
+}

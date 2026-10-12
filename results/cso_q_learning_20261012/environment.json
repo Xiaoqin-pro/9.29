@@ -1,0 +1,24 @@
+{
+  "Mode": "study",
+  "Jobs": 40,
+  "MATLAB": "25.2.0.2998904 (R2025b)",
+  "Computer": "PCWIN64",
+  "Workers": 4,
+  "ThreadsPerWorker": 1,
+  "SourceFiles": [
+    "src/ASE_CSO_Simplify.m",
+    "src/ASE_CSO_ModeBudget.m",
+    "src/ASE_CSO_ModeQ.m",
+    "src/ASE_CSO_ModeQ_Progress.m",
+    "src/ASE_CSO_ModeQ_State.m",
+    "src/ASE_CSO_ModeQ_Efficiency.m",
+    "src/ASE_CSO_ModeQ_InitialValue.m",
+    "src/ASE_CSO_Lean_B10.m",
+    "archive/legacy/CEC2017Function.m",
+    "experiments/run_cso_q_initial_value_study.m",
+    "docs/CSO_Q_INITIAL_VALUE_PROTOCOL_20261012.md",
+    "tests/test_CSO_q_initial_value.m"
+  ],
+  "ObjectiveBinary": "D:\\111\\Desktop\\噜噜\\9.29\\data\\cec2017\\cec17_func.mexw64",
+  "Created": "2026-10-12 17:53:04"
+}
