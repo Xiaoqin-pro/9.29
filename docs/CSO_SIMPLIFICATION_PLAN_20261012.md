@@ -20,8 +20,8 @@
 
 |原始来源|已核对内容|对当前项目的用途|
 |---|---|---|
-|Ji et al., Adaptive Cat Swarm Optimization Algorithm and Its Applications in Vehicle Routing Problems, Mathematical Problems in Engineering, 2020, 1291526; DOI 10.1155/2020/1291526|作者中有Qing-Wei Chai；论文提出CSO/APSO混合ACSO，限制Tracing半径并自适应调整随机参数与记忆因子|可以以老师参与的已有CSO改进为背景；不建议把其中整套机制追加到当前框架|
-|Tsai, Xue, Zhang & Istanda, Adjustable mode ratio and focus boost search strategy for cat swarm optimization, Applied Computing and Intelligence 1(1):75–94, 2021; DOI 10.3934/aci.2021005|可调模式比例、聚焦增强Seeking、Tracing动量简化；在六个基准函数测试|可调模式比例已有先例；其中简化Tracing的思路适合一次删机制检查。移植一个改动只能称参考该论文的变体，不能称完整复现CSO-M|
+|Ji et al., Adaptive Cat Swarm Optimization Algorithm and Its Applications in Vehicle Routing Problems, Mathematical Problems in Engineering, 2020, 1291526; DOI 10.1155/2020/1291526|作者中有Qing-Wei Chai；论文提出CSO/APSO混合ACSO，限制Tracing半径并自适应调整随机参数与记忆因子|可以以与导师稿件有重叠作者的已有CSO改进为背景；不建议把其中整套机制追加到当前框架|
+|Tsai, Xue, Zhang & Istanda, Adjustable mode ratio and focus boost search strategy for cat swarm optimization, Applied Computing and Intelligence 1(1):75–94, 2021; DOI 10.3934/aci.2021005|可调模式比例、聚焦搜索增强、Tracing动量简化；在六个基准函数测试|可调模式比例已有先例；其中简化Tracing的思路适合一次删机制检查。移植一个改动只能称参考该论文的变体，不能称完整复现CSO-M|
 |Yin et al., Reinforcement-learning-based parameter adaptation method for particle swarm optimization, Complex & Intelligent Systems 9:5585–5609, 2023; DOI 10.1007/s40747-023-01012-8|RL控制PSO参数，DDPG类实现|说明RL调群体参数已广泛存在，不能只凭加入Q或改参数宣称新颖|
 |Song et al., Reinforcement learning-assisted evolutionary algorithm: A survey and research opportunities, Swarm and Evolutionary Computation 86:101517, 2024; DOI 10.1016/j.swevo.2024.101517; 作者稿arXiv:2308.13420|参数适应、算子选择、子群管理等已有路线|把贡献写成具体的评价资源决策与验证，不写泛泛的RL+CSO|
 |Hao, Zhang & Zhou, Un-evaluated solutions may be valuable in expensive optimization, Swarm and Evolutionary Computation 94:101905, 2025; DOI 10.1016/j.swevo.2025.101905|出版社摘要：USEA保留并利用未评价解，结合代理与预筛选|“利用未评价解”并非空白；本项目可以强调不训练代理、实际FE配额，但需要正式近邻查新|
