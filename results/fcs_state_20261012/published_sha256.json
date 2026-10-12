@@ -1,0 +1,17 @@
+{
+  "combined_quality_runs.csv": "5b39ea40aecb85ed5b68b75662f9d1f47df791d0a5d6bcc46e936baad6db28bb",
+  "confirmation_gate.csv": "4577962df12a53c56c39e7ae09f7310db55943a217a0a0a09744f2e19caff24f",
+  "integrity_checks.json": "45dc1c752ae9e0a8a6cd283d3427458a08af1c7526ecc08cddb062073feb2058",
+  "INTERPRETATION.md": "38930f06b3022fb23ecf8d3fe8c94fb9c73ab1afb60aacc01a9e8b7c095a38fd",
+  "job_manifest.csv": "a20749c8b8ce7384dd106328b877b18e5a52bac1a0d888d7bd3aea058a520f87",
+  "mean_error_table.csv": "e0f80dc9d0643e7f3a0dfa74de22478b07c814d1b7356aeb576a8b20db0a02ad",
+  "overall_summary.csv": "7141b873ff39bb6f395a8d03e51acd8745caa31460b4172c069b35645b558d2c",
+  "pairwise_comparison.csv": "07b99918cf5d5dcec18441c7095b5e8b949d0291995ff66dfdb73cec736c7103",
+  "raw_runs.csv": "7f73b4be9cf59771164c310545ef208a7840585b99d0c7c08cb12de21d94daa5",
+  "README.md": "9c9f4d791490a8c938ea6db6f1dfe97c49f982ca20da83176feff3a16284a48b",
+  "RESULTS_REPORT.md": "49305634ea88fcce9a60d1dd4f3bdc124c8febb95f83d007da626b0915db0788",
+  "selection.json": "7a73b14abf1ea5c79929d083445711704dcad249a0c30b9d4530f4c998f00566",
+  "source_manifest.json": "02992e70b66251fa0a6df806a514f1bdfb85d5ad87ef125e0f01f7e0f6f666f2",
+  "state_checks.json": "e409981ccbe8efeaf77bd5d49081247d53c47ccaf261b6b8a5c76de6032717ef",
+  "summary_by_function.csv": "b1876180be3f2af120707cb58ab126ab9664cfb4a06e365feaedbb7add30e326"
+}

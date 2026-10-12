@@ -1,0 +1,4 @@
+Condition,BatchFunctionWins,BatchFunctionLosses,BatchSeedWins,BatchSeedLosses,RandomFunctionWins,RandomFunctionLosses,RandomSeedWins,RandomSeedLosses,Rule-qualityFunctionWins,Rule-qualityFunctionLosses,Rule-qualitySeedWins,Rule-qualitySeedLosses,DevelopmentComparisonsPassed,EligibleForConfirmation
+Q-success,3,5,22,18,5,3,23,17,4,4,20,20,False,False
+Q-phase,2,6,17,23,2,6,17,23,3,5,18,22,False,False
+Q-quality,2,6,20,20,3,5,17,23,5,3,22,18,False,False

@@ -1,0 +1,15 @@
+Condition,Control,FunctionWins,FunctionLosses,FunctionTies,SeedWins,SeedLosses,SeedTies
+Q-success,Batch,3,5,0,22,18,0
+Q-success,Random,5,3,0,23,17,0
+Q-success,Rule-quality,4,4,0,20,20,0
+Q-success,B10,5,3,0,21,19,0
+Q-phase,Batch,2,6,0,17,23,0
+Q-phase,Random,2,6,0,17,23,0
+Q-phase,Rule-quality,3,5,0,18,22,0
+Q-phase,Q-success,0,8,0,11,29,0
+Q-phase,B10,2,6,0,13,27,0
+Q-quality,Batch,2,6,0,20,20,0
+Q-quality,Random,3,5,0,17,23,0
+Q-quality,Rule-quality,5,3,0,22,18,0
+Q-quality,Q-success,4,4,0,19,21,0
+Q-quality,B10,4,4,0,17,23,0

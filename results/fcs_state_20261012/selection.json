@@ -1,0 +1,9 @@
+{
+  "Mode": "study",
+  "NewRuns": 160,
+  "CachedRuns": 320,
+  "SelectedCondition": null,
+  "EligibleConditions": [],
+  "Rule": "Only Q-quality is the prespecified candidate; it must win more function means and paired seeds than it loses against Batch, Random AND Rule-quality.",
+  "ClaimStatus": "Development selection only; requires independent-seed confirmation"
+}

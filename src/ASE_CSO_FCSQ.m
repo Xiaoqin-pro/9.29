@@ -5,6 +5,7 @@ function [Best,T,info]=ASE_CSO_FCSQ(f,state,~,N,seed)
 % candidate order. B10 is a quality reference, not a one-factor ablation.
 % state.fcsPolicy: batch, continue, switch, random, success, reverse, or q.
 % state.auditDecisions enables point-level decision and round logs.
+% state.fcsState: success(default), quality, or phase-only.
 % Development rewards: parent_binary, global_binary, or global_gain.
 % rewardBonus scales positive credit; gainScaleDecay updates past-positive gain scale.
 
@@ -13,6 +14,8 @@ pop=state.initialPopulation; D=size(pop,2); lb=state.lowerBound; ub=state.upperB
 budget=state.maxEvaluations; policy='q';
 if isfield(state,'fcsPolicy'), policy=char(state.fcsPolicy); end
 auditDecisions=isfield(state,'auditDecisions') && state.auditDecisions;
+fcsState='success';if isfield(state,'fcsState'),fcsState=char(state.fcsState);end
+assert(ismember(fcsState,{'success','quality','phase'}));
 alpha=.10; gamma=.90; epsilon=.10;
 if isfield(state,'alpha'), alpha=state.alpha; end
 if isfield(state,'gamma'), gamma=state.gamma; end
@@ -27,7 +30,8 @@ assert(isscalar(gainScaleDecay) && gainScaleDecay>0 && gainScaleDecay<=1);
 assert(alpha>0 && alpha<=1 && gamma>=0 && gamma<=1 && epsilon>=0 && epsilon<=1);
 assert(N==50 && size(pop,1)==N,'FCS-CSO uses a population of 50.');
 assert(D>=1 && budget>=N && budget==floor(budget));
-assert(ismember(policy,{'batch','continue','switch','random','success','reverse','q'}));
+assert(ismember(policy,{'batch','continue','switch','random','success','reverse','signal','reverse_signal','q'}));
+if strcmp(policy,'q') && ~strcmp(fcsState,'success'),assert(gamma==0,'FCS:StateBackup','Experimental quality/phase state uses immediate gamma=0 credit.');end
 assert(all(isfinite(pop),'all') && all(pop>=lb & pop<=ub,'all'));
 rng(seed,'twister');
 
@@ -49,10 +53,10 @@ sameParentSecond=0; otherParentSecond=0; openedParents=0; actualMaxParentCount=0
 conditionalCounts=zeros(6,2); conditionalSuccesses=zeros(6,2); conditionalGain=zeros(6,2);
 conditionalGlobalSuccesses=zeros(6,2);conditionalGlobalGain=zeros(6,2);gainScale=0;rewardTotal=0;positiveRewards=0;negativeRewards=0;
 decisionColumns={'Round','StarterFE','State','StarterParent','StarterRow','StarterSuccess','RequestedAction','ExecutedAction','FollowParent','FollowRow','FollowCountBefore','Fallback','FollowSuccess','Reward','NextState','FollowFE','StarterAnchor','StarterCost','FollowAnchor','FollowCost','StarterCountBefore'};
-decisionLog=zeros(0,numel(decisionColumns));starterPoints=zeros(0,D);followPoints=zeros(0,D);roundLog=zeros(0,7);rewardLog=zeros(0,6);decisionNumber=0;
+decisionLog=zeros(0,numel(decisionColumns));starterPoints=zeros(0,D);followPoints=zeros(0,D);roundLog=zeros(0,7);rewardLog=zeros(0,6);stateSignalLog=zeros(0,2);signalCounts=zeros(1,2);decisionNumber=0;
 if auditDecisions
  decisionLog=zeros(ceil(budget/2),numel(decisionColumns));starterPoints=zeros(ceil(budget/2),D);followPoints=zeros(ceil(budget/2),D);
- roundLog=zeros(max(1,ceil((budget-N)/10)),7);rewardLog=zeros(ceil(budget/2),6);
+ roundLog=zeros(max(1,ceil((budget-N)/10)),7);rewardLog=zeros(ceil(budget/2),6);stateSignalLog=zeros(ceil(budget/2),2);
 end
 
 while fe<budget
@@ -116,9 +120,13 @@ while fe<budget
                 selectedMask(i)=true; counts(i)=counts(i)+1; usedRows(row)=true; starterCountTotal=starterCountTotal+1;
                 firstVisits=firstVisits+double(starterCountBefore==0);starterFE=fe;
                 if pair<=targetSeek-starterCount
-                    phase=min(2,floor(3*progress)); stateIndex=1+2*phase+double(~improved);
+                    signal=improved;qualityThreshold=NaN;
+                    if strcmp(fcsState,'quality'),[signal,qualityThreshold]=fcs.relativeQuality(starterCost,fitness,eliteCount);
+                    elseif strcmp(fcsState,'phase'),signal=true;end
+                    signalCounts(1+double(~signal))=signalCounts(1+double(~signal))+1;
+                    phase=min(2,floor(3*progress)); stateIndex=1+2*phase+double(~signal);
                     if strcmp(policy,'q'), qVisits(stateIndex)=qVisits(stateIndex)+1; end
-                    action=chooseAction(policy,Q,stateIndex,epsilon);
+                    action=chooseAction(policy,Q,stateIndex,epsilon,improved);
                     actionCounts(action)=actionCounts(action)+1;
                     if action==1
                         continueCount=continueCount+1; [nextRow,nextParent]=findContinue(orderedRows,orderedParents,usedRows,counts,i);
@@ -168,6 +176,7 @@ while fe<budget
                         decisionLog(decisionNumber,:)=[rounds starterFE stateIndex i row improved action actualAction nextParent nextRow followCountBefore usedFallback followImproved reward nextState fe starterAnchor starterCost followAnchor followCost starterCountBefore];
                         starterPoints(decisionNumber,:)=seekBuffer(row,:);followPoints(decisionNumber,:)=seekBuffer(nextRow,:);
                         rewardLog(decisionNumber,:)=[followBestBefore Best.Cost globalGain scaleBefore gainScale rewardModeID];
+                        stateSignalLog(decisionNumber,:)=[signal qualityThreshold];
                     end
                 end
             end
@@ -184,7 +193,7 @@ while fe<budget
     assert(fe-roundStart==quota && roundTraceActual==targetTrace && actualSeek==targetSeek,'FCS:RoundQuota','Round did not consume its declared real FE quota.');
     if auditDecisions,roundLog(rounds,:)=[rounds roundStart quota targetTrace targetSeek roundTraceActual actualSeek];end
 end
-if auditDecisions,decisionLog=decisionLog(1:decisionNumber,:);starterPoints=starterPoints(1:decisionNumber,:);followPoints=followPoints(1:decisionNumber,:);roundLog=roundLog(1:rounds,:);rewardLog=rewardLog(1:decisionNumber,:);end
+if auditDecisions,decisionLog=decisionLog(1:decisionNumber,:);starterPoints=starterPoints(1:decisionNumber,:);followPoints=followPoints(1:decisionNumber,:);roundLog=roundLog(1:rounds,:);rewardLog=rewardLog(1:decisionNumber,:);stateSignalLog=stateSignalLog(1:decisionNumber,:);end
 T=T(1:fe);
 info=struct('Algorithm',['FCS-CSO-' policy],'Seed',seed,'Evaluations',fe,'Seconds',toc(started),...
     'SeekingEvaluations',seekEvalTotal,'TracingEvaluations',traceEvalTotal,'Rounds',rounds,...
@@ -192,9 +201,10 @@ info=struct('Algorithm',['FCS-CSO-' policy],'Seed',seed,'Evaluations',fe,'Second
     'ContinueCount',continueCount,'SwitchCount',switchCount,'SecondEvaluationSuccesses',secondEvalSuccess,...
     'StarterEvaluations',starterCountTotal,'MeanParentCoverage',parentCoverageTotal/max(1,rounds),...
     'TraceSuccesses',traceSuccess,'SeekSuccesses',seekSuccess,'TraceRollbacks',traceRollbacks,...
-    'Version','reward-development-v2','ExecutedActionCounts',executedCounts,'FallbackCount',fallbackCount,'ActionMismatchCount',mismatchCount,...
+    'Version','quality-feedback-development-v3','ExecutedActionCounts',executedCounts,'FallbackCount',fallbackCount,'ActionMismatchCount',mismatchCount,...
     'QFallbackUpdates',qFallbackUpdates,'SameParentSecondEvaluations',sameParentSecond,'OtherParentSecondEvaluations',otherParentSecond,...
     'OpenedParentEvaluations',openedParents,'FirstVisitEvaluations',firstVisits,'ActualMaxParentEvaluations',actualMaxParentCount,...
+    'StateMode',fcsState,'StateSignalCounts',signalCounts,'StateSignalColumns',{{'Signal','QualityThreshold'}},'StateSignalLog',stateSignalLog,...
     'RewardMode',rewardMode,'RewardBonus',rewardBonus,'GainScaleDecay',gainScaleDecay,'GainScale',gainScale,...
     'RewardTotal',rewardTotal,'PositiveRewards',positiveRewards,'NegativeRewards',negativeRewards,...
     'ConditionalFollowGlobalSuccesses',conditionalGlobalSuccesses,'ConditionalFollowGlobalGain',conditionalGlobalGain,...
@@ -255,12 +265,14 @@ end
 if n<count, error('FCS:StarterQuota','Unable to select starters.'); end
 end
 
-function action=chooseAction(policy,Q,stateIndex,epsilon)
+function action=chooseAction(policy,Q,stateIndex,epsilon,improved)
 if strcmp(policy,'continue'), action=1; return; end
 if strcmp(policy,'switch'), action=2; return; end
 if strcmp(policy,'random'), action=randi(2); return; end
-if strcmp(policy,'success'), action=1+double(mod(stateIndex,2)==0); return; end
-if strcmp(policy,'reverse'), action=1+double(mod(stateIndex,2)==1); return; end
+if strcmp(policy,'success'), action=1+double(~improved); return; end
+if strcmp(policy,'signal'), action=1+double(mod(stateIndex,2)==0); return; end
+if strcmp(policy,'reverse'), action=1+double(improved); return; end
+if strcmp(policy,'reverse_signal'), action=1+double(mod(stateIndex,2)==1); return; end
 if rand<epsilon, action=randi(2); return; end
 values=Q(stateIndex,:); best=find(values==max(values)); action=best(randi(numel(best)));
 end

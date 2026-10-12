@@ -1,0 +1,30 @@
+{
+  "docs\\FCS_STATE_STUDY_PROTOCOL_20261012.md": {
+    "sha256_execution_bytes": "4750c9a6319897daccbb5869d1d50460de8ee9ee8b66cbfc64bb2f9526acb79d",
+    "sha256_LF_normalized": "4750c9a6319897daccbb5869d1d50460de8ee9ee8b66cbfc64bb2f9526acb79d"
+  },
+  "experiments\\run_fcs_state_study.m": {
+    "sha256_execution_bytes": "88405e9c3676a548e675ffec6f1e470bb8a6139ddee54d3bc516443554bdc07b",
+    "sha256_LF_normalized": "88405e9c3676a548e675ffec6f1e470bb8a6139ddee54d3bc516443554bdc07b"
+  },
+  "src\\ASE_CSO_FCSQ.m": {
+    "sha256_execution_bytes": "9eae43e16ac61dc8877c9940612a4e46f4654540ebec40de19fe59b45252c416",
+    "sha256_LF_normalized": "e534297dfd247d6175b737dc4c60f353f56e83f38169a1cfc340ce9500d50041"
+  },
+  "src\\ASE_CSO_Lean_B10.m": {
+    "sha256_execution_bytes": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af",
+    "sha256_LF_normalized": "0b027941023690332cfc7a8f6a236129799657f2ddfe8b480c286976252b33af"
+  },
+  "tests\\test_FCS_state.m": {
+    "sha256_execution_bytes": "9da396826eb1e1bddff5ca46b67174a69938be1c990d27d2d231d0a948c7c104",
+    "sha256_LF_normalized": "9da396826eb1e1bddff5ca46b67174a69938be1c990d27d2d231d0a948c7c104"
+  },
+  "src\\+fcs\\relativeQuality.m": {
+    "sha256_execution_bytes": "f387ce39b9b5233893bfcf72c140bb230435d34246a271ce0a1bc190ff653367",
+    "sha256_LF_normalized": "f387ce39b9b5233893bfcf72c140bb230435d34246a271ce0a1bc190ff653367"
+  },
+  "archive\\legacy\\CEC2017Function.m": {
+    "sha256_execution_bytes": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+    "sha256_LF_normalized": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  }
+}

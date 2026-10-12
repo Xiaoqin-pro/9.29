@@ -1,0 +1,13 @@
+Condition,AverageFunctionRank,FunctionsBest,Source
+Batch,4.0,2,S0-cache
+Q-success,4.625,1,reward-cache
+B10,5.5,2,S0-cache
+Random,5.625,2,S0-cache
+Q-quality,6.0,0,new-study
+Success,6.125,0,S0-cache
+Rule-quality,6.375,0,new-study
+Continue,7.125,0,S0-cache
+Reverse,7.5,0,S0-cache
+Q-phase,8.0,0,new-study
+Switch,8.5,0,S0-cache
+Rule-reverse-quality,8.625,1,new-study
