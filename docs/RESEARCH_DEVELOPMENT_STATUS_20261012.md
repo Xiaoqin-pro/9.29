@@ -47,3 +47,7 @@ D50/100k十新seed共160run完成，16M真实FE。SMP3函数2:6/seed34:46，时�
 
 ## 当前状态覆盖上文（纯配额Q主线）
 640持续停滞Q独立确认已结束，联合强控制门未过；全部证据results/cso_mode_q_state_confirm_20261012/公开。用户明确Q只控制评价配额，绑定半径action的草案撤回，预检退出且未执行smoke或正式半径优化；runner禁止自动启动。后续半径只可所有对照共享的骨架改进。下一项优先检查真实模式相对收益反馈与配额决策，保持小表/纯动作，不运行未写新协议的批次。当前无MATLAB实验进程。详见docs/CSO_QUOTA_Q_ANCHOR_20261012.md。
+
+
+## 用户授权比较两路线
+用户保留Q配额主故事，同时允许比较原action1绑定半径候选。CSO_TWO_ROUTES_PROTOCOL_20261012.md已先写：A所有策略统一Seeking阶段幅度+后段真实停滞恢复，Q纯名额；B仅停滞且Seeking多动作恢复，Q/规则/随机同机会。同新seed1701–1705共520run（A360/B160），预检A59等价/63行为/flat238恢复轮、B59等价/171行为/flat9恢复块通过，A18/B8smoke通过，当前四worker运行。前次withdrawn runner不自动复用，新B入口独立授权。
