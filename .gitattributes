@@ -15,3 +15,6 @@ results/saq_cso_eightway_30seed_20261013/** -text whitespace=cr-at-eol
 src/SAQ_CSO_FrameworkAblation.m -text whitespace=cr-at-eol
 src/SAQ_CSO_AblationVariant.m -text whitespace=cr-at-eol
 results/saq_cso_main_five_30seed_20261013/** -text whitespace=cr-at-eol
+
+# Preserve completed sparse-framework ablation release SHA256 bytes.
+results/saq_sparse_framework_ablation_30seed_20261013/** -text whitespace=cr-at-eol

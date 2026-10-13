@@ -1,0 +1,41 @@
+{
+  "PerFunction": "paired two-sided Wilcoxon, normal approximation, continuity/tie correction",
+  "HolmFamily": 145,
+  "SeedPairsPerFunction": 30,
+  "FriedmanBlocks": 29,
+  "FriedmanStatistic": 51.81773399014776,
+  "FriedmanP": 5.879646093659651e-10,
+  "Contrasts": [
+    [
+      "C1",
+      "SpatialSparse-Fixed6",
+      "FullEval-CSO",
+      "PrimarySparseFramework"
+    ],
+    [
+      "C2",
+      "SpatialSparse-Fixed6",
+      "RandomSparse-Fixed6",
+      "PrimaryGeometry"
+    ],
+    [
+      "Q1",
+      "SAQ-CSO",
+      "SpatialSparse-Fixed4",
+      "SecondaryOriginalFixedQuota"
+    ],
+    [
+      "Q2",
+      "SAQ-CSO",
+      "SpatialSparse-Fixed6",
+      "SecondaryStrongFixedQuota"
+    ],
+    [
+      "Q3",
+      "SAQ-CSO",
+      "SpatialSparse-RandomQuota",
+      "SecondaryNonLearningQuota"
+    ]
+  ],
+  "NoFunctionSelection": true
+}

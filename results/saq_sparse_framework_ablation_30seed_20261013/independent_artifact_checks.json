@@ -1,0 +1,13 @@
+{
+  "Passed": true,
+  "FullBatch": true,
+  "QualityRecords": 5220,
+  "SharedPopulationGroups": 870,
+  "RoundChecks": 44099785,
+  "DecisionChecks": 4971496,
+  "CachedFullRecords": 870,
+  "NewOptimizationRecords": 4350,
+  "NoNewObjectiveChecksInPython": true,
+  "CachedTraceAndQExact": true,
+  "PreflightSourceSHAEqual": true
+}

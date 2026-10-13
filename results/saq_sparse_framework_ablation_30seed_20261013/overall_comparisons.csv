@@ -1,0 +1,6 @@
+Contrast,Role,Left,Right,MeanWins,MeanLosses,MeanTies,SeedWins,SeedLosses,SeedTies,HolmBetter,HolmWorse,HolmNS
+C1,PrimarySparseFramework,SpatialSparse-Fixed6,FullEval-CSO,24,5,0,654,216,0,13,0,16
+C2,PrimaryGeometry,SpatialSparse-Fixed6,RandomSparse-Fixed6,26,3,0,601,269,0,9,3,17
+Q1,SecondaryOriginalFixedQuota,SAQ-CSO,SpatialSparse-Fixed4,17,12,0,465,405,0,0,0,29
+Q2,SecondaryStrongFixedQuota,SAQ-CSO,SpatialSparse-Fixed6,18,11,0,443,422,5,0,0,29
+Q3,SecondaryNonLearningQuota,SAQ-CSO,SpatialSparse-RandomQuota,13,16,0,423,441,6,0,0,29

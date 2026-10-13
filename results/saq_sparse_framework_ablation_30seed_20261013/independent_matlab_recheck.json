@@ -1,0 +1,7 @@
+{
+  "Passed": true,
+  "QualityRecords": 5220,
+  "RegeneratedInitialPopulations": 5220,
+  "ObjectiveAuditCallsOutsideOptimizationBudget": 5220,
+  "MaxBestDifference": 0
+}

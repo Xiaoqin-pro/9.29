@@ -43,6 +43,13 @@ SAQ-CSO. Primary contrasts use the same noQ backbone: Fixed6vsFullEval and
 Fixed6vsRandomSparse. Q has only three supporting comparisons; no parameter grid.
 
 [Detailed ablation protocol](docs/SAQ_SPARSE_ABLATION_PROTOCOL_20261013.md).
+
+[Completed six-version results](results/saq_sparse_framework_ablation_30seed_20261013/REPORT.md):
+Fixed6 vs FullEval gives24/5 function mean wins/losses; Fixed6 vs random sparse
+selection gives26/3. The Q variant has no significant advantage over fixed or
+same-gate random quotas after the predefined145-test Holm correction. All5220
+quality records passed independent artifact, final objective and population checks.
+
 Run from the repository root:
 
 ```matlab
@@ -55,8 +62,7 @@ run_saq_sparse_ablation_30seed('study');
 
 Formal jobs require checksum-bound preflight. The complete SAQ results are
 reused only after source/population/trajectory checks; five new variants require
-4350 new runs. A launch is not a completed result. Status and all rawMAT files
-are under the timestamped local `results/cec/saq_sparse_ablation_30seed_*` folder.
+4350 new runs. The completed batch and all rawMAT files are under the timestamped local `results/cec/saq_sparse_ablation_30seed_*` folder.
 
 ## Historical entry
 

@@ -1,0 +1,24 @@
+{
+  "Full100kNewVariants": 5,
+  "FixedQuotaIndependentBudgetEngineMatch": true,
+  "ExactFrozenMainPairs": 33,
+  "VariantBehaviorCases": 192,
+  "IndependentDensePoolWitness": 1,
+  "RandomSelectorActualPointDifference": true,
+  "FormalVariants": [
+    "Full",
+    "Fixed4",
+    "Fixed6",
+    "RandomSparse-Fixed6",
+    "RandomQuota",
+    "Dense-NoQ"
+  ],
+  "MatchedFixed6RandomScreen": true,
+  "GatedRandomQuotaWithoutQLearning": true,
+  "SourceHashes": {
+    "Engine": "08cd531c1a09d861429784ee0ec84dd77f1a7716bdb92dde6c20d5e511e5b49b",
+    "Variant": "8b4281fb343045cbc64b70ef21f8c15f6498195a2ffa5e9782662eb15b2b4ff3",
+    "FrozenMain": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  "Passed": true
+}

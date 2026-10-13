@@ -1,0 +1,176 @@
+{
+  "Dataset": "CEC2017 D50 100k 29 functions 30 seeds 6 sparse-framework variants",
+  "NewOptimizationRuns": 4350,
+  "CachedFullRuns": 870,
+  "PredefinedContrasts": 5,
+  "HolmTests": 145,
+  "AllFinalChecksPassed": true,
+  "Files": [
+    {
+      "File": "ablation_contrast_ratios.png",
+      "Bytes": 260346,
+      "SHA256": "8df2979a936d468fc7ab29c48b44e95052ec1802dae040fcfe3a27604eadbf45"
+    },
+    {
+      "File": "ablation_preflight.json",
+      "Bytes": 727,
+      "SHA256": "5c1e477eae46134a07c66fe6b6f762931a971caeaae4e72557fc0a9bb6670cc1"
+    },
+    {
+      "File": "ACCEPTED.json",
+      "Bytes": 420,
+      "SHA256": "894cd975fc351385c57c8fdf567d6a0ffb24914f63df067341e984eab1091983"
+    },
+    {
+      "File": "all29_convergence.png",
+      "Bytes": 722963,
+      "SHA256": "2882b2053a563a926fa7ea5ab62c69a542c1c6d9bc830b3150cbb6bff9f29f00"
+    },
+    {
+      "File": "all_quality_runs.csv",
+      "Bytes": 1617969,
+      "SHA256": "1813d9b2c5a674a7e2c27e6bc3e397a97ec5d92c5e031a8ff73595ff43da61c3"
+    },
+    {
+      "File": "benchmark_identity_checks.json",
+      "Bytes": 362,
+      "SHA256": "06a389a9293a426c7169e703e161048edd30239b436d53ab125f6abeb259b35d"
+    },
+    {
+      "File": "contrast_error_ratios.csv",
+      "Bytes": 17352,
+      "SHA256": "21ec4f18a5fcaa7b889e8e1304ecd645dcb5e3cb2410c75d48d7ee5291f25c91"
+    },
+    {
+      "File": "contrast_ratio_summary.csv",
+      "Bytes": 279,
+      "SHA256": "d3b4f7aadb60bd5e67133573686be5e793e3c676292458c6b5dfd2035b4e5652"
+    },
+    {
+      "File": "convergence_nodes.csv",
+      "Bytes": 513316,
+      "SHA256": "23ae49b80d196a7eca1a0ad7fc9dea09ed5b0a70fba69d56d635e22e156c453b"
+    },
+    {
+      "File": "csv_reanalysis_verification.json",
+      "Bytes": 247,
+      "SHA256": "e51e4aca3a5c16c033ebef01a34977708df391d5ccff5882e7f214a12a8cc6ab"
+    },
+    {
+      "File": "framework_efficiency.csv",
+      "Bytes": 763,
+      "SHA256": "227a5c9522e693d10774452d25559a3420e2f7fa40c25d12b8e5ab8e39adc4d9"
+    },
+    {
+      "File": "framework_rounds_and_evaluation_fraction.png",
+      "Bytes": 43649,
+      "SHA256": "093cbfbe26c93d3647d4f28de491c485f17741b844f0f2dc21426c651e8dd554"
+    },
+    {
+      "File": "function_comparison.csv",
+      "Bytes": 25572,
+      "SHA256": "db41490f668f17b053edd3a7139db7a032c07ff7cf2977b5b4d80b42ae26496a"
+    },
+    {
+      "File": "function_means.csv",
+      "Bytes": 3414,
+      "SHA256": "b1e716619248fe598bf51c9a0515707aa16be714c1db2102fb5ae31cd6052c4d"
+    },
+    {
+      "File": "function_medians.csv",
+      "Bytes": 3300,
+      "SHA256": "1238f4db1e8f5e7176c48d79752cacda6e1e14f0dd436ac4d8776cb8e29ec6c7"
+    },
+    {
+      "File": "independent_artifact_checks.json",
+      "Bytes": 337,
+      "SHA256": "3f930fcaabe97b7e19f775e5dde98c0020977decb93bf40e7321883260b59353"
+    },
+    {
+      "File": "independent_best_rechecks.csv",
+      "Bytes": 186312,
+      "SHA256": "ad9c0a5c1dc7f125679832416929c1a2cdbd283f23ca84b89ab4d55e1196fbc4"
+    },
+    {
+      "File": "independent_matlab_recheck.json",
+      "Bytes": 169,
+      "SHA256": "b4792629440109dbd6189488780b6fa73b60db84d05a19913964e005782fdd50"
+    },
+    {
+      "File": "mean_ranks.csv",
+      "Bytes": 252,
+      "SHA256": "52d8c81864f4795a175226c0ede122561a56718c545656387e5e86ebff43f9fa"
+    },
+    {
+      "File": "mean_ranks.png",
+      "Bytes": 49867,
+      "SHA256": "4f7eb915e4a9585feb1961065290a0d61bc53ff3deebcb365f3acc1d22f205ec"
+    },
+    {
+      "File": "mechanism_runs.csv",
+      "Bytes": 421356,
+      "SHA256": "79702b94fd29d21e566060c00bb201275d45b053823f9397ed322f175da71996"
+    },
+    {
+      "File": "overall.json",
+      "Bytes": 3343,
+      "SHA256": "338d706a90f3474f141d9bf0d6efda5769b2e00b6ed4c15bb58989ff9bf79409"
+    },
+    {
+      "File": "overall_comparisons.csv",
+      "Bytes": 542,
+      "SHA256": "aa43353abd410af7f316643262aa00d88d9107e3f7754ab5d59eb0a70e7e9a3b"
+    },
+    {
+      "File": "paper_mean_std.csv",
+      "Bytes": 4582,
+      "SHA256": "c7df06beeb0a1e1d2fa0f4706c7fe5cbbb6f8af054b371fd4f9061b203742c5d"
+    },
+    {
+      "File": "REPORT.md",
+      "Bytes": 4285,
+      "SHA256": "8b6703da15b928f5f8d1481abe626df471a5e097f99d7f04e7fe7955ab573c29"
+    },
+    {
+      "File": "run_COMPLETED.json",
+      "Bytes": 72,
+      "SHA256": "5ed57e04d4bad15d40384d95fc79a3b8e1dd41ea70119f7f8dddfa58532fcc4f"
+    },
+    {
+      "File": "run_environment.json",
+      "Bytes": 1921,
+      "SHA256": "c5c6ce8f04a21bdea6e24becfb690936e2d5688874d3bac9b239f3e527b7b64f"
+    },
+    {
+      "File": "run_job_manifest.csv",
+      "Bytes": 390782,
+      "SHA256": "7d28ef70592f56cbba0327b4ace7bc8661330eab985acb0db2df9b5510c9d787"
+    },
+    {
+      "File": "run_progress.json",
+      "Bytes": 160,
+      "SHA256": "c3348bde144cdb53eac12c63e895bf7ee88fe5a880fe77c27558d6d00d7cbce9"
+    },
+    {
+      "File": "runtime.csv",
+      "Bytes": 434,
+      "SHA256": "feaf81697b7b0e62d1e4039da753e436870882b7ecbf3ccb0ddfa1761481d115"
+    },
+    {
+      "File": "source_manifest.json",
+      "Bytes": 2144,
+      "SHA256": "ff7b084bf55bb919c704bfc48f21849cef0eaa093294c3552e851a4d934e3284"
+    },
+    {
+      "File": "statistics_protocol.json",
+      "Bytes": 885,
+      "SHA256": "77b1cd5421fd684b342ec27b8780779c1ddbae5aa2c5f75efc25e788407675c7"
+    },
+    {
+      "File": "summary.csv",
+      "Bytes": 16805,
+      "SHA256": "00533ee0ecbc90cb3ac3db08d33e921e3c5508a359d4260cc26093ca42ea8b38"
+    }
+  ],
+  "MATSourceArchives": "Retained locally in results/cec; this publication contains raw per-seed quality CSV and mechanism metrics"
+}

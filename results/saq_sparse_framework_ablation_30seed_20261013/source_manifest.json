@@ -1,0 +1,59 @@
+{
+  "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_sparse_ablation_30seed_study_20261013_133122",
+  "Files": [
+    {
+      "File": "archive\\legacy\\CEC2017Function.m",
+      "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+    },
+    {
+      "File": "docs\\SAQ_SPARSE_ABLATION_PROTOCOL_20261013.md",
+      "SHA256": "e707badf09dfd32b27b9aaa149f30d7695aee850c4af1be5a32d392eedacce66"
+    },
+    {
+      "File": "experiments\\run_saq_sparse_ablation_30seed.m",
+      "SHA256": "e3905b81e6bc8508cd0f5230ebf2e2808a0909856d687755aa56677d16867f75"
+    },
+    {
+      "File": "implement-stage\\SPARSE_FRAMEWORK_ABLATION_ASSUMPTIONS_20261013.md",
+      "SHA256": "eaa41772b9ec404ca11a3f595a6d695ccdd465fea144e34959bd675520cac986"
+    },
+    {
+      "File": "preflight.json",
+      "SHA256": "5c1e477eae46134a07c66fe6b6f762931a971caeaae4e72557fc0a9bb6670cc1"
+    },
+    {
+      "File": "src\\ASE_CSO_ModeBudget.m",
+      "SHA256": "8467e7f2302aa4b190f846cb1a56cad85f19c0f1581b02a351631dc2b47a3e29"
+    },
+    {
+      "File": "src\\ASE_CSO_QuotaQ_Candidate.m",
+      "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+    },
+    {
+      "File": "src\\ASE_CSO_QuotaQ_Compact.m",
+      "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+    },
+    {
+      "File": "src\\SAQ_CSO.m",
+      "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+    },
+    {
+      "File": "src\\SAQ_CSO_AblationVariant.m",
+      "SHA256": "8b4281fb343045cbc64b70ef21f8c15f6498195a2ffa5e9782662eb15b2b4ff3"
+    },
+    {
+      "File": "src\\SAQ_CSO_FrameworkAblation.m",
+      "SHA256": "08cd531c1a09d861429784ee0ec84dd77f1a7716bdb92dde6c20d5e511e5b49b"
+    },
+    {
+      "File": "src\\SourceFileSHA256.m",
+      "SHA256": "d8ca4e21e18a54ddee126f0fe8dc64160fe2a84d0964a8089d9e28806819d464"
+    },
+    {
+      "File": "tests\\test_SAQ_framework_ablation.m",
+      "SHA256": "4da2fe9b95a54709b33aafcea89dce4dc70f1c8f3b8d3d55e983cd219f247a93"
+    }
+  ],
+  "NewRuns": 4350,
+  "CachedFullRuns": 870
+}

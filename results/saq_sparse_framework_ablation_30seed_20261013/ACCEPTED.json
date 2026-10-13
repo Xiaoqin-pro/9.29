@@ -1,0 +1,11 @@
+{
+  "Complete": true,
+  "QualityRecords": 5220,
+  "NewRuns": 4350,
+  "CachedFullRuns": 870,
+  "Passed": true,
+  "ObjectiveAuditCallsOutsideBudget": 5220,
+  "MaxBestDifference": 0,
+  "ResultDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\saq_sparse_framework_ablation_30seed_20261013",
+  "SourceDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_sparse_ablation_30seed_study_20261013_133122"
+}

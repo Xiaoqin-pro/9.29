@@ -1,0 +1,107 @@
+{
+  "QualityRecords": 5220,
+  "Dimension": 50,
+  "Budget": 100000,
+  "Functions": 29,
+  "Seeds": 30,
+  "Methods": [
+    "FullEval-CSO",
+    "RandomSparse-Fixed6",
+    "SpatialSparse-Fixed4",
+    "SpatialSparse-Fixed6",
+    "SpatialSparse-RandomQuota",
+    "SAQ-CSO"
+  ],
+  "MeanRanks": {
+    "SpatialSparse-RandomQuota": 2.4827586206896552,
+    "SAQ-CSO": 2.6206896551724137,
+    "SpatialSparse-Fixed6": 2.9655172413793105,
+    "SpatialSparse-Fixed4": 3.103448275862069,
+    "FullEval-CSO": 4.862068965517241,
+    "RandomSparse-Fixed6": 4.9655172413793105
+  },
+  "Contrasts": [
+    {
+      "Contrast": "C1",
+      "Role": "PrimarySparseFramework",
+      "Left": "SpatialSparse-Fixed6",
+      "Right": "FullEval-CSO",
+      "MeanWins": 24,
+      "MeanLosses": 5,
+      "MeanTies": 0,
+      "SeedWins": 654,
+      "SeedLosses": 216,
+      "SeedTies": 0,
+      "HolmBetter": 13,
+      "HolmWorse": 0,
+      "HolmNS": 16
+    },
+    {
+      "Contrast": "C2",
+      "Role": "PrimaryGeometry",
+      "Left": "SpatialSparse-Fixed6",
+      "Right": "RandomSparse-Fixed6",
+      "MeanWins": 26,
+      "MeanLosses": 3,
+      "MeanTies": 0,
+      "SeedWins": 601,
+      "SeedLosses": 269,
+      "SeedTies": 0,
+      "HolmBetter": 9,
+      "HolmWorse": 3,
+      "HolmNS": 17
+    },
+    {
+      "Contrast": "Q1",
+      "Role": "SecondaryOriginalFixedQuota",
+      "Left": "SAQ-CSO",
+      "Right": "SpatialSparse-Fixed4",
+      "MeanWins": 17,
+      "MeanLosses": 12,
+      "MeanTies": 0,
+      "SeedWins": 465,
+      "SeedLosses": 405,
+      "SeedTies": 0,
+      "HolmBetter": 0,
+      "HolmWorse": 0,
+      "HolmNS": 29
+    },
+    {
+      "Contrast": "Q2",
+      "Role": "SecondaryStrongFixedQuota",
+      "Left": "SAQ-CSO",
+      "Right": "SpatialSparse-Fixed6",
+      "MeanWins": 18,
+      "MeanLosses": 11,
+      "MeanTies": 0,
+      "SeedWins": 443,
+      "SeedLosses": 422,
+      "SeedTies": 5,
+      "HolmBetter": 0,
+      "HolmWorse": 0,
+      "HolmNS": 29
+    },
+    {
+      "Contrast": "Q3",
+      "Role": "SecondaryNonLearningQuota",
+      "Left": "SAQ-CSO",
+      "Right": "SpatialSparse-RandomQuota",
+      "MeanWins": 13,
+      "MeanLosses": 16,
+      "MeanTies": 0,
+      "SeedWins": 423,
+      "SeedLosses": 441,
+      "SeedTies": 6,
+      "HolmBetter": 0,
+      "HolmWorse": 0,
+      "HolmNS": 29
+    }
+  ],
+  "Notes": [
+    "主要证据是无Q的FullEval→RandomSparse→SpatialSparse链；固定6的筛选对照才隔离geometry。Dense父代cap4及完整轮成本变化属于删除稀疏框架的自然包差异，不能全部归空间排序。",
+    "Q仅作3项辅助控制。若不胜Fixed6/RandomQuota，主文应限制Q新增收益描述，不通过省略强固定或随机控制声称必要性。没有奖励/状态/学习率调参。",
+    "所有六条件搜索公式、初始化、N50、MR.4、预算进度一致；Dense无虚假fitness，全部新候选真实评价；RandomSparse仅变筛选，cap2/配额6同Fixed6。",
+    "Full870使用冻结主结果缓存，独立p0/T/Q核验；本轮新4350run，不称5220新优化。实评及额外审计调用分列。",
+    "30seed3001–3030，D50/100k。所有29函数纳入；末轮预算截断。本文主对照五算法范围已固定，不增加外部方法。"
+  ]
+}
