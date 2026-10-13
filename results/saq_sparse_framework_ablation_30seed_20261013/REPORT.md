@@ -47,3 +47,8 @@ FullEval平均2.305秒，空间Fixed6为8.345秒，完整SAQ为9.082秒（SAQ取
 新优化4350、缓存870；全部29函数×30seed保留。完整MAT与source_snapshot在本地results/cec保留，发布逐seedCSV、mean/std、机制计数、预定比较、图和核验记录。主性能五算法表与本六版本消融是不同comparison family，平均排名不能混用。
 
 此批不增加新机制、没有再调Q超参数。下一研究决策应基于上述范围，稀疏框架是当前最强结论；三维无人机应用尚未作为本结果证据。
+
+
+## 2026-10-13写作阶段配额占比更正
+
+配额占比汇总曾将DecisionLog动作编号列按配额数读取。已从5220份MAT重新统计Action1Share/2Share/3Share，和为1；原发布三列另存historical_reported_action_shares.csv。搜索代码、MAT轨迹、误差、均值/标准差、排名和显著性完全不变，localraw不覆盖。主结果未新增优化。当前论文图采用更正后日志；未来运行脚本的汇总列索引已修正。

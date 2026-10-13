@@ -95,7 +95,7 @@ try
  for n=fields,rec.(n{1})=I.(n{1});end
  R=I.RoundLog;rec.CandidatePointsGenerated=sum(R(:,5)+4*R(:,6));rec.RealEvaluationFraction=(job.Budget-50)/rec.CandidatePointsGenerated;
  rec.MeanRoundCost=(job.Budget-50)/I.Rounds;G=I.GateLog;rec.GateFraction=mean(G(:,2));DL=I.DecisionLog;
- rec.Action1Share=mean(DL(:,4)==2);rec.Action2Share=mean(DL(:,4)==4);rec.Action3Share=mean(DL(:,4)==6);
+ rec.Action1Share=mean(DL(:,4)==1);rec.Action2Share=mean(DL(:,4)==2);rec.Action3Share=mean(DL(:,4)==3); % col4=actionindex, col5=quota
  rec.Error20FE=T(round(.2*job.Budget))-100*job.FunctionID;rec.Error60FE=T(round(.6*job.Budget))-100*job.FunctionID;rec.Error80FE=T(round(.8*job.Budget))-100*job.FunctionID;
  j=find(T(51:end)<T(50),1);if ~isempty(j),rec.FirstImprovementEvaluation=50+j;end
  rec.Status='ok';

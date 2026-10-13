@@ -98,6 +98,10 @@ def validate(run_dir,output,complete=False):
             assert np.array_equal(DL[:,13],eligible)
         else:assert I['QUpdates']==r.QUpdates==0 and np.all(np.asarray(I['QVisits'])==0) and np.all(DL[:,13]==0)
         for frac,col in [(.2,'Error20FE'),(.6,'Error60FE'),(.8,'Error80FE')]:assert np.isclose(T[round(frac*100000)-1]-100*r.FunctionID,getattr(r,col),rtol=1e-11,atol=1e-7)
+        # Reporting-only correction: action index column4; true quota column5.
+        for action,col in [(1,'Action1Share'),(2,'Action2Share'),(3,'Action3Share')]:
+            raw.at[raw.index[raw.JobID==r.JobID][0],col]=float((DL[:,3]==action).mean())
+        assert abs(sum(float((DL[:,3]==action).mean()) for action in [1,2,3])-1)<1e-12
         for fe,val in zip(nodes,T[nodes-1]):curve.append({'FunctionID':r.FunctionID,'Seed':r.Seed,'Condition':r.Condition,'FE':int(fe),'Error':float(val-100*r.FunctionID)})
         checked+=1;roundchecks+=len(R);qchecks+=len(DL)
         if checked%500==0:print(f'VALIDATED {checked}/{len(raw)}',flush=True)

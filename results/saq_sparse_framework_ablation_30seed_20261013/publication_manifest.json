@@ -22,14 +22,19 @@
       "SHA256": "894cd975fc351385c57c8fdf567d6a0ffb24914f63df067341e984eab1091983"
     },
     {
+      "File": "action_share_correction.json",
+      "Bytes": 624,
+      "SHA256": "6231d8c5f0406f29f9ebac5742cf7d24000232d752c6144700e1ea6ec85738a6"
+    },
+    {
       "File": "all29_convergence.png",
       "Bytes": 722963,
       "SHA256": "2882b2053a563a926fa7ea5ab62c69a542c1c6d9bc830b3150cbb6bff9f29f00"
     },
     {
       "File": "all_quality_runs.csv",
-      "Bytes": 1617969,
-      "SHA256": "1813d9b2c5a674a7e2c27e6bc3e397a97ec5d92c5e031a8ff73595ff43da61c3"
+      "Bytes": 1645374,
+      "SHA256": "bbf13545a65a3a2f230bfc75b7faecf45283094f7f12279d02dc3d3de782df77"
     },
     {
       "File": "benchmark_identity_checks.json",
@@ -50,6 +55,11 @@
       "File": "convergence_nodes.csv",
       "Bytes": 513316,
       "SHA256": "23ae49b80d196a7eca1a0ad7fc9dea09ed5b0a70fba69d56d635e22e156c453b"
+    },
+    {
+      "File": "corrected_action_shares.csv",
+      "Bytes": 263106,
+      "SHA256": "fb2fda488bef39f4ff9436717003969dc55ec8c742836b2f78b287541089fa25"
     },
     {
       "File": "csv_reanalysis_verification.json",
@@ -82,6 +92,11 @@
       "SHA256": "1238f4db1e8f5e7176c48d79752cacda6e1e14f0dd436ac4d8776cb8e29ec6c7"
     },
     {
+      "File": "historical_reported_action_shares.csv",
+      "Bytes": 210455,
+      "SHA256": "38ab2a81e0def209e956b7fc03a652c5cfba179fb39797718f9d929633254ab1"
+    },
+    {
       "File": "independent_artifact_checks.json",
       "Bytes": 337,
       "SHA256": "3f930fcaabe97b7e19f775e5dde98c0020977decb93bf40e7321883260b59353"
@@ -108,8 +123,8 @@
     },
     {
       "File": "mechanism_runs.csv",
-      "Bytes": 421356,
-      "SHA256": "79702b94fd29d21e566060c00bb201275d45b053823f9397ed322f175da71996"
+      "Bytes": 448761,
+      "SHA256": "832285700bf7917d26543ca612e8056fc33777676bcdc0c376f5ee826634da71"
     },
     {
       "File": "overall.json",
@@ -128,8 +143,8 @@
     },
     {
       "File": "REPORT.md",
-      "Bytes": 4285,
-      "SHA256": "8b6703da15b928f5f8d1481abe626df471a5e097f99d7f04e7fe7955ab573c29"
+      "Bytes": 4759,
+      "SHA256": "59a9d0f54bcdc51e50cab5353be663264a22c2d561485b54218cf0a3cfb4429f"
     },
     {
       "File": "run_COMPLETED.json",
@@ -172,5 +187,6 @@
       "SHA256": "00533ee0ecbc90cb3ac3db08d33e921e3c5508a359d4260cc26093ca42ea8b38"
     }
   ],
-  "MATSourceArchives": "Retained locally in results/cec; this publication contains raw per-seed quality CSV and mechanism metrics"
+  "MATSourceArchives": "Retained locally in results/cec; this publication contains raw per-seed quality CSV and mechanism metrics",
+  "ReportingCorrection": "Three action-share fields reconstructed from5220savedMAT, oldcolumns archived; optimization,errors,ranks,tests unchanged"
 }

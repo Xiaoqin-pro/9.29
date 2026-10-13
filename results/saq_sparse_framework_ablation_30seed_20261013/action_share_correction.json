@@ -1,0 +1,15 @@
+{
+  "Reason": "Report used MATLAB DecisionLog column4 actionindex as if it were quota; correct quota is col5. Three actions are index1/2/3, quotas2/4/6.",
+  "RowsRecomputedFromMAT": 5220,
+  "CorrectedFields": [
+    "Action1Share",
+    "Action2Share",
+    "Action3Share"
+  ],
+  "SumOneCheckPassed": true,
+  "OptimizationAndTrajectoriesUnchanged": true,
+  "FinalErrorsAndRanksAndStatisticalTestsUnchanged": true,
+  "OriginalLocalRawAndMATRetained": true,
+  "OriginalPublishedColumnsArchivedAs": "historical_reported_action_shares.csv",
+  "Scope": "Reporting-only correction discovered while drafting2026-10-13"
+}
