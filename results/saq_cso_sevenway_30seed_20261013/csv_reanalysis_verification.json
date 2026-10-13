@@ -1,0 +1,10 @@
+{
+  "Rows": 6090,
+  "Functions": 29,
+  "Seeds": 30,
+  "Methods": 7,
+  "PerFunctionComparisons": 174,
+  "MeanStdMedianRanksAndHolmReproduced": true,
+  "Scope": "Numeric reporting layer from uploaded CSV; not a substitute for source/MATLAB checks",
+  "Passed": true
+}

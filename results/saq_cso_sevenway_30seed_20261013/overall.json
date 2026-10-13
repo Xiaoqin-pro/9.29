@@ -1,0 +1,132 @@
+{
+  "Runs": 6090,
+  "Functions": 29,
+  "Seeds": 30,
+  "Budget": 100000,
+  "Dimension": 50,
+  "Methods": [
+    "Original-CSO-MR02",
+    "SAQ-CSO",
+    "CLPSO-AuthorSource",
+    "HCLPSO-AuthorSource",
+    "HIDMS-PSO-IndexCorrected",
+    "HPSO-TVAC-CEC",
+    "DMS-PSO-SIS2005"
+  ],
+  "Ranks": {
+    "Original-CSO-MR02": 6.9655172413793105,
+    "SAQ-CSO": 4.137931034482759,
+    "CLPSO-AuthorSource": 5.137931034482759,
+    "HCLPSO-AuthorSource": 2.586206896551724,
+    "HIDMS-PSO-IndexCorrected": 2.103448275862069,
+    "HPSO-TVAC-CEC": 4.689655172413793,
+    "DMS-PSO-SIS2005": 2.3793103448275863
+  },
+  "MeanSeconds": {
+    "CLPSO-AuthorSource": 2.406680747816092,
+    "DMS-PSO-SIS2005": 1.8870602706896553,
+    "HCLPSO-AuthorSource": 2.1258149901149426,
+    "HIDMS-PSO-IndexCorrected": 3.3159829677011494,
+    "HPSO-TVAC-CEC": 1.8005945187356323,
+    "Original-CSO-MR02": 2.238224584137931,
+    "SAQ-CSO": 9.082061515172413
+  },
+  "Comparisons": [
+    {
+      "Control": "Original-CSO-MR02",
+      "MeanWins": 29,
+      "MeanLosses": 0,
+      "MeanTies": 0,
+      "SeedWins": 870,
+      "SeedLosses": 0,
+      "SeedTies": 0,
+      "HolmAllBetter": 29,
+      "HolmAllWorse": 0,
+      "HolmAllNS": 0,
+      "MedianFunctionErrorRatio": 0.18404466232047847
+    },
+    {
+      "Control": "CLPSO-AuthorSource",
+      "MeanWins": 25,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "SeedWins": 677,
+      "SeedLosses": 193,
+      "SeedTies": 0,
+      "HolmAllBetter": 18,
+      "HolmAllWorse": 1,
+      "HolmAllNS": 10,
+      "MedianFunctionErrorRatio": 0.8298063286068855
+    },
+    {
+      "Control": "HCLPSO-AuthorSource",
+      "MeanWins": 6,
+      "MeanLosses": 23,
+      "MeanTies": 0,
+      "SeedWins": 213,
+      "SeedLosses": 657,
+      "SeedTies": 0,
+      "HolmAllBetter": 0,
+      "HolmAllWorse": 16,
+      "HolmAllNS": 13,
+      "MedianFunctionErrorRatio": 1.3699515570218928
+    },
+    {
+      "Control": "HIDMS-PSO-IndexCorrected",
+      "MeanWins": 2,
+      "MeanLosses": 27,
+      "MeanTies": 0,
+      "SeedWins": 160,
+      "SeedLosses": 710,
+      "SeedTies": 0,
+      "HolmAllBetter": 0,
+      "HolmAllWorse": 19,
+      "HolmAllNS": 10,
+      "MedianFunctionErrorRatio": 1.5066653573248971
+    },
+    {
+      "Control": "HPSO-TVAC-CEC",
+      "MeanWins": 17,
+      "MeanLosses": 12,
+      "MeanTies": 0,
+      "SeedWins": 569,
+      "SeedLosses": 301,
+      "SeedTies": 0,
+      "HolmAllBetter": 16,
+      "HolmAllWorse": 5,
+      "HolmAllNS": 8,
+      "MedianFunctionErrorRatio": 0.9406078703271636
+    },
+    {
+      "Control": "DMS-PSO-SIS2005",
+      "MeanWins": 4,
+      "MeanLosses": 25,
+      "MeanTies": 0,
+      "SeedWins": 212,
+      "SeedLosses": 658,
+      "SeedTies": 0,
+      "HolmAllBetter": 1,
+      "HolmAllWorse": 17,
+      "HolmAllNS": 11,
+      "MedianFunctionErrorRatio": 1.4381625883652405
+    }
+  ],
+  "ArtifactVerificationPassed": true,
+  "HCLPSOReferenceSuperseded": true,
+  "HIDMSAdded": true,
+  "NewBaselineRunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+  "NewRuns": 1204,
+  "CachedHPSORuns": 536,
+  "Population": {
+    "Original-CSO-MR02": 50,
+    "SAQ-CSO": 50,
+    "CLPSO-AuthorSource": 50,
+    "HCLPSO-AuthorSource": 50,
+    "HIDMS-PSO-IndexCorrected": 40,
+    "HPSO-TVAC-CEC": 50,
+    "DMS-PSO-SIS2005": 30
+  },
+  "OriginalRunsDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+  "HCLPSORunDirectory": "results\\cec\\hclpso_author_30seed_study_20261013_100621",
+  "HIDMSRunDirectory": "results\\cec\\hidms_pso_30seed_study_20261013_102120"
+}

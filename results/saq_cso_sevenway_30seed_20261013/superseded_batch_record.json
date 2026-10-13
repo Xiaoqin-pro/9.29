@@ -1,0 +1,10 @@
+{
+  "Status": "Superseded before completion",
+  "Reason": "Final paper-parameter inspection found SIS2005 inertia is .9 to .2, not the .729 constant inherited from DMS-L-PSO code. These DMS records cannot be labeled paper base results. HPSO records keep valid source semantics. No adverse-performance based selection.",
+  "CompletedCSVRecords": 1072,
+  "Counts": {
+    "DMS-PSO-SIS2005": 536,
+    "HPSO-TVAC-CEC": 536
+  },
+  "OldRecordsPreserved": true
+}

@@ -1,0 +1,18 @@
+{
+  "HPSOExactOraclePairs": 29,
+  "DMSPaperCoreOraclePairs": 29,
+  "DMSPaperInertiaWitness": true,
+  "IndependentHPSOStepWitness": true,
+  "ZeroRestartAndClipWitness": true,
+  "IndependentDMSStepWitness": true,
+  "DMSGroupsRegroupAndSwitchWitness": true,
+  "D50FiniteFunctions": 29,
+  "Full100kCasesPerMethod": 2,
+  "DMSIdentity": "SIS2005 paper reconstruction, not an exact original-paper table reproduction",
+  "HPSOIdentity": "2017 standalone reference plus explicit CEC position clip",
+  "SourceHashes": {
+    "HPSO": "3073f6c24861959e51803b649b2be44f668256ec2ab182a9ea36d70afa4e475c",
+    "DMS": "a5ce43e57f1777ce345b27535e71d0ece5618c840f8b64e226332caed7fd9f3d"
+  },
+  "Passed": true
+}

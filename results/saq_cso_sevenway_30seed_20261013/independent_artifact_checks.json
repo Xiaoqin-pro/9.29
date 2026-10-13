@@ -1,0 +1,46 @@
+{
+  "RunsChecked": 6090,
+  "Passed": true,
+  "SharedInitialGroups": 870,
+  "RoundChecks": 8695650,
+  "QDecisionChecks": 870000,
+  "ObjectiveCalls": 609000000,
+  "PostRunRecheckCalls": 6090,
+  "Checks": "CSV/MAT/keys/FE/p0-prefix/bounds/final-best/nodes/Q states+gates+rewards+terminal replay",
+  "CachedSourceIdentity": [
+    {
+      "Path": "src/SAQ_CSO.m",
+      "SHA256NormalizedLF": "0d6a1757057132d69672e7d899cc5e745d34aea33edec215ebefc2254ded9958",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Candidate.m",
+      "SHA256NormalizedLF": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Compact.m",
+      "SHA256NormalizedLF": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/CLPSO_CEC_AuthorSource.m",
+      "SHA256NormalizedLF": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "archive/legacy/CSO_CEC.m",
+      "SHA256NormalizedLF": "f3240c34c5136909b9f2d792e7c933627676495eb677479b53f52c085d0da501",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "MatchesCurrent": true
+    }
+  ],
+  "NoNewObjectiveChecksInPython": true,
+  "NewOptimizationRuns": 1204,
+  "CachedHPSORuns": 536,
+  "NewObjectiveCalls": 120400000
+}
