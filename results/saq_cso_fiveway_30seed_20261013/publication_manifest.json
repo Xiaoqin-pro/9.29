@@ -1,0 +1,156 @@
+{
+  "Dataset": "CEC2017 D50 100k FE 29 functions 30 seeds 5 methods",
+  "Files": [
+    {
+      "File": "all29_convergence.png",
+      "Bytes": 876786,
+      "SHA256": "c91bc52af0f31581c7de0612ce037d0b855772ee82dbc7bde3529eb14b9bf986"
+    },
+    {
+      "File": "all29_error_ratios.png",
+      "Bytes": 141741,
+      "SHA256": "be62ec95d647ac298a7d9d0fcc93ce2801cd8b747f5675fb5ce82b57c9899be0"
+    },
+    {
+      "File": "all_quality_runs.csv",
+      "Bytes": 1376739,
+      "SHA256": "67670c0cb22ca4effbdaf932f081475ed9e15bfb0dfc498ec40cffdd19a63414"
+    },
+    {
+      "File": "convergence_nodes.csv",
+      "Bytes": 426450,
+      "SHA256": "d0deab340f3bcf16e90786184f1968c8a14b48de6dce21a3758bac1d82bd9682"
+    },
+    {
+      "File": "csv_reanalysis_verification.json",
+      "Bytes": 274,
+      "SHA256": "5ed3a1403b4be18da53717471c9a8710702dfa0e68f5aae2c01974a35384c02a"
+    },
+    {
+      "File": "error_ratios.csv",
+      "Bytes": 2425,
+      "SHA256": "5f982e38e1b9b1c6ec12abe4b499d8d9538c8d1b62e79e429d6e7bd7305823a1"
+    },
+    {
+      "File": "function_comparison.csv",
+      "Bytes": 24066,
+      "SHA256": "1dedf306ffeed36b06c9d215bac625c86238110f87dd04755b48c3ead4586a10"
+    },
+    {
+      "File": "function_means.csv",
+      "Bytes": 2868,
+      "SHA256": "fb5b0b48c2914875cec51dc074917d88e751e09af14fad38e85bb5b08955392a"
+    },
+    {
+      "File": "function_medians.csv",
+      "Bytes": 2768,
+      "SHA256": "1d3aa63c6a35fcd621463f97fc29c227514e070f98ba09d8c1bb86073dd6addf"
+    },
+    {
+      "File": "hclpso_preflight.json",
+      "Bytes": 85,
+      "SHA256": "039156986cd9ec20609dbffa46dbc221431803d4936d9ece5f92c7ab0a47bf24"
+    },
+    {
+      "File": "hclpso_source_provenance.json",
+      "Bytes": 337,
+      "SHA256": "c3a33856d7281093175bf3aed246c4d8136058c31e8ee14f3886c0614a0cb68d"
+    },
+    {
+      "File": "hidms_preflight.json",
+      "Bytes": 211,
+      "SHA256": "67e27be318213e5bfb174a82c06d4cce5584cef8845892e182b28f97424c3f43"
+    },
+    {
+      "File": "hidms_source_provenance.json",
+      "Bytes": 218,
+      "SHA256": "805fc7e0a074a6e6d093d8ab3c54c8e2d7227106d7a02d94ef142816e7b459ad"
+    },
+    {
+      "File": "historical_hclpso_reference_runs.csv",
+      "Bytes": 200552,
+      "SHA256": "81e630d08c83c0d81013a412100ad0fdd59ad4081ebd4f673589d3808ecb0620"
+    },
+    {
+      "File": "independent_artifact_checks.json",
+      "Bytes": 1499,
+      "SHA256": "cb3f14dfe52d4dc43da684f9c72ec7b39f55381d2b78a37a30c41b15a26a5659"
+    },
+    {
+      "File": "independent_best_rechecks.csv",
+      "Bytes": 729934,
+      "SHA256": "25fa1497f87bab43b033b74d1d721ed885e43ab82c5d6e2cbf958de38fc3c0b4"
+    },
+    {
+      "File": "independent_matlab_recheck.json",
+      "Bytes": 149,
+      "SHA256": "ccd253f96b9cb4e57517dffe85551786ddf171aa6f70e7b85d960154d25c3cfc"
+    },
+    {
+      "File": "mean_ranks.csv",
+      "Bytes": 199,
+      "SHA256": "b3fb4f7bf5cf262b670c6da77bfb48d649a418e15c4be3a76133e6693d45bdf4"
+    },
+    {
+      "File": "mean_ranks.png",
+      "Bytes": 41426,
+      "SHA256": "0463c677f99bcde2b622d4c6ce132d1f42692ee15c943ec5b327730c472b1df0"
+    },
+    {
+      "File": "node_function_wins.csv",
+      "Bytes": 597,
+      "SHA256": "9a1f27972db21293a3062bdfb935dba332f6077e1d73d37d9138341f57087fa2"
+    },
+    {
+      "File": "overall.json",
+      "Bytes": 2639,
+      "SHA256": "fcfab277b776c43f4de03ff20328404b378534dec380b7086f5f47841665b126"
+    },
+    {
+      "File": "overall_comparisons.csv",
+      "Bytes": 389,
+      "SHA256": "b990b5293b79c39e1e567883f9029bc4469764f0bf51e99455d78dde76533201"
+    },
+    {
+      "File": "paper_mean_std.csv",
+      "Bytes": 3838,
+      "SHA256": "7922508cb5303fb90169666691a285a9b69d8974da462ca8a647dfd15498cbe6"
+    },
+    {
+      "File": "q_behavior.csv",
+      "Bytes": 92768,
+      "SHA256": "8cacadcfed379a571c49199f64707515b5eaab886f95a1eddee7d4b4002fbb73"
+    },
+    {
+      "File": "q_tables.csv",
+      "Bytes": 258195,
+      "SHA256": "b50a09a625a0febcaef8a16a6643e5d4806c383bf05f25127dc31fa780ecaa07"
+    },
+    {
+      "File": "REPORT.md",
+      "Bytes": 3079,
+      "SHA256": "6d4375f8846cc4c4d0493f744eac7cfbc29d536181d9015eb2c8c8a4370e305d"
+    },
+    {
+      "File": "runtime.csv",
+      "Bytes": 361,
+      "SHA256": "93e0fcdefcd9caccaf4a6c15f86b7bf703c3038d1e394bf53b0b0c0f9326dda2"
+    },
+    {
+      "File": "source_manifest.json",
+      "Bytes": 19709,
+      "SHA256": "3e30ec7bf296757dbccc648753023f21562f68b49089296475d32ed5ee3cc89e"
+    },
+    {
+      "File": "statistics_protocol.json",
+      "Bytes": 452,
+      "SHA256": "7c18b65ecc0fb07e031f0c82db25a1bbdabe83b3de58c9fc2defcc27dc12389a"
+    },
+    {
+      "File": "summary.csv",
+      "Bytes": 21789,
+      "SHA256": "9de1d509fd0680b50e6ab90021aeea7bae3f939a6392e508064f543493e4df9a"
+    }
+  ],
+  "MATArchives": "Retained locally, not uploaded"
+}

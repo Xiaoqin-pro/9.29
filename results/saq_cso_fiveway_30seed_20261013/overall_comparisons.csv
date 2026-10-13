@@ -1,0 +1,5 @@
+Control,MeanWins,MeanLosses,MeanTies,SeedWins,SeedLosses,SeedTies,HolmAllBetter,HolmAllWorse,HolmAllNS,MedianFunctionErrorRatio
+Original-CSO-MR02,29,0,0,870,0,0,29,0,0,0.18404466232047847
+CLPSO-AuthorSource,25,4,0,677,193,0,18,1,10,0.8298063286068855
+HCLPSO-AuthorSource,6,23,0,213,657,0,0,16,13,1.3699515570218928
+HIDMS-PSO-IndexCorrected,2,27,0,160,710,0,0,19,10,1.5066653573248971

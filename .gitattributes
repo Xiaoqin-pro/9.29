@@ -1,2 +1,5 @@
 # Preserve official D50 benchmark data byte-for-byte for source hashes.
 data/cec2017/input_data/*_D50.txt -text -diff
+
+# Preserve the published result release exactly for its SHA256 file manifest.
+results/saq_cso_fiveway_30seed_20261013/** -text

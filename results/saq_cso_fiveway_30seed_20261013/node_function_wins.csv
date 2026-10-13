@@ -1,0 +1,17 @@
+FE,Control,MeanWins,MeanLosses,MeanTies
+20000,Original-CSO-MR02,29,0,0
+20000,CLPSO-AuthorSource,29,0,0
+20000,HCLPSO-AuthorSource,6,23,0
+20000,HIDMS-PSO-IndexCorrected,28,1,0
+60000,Original-CSO-MR02,29,0,0
+60000,CLPSO-AuthorSource,25,4,0
+60000,HCLPSO-AuthorSource,1,28,0
+60000,HIDMS-PSO-IndexCorrected,2,27,0
+80000,Original-CSO-MR02,29,0,0
+80000,CLPSO-AuthorSource,24,5,0
+80000,HCLPSO-AuthorSource,3,26,0
+80000,HIDMS-PSO-IndexCorrected,3,26,0
+100000,Original-CSO-MR02,29,0,0
+100000,CLPSO-AuthorSource,25,4,0
+100000,HCLPSO-AuthorSource,6,23,0
+100000,HIDMS-PSO-IndexCorrected,2,27,0

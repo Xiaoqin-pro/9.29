@@ -1,0 +1,9 @@
+{
+  "SourceOracleExactPairs": 35,
+  "IndexWitnessPassed": true,
+  "ActualMasterHelperWitness": true,
+  "MutationEndpointWitness": true,
+  "UnitTopologyWitness": true,
+  "Full100kWitnesses": 2,
+  "Passed": true
+}
