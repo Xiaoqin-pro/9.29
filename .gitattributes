@@ -10,3 +10,8 @@ results/saq_cso_sevenway_30seed_20261013/** -text whitespace=cr-at-eol
 # Preserve SPSO wrapper and eight-way release hashes exactly.
 src/SPSO2011_CEC.m -text whitespace=cr-at-eol
 results/saq_cso_eightway_30seed_20261013/** -text whitespace=cr-at-eol
+
+# Preserve frozen sparse-ablation source SHA and selected main-result hashes.
+src/SAQ_CSO_FrameworkAblation.m -text whitespace=cr-at-eol
+src/SAQ_CSO_AblationVariant.m -text whitespace=cr-at-eol
+results/saq_cso_main_five_30seed_20261013/** -text whitespace=cr-at-eol

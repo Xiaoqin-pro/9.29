@@ -1,0 +1,90 @@
+{
+  "QualityRecords": 4350,
+  "Dimension": 50,
+  "Budget": 100000,
+  "Functions": 29,
+  "Seeds": 30,
+  "Methods": [
+    "SAQ-CSO",
+    "Original-CSO-MR02",
+    "CLPSO-AuthorSource",
+    "HPSO-TVAC-CEC",
+    "SPSO-2011-OfficialC"
+  ],
+  "MeanRanks": {
+    "SAQ-CSO": 1.9655172413793103,
+    "SPSO-2011-OfficialC": 2.2758620689655173,
+    "HPSO-TVAC-CEC": 2.7586206896551726,
+    "CLPSO-AuthorSource": 3.0344827586206895,
+    "Original-CSO-MR02": 4.9655172413793105
+  },
+  "Contrasts": [
+    {
+      "Contrast": "M1",
+      "Role": "MainComparator",
+      "Left": "SAQ-CSO",
+      "Right": "Original-CSO-MR02",
+      "MeanWins": 29,
+      "MeanLosses": 0,
+      "MeanTies": 0,
+      "SeedWins": 870,
+      "SeedLosses": 0,
+      "SeedTies": 0,
+      "HolmBetter": 29,
+      "HolmWorse": 0,
+      "HolmNS": 0
+    },
+    {
+      "Contrast": "M2",
+      "Role": "MainComparator",
+      "Left": "SAQ-CSO",
+      "Right": "CLPSO-AuthorSource",
+      "MeanWins": 25,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "SeedWins": 677,
+      "SeedLosses": 193,
+      "SeedTies": 0,
+      "HolmBetter": 18,
+      "HolmWorse": 1,
+      "HolmNS": 10
+    },
+    {
+      "Contrast": "M3",
+      "Role": "MainComparator",
+      "Left": "SAQ-CSO",
+      "Right": "HPSO-TVAC-CEC",
+      "MeanWins": 17,
+      "MeanLosses": 12,
+      "MeanTies": 0,
+      "SeedWins": 569,
+      "SeedLosses": 301,
+      "SeedTies": 0,
+      "HolmBetter": 16,
+      "HolmWorse": 6,
+      "HolmNS": 7
+    },
+    {
+      "Contrast": "M4",
+      "Role": "MainComparator",
+      "Left": "SAQ-CSO",
+      "Right": "SPSO-2011-OfficialC",
+      "MeanWins": 17,
+      "MeanLosses": 12,
+      "MeanTies": 0,
+      "SeedWins": 457,
+      "SeedLosses": 413,
+      "SeedTies": 0,
+      "HolmBetter": 5,
+      "HolmWorse": 7,
+      "HolmNS": 17
+    }
+  ],
+  "Notes": [
+    "主性能集合为用户在八算法完整比较后指定的五算法子集；不是未看结果前选择的全基线清单。该集合平均排名第一不代表优于所有PSO或SOTA。",
+    "较强HCLPSO/HIDMS/DMS结果仍公开留在八算法归档，正文应给范围说明或补充入口；没有删除原数据。",
+    "同D50/100k；SPSO40粒子，其余50，共享种群前缀。SPSO原生C控制器，时间不同批次且不同实现，不作机制归因。",
+    "五方法4×29=116检验族Holm重算，不沿用八算法203族的票数；此次仅分析缓存，无新增优化。",
+    "完整算法不改；稀疏框架和Q收益由新的同骨架消融检验。"
+  ]
+}

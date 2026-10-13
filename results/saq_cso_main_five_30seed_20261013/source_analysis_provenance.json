@@ -1,0 +1,23 @@
+{
+  "PriorRelease": "D:\\111\\Desktop\\\u565c\u565c\\9.29\\results\\saq_cso_eightway_30seed_20261013",
+  "InputHashes": [
+    {
+      "File": "all_quality_runs.csv",
+      "SHA256": "3ba9f922d2ae1c6a101cfad473891e7b80475c5d25df48dd43a1d60816a316e4"
+    },
+    {
+      "File": "independent_artifact_checks.json",
+      "SHA256": "8d4d02b1b1536aede7a5abc9764202e0d235615016640c9b6ac4abd472a6baad"
+    },
+    {
+      "File": "independent_matlab_recheck.json",
+      "SHA256": "9d919a724e5887a31685cf459829b63e26b372a4558e7dfefb89dbd46e7ea452"
+    },
+    {
+      "File": "source_manifest.json",
+      "SHA256": "3c49f703a7a9383dc0f4601aafcbd2058d84f27b590d0f2e5b6778082da9cf80"
+    }
+  ],
+  "NewOptimizationRuns": 0,
+  "UsesPriorIndependentMATChecks": true
+}

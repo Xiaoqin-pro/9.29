@@ -1,0 +1,35 @@
+{
+  "PerFunction": "paired two-sided Wilcoxon, normal approximation, continuity/tie correction",
+  "HolmFamily": 116,
+  "SeedPairsPerFunction": 30,
+  "FriedmanBlocks": 29,
+  "FriedmanStatistic": 64.0,
+  "FriedmanP": 4.1791746312010813e-13,
+  "Contrasts": [
+    [
+      "M1",
+      "SAQ-CSO",
+      "Original-CSO-MR02",
+      "MainComparator"
+    ],
+    [
+      "M2",
+      "SAQ-CSO",
+      "CLPSO-AuthorSource",
+      "MainComparator"
+    ],
+    [
+      "M3",
+      "SAQ-CSO",
+      "HPSO-TVAC-CEC",
+      "MainComparator"
+    ],
+    [
+      "M4",
+      "SAQ-CSO",
+      "SPSO-2011-OfficialC",
+      "MainComparator"
+    ]
+  ],
+  "NoFunctionSelection": true
+}

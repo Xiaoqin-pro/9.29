@@ -1,0 +1,5 @@
+Contrast,Role,Left,Right,MeanWins,MeanLosses,MeanTies,SeedWins,SeedLosses,SeedTies,HolmBetter,HolmWorse,HolmNS
+M1,MainComparator,SAQ-CSO,Original-CSO-MR02,29,0,0,870,0,0,29,0,0
+M2,MainComparator,SAQ-CSO,CLPSO-AuthorSource,25,4,0,677,193,0,18,1,10
+M3,MainComparator,SAQ-CSO,HPSO-TVAC-CEC,17,12,0,569,301,0,16,6,7
+M4,MainComparator,SAQ-CSO,SPSO-2011-OfficialC,17,12,0,457,413,0,5,7,17

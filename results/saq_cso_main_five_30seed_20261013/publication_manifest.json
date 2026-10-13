@@ -1,0 +1,93 @@
+{
+  "Dataset": "User-specified five-method main table subset, D50/100k/30seed",
+  "NewOptimizationRuns": 0,
+  "PosthocScopeSelectionDisclosed": true,
+  "BroaderResultArchive": "results/saq_cso_eightway_30seed_20261013",
+  "Files": [
+    {
+      "File": "all29_convergence.png",
+      "Bytes": 821126,
+      "SHA256": "dc3d2272eacaca95bdf94769377f5eff6c6ecaa46de613fcd553df5533e48f2a"
+    },
+    {
+      "File": "all_quality_runs.csv",
+      "Bytes": 1443651,
+      "SHA256": "78dc2a5686d97e5bd17a5c0031efa553889b1df742970e5a90970a96d10554f7"
+    },
+    {
+      "File": "convergence_nodes.csv",
+      "Bytes": 405404,
+      "SHA256": "0a92008020b805293ce0f0e8b5b9398a7b1bbc19471e5b2633c4ef2f1ee3da8b"
+    },
+    {
+      "File": "csv_reanalysis_verification.json",
+      "Bytes": 247,
+      "SHA256": "4cea52b611d3389daed54cca5ddab2238b5197f3ce1b8ca8b03f8d71068428f7"
+    },
+    {
+      "File": "function_comparison.csv",
+      "Bytes": 22057,
+      "SHA256": "c8b0d0b10d03f8cdde1720004ae1d329a8967a847ab1fdcf7740506b484a2aa9"
+    },
+    {
+      "File": "function_means.csv",
+      "Bytes": 2859,
+      "SHA256": "b08d971d7cd9351892b42f66565a13a98bf0595fca7ccb03881e06cfb63048d0"
+    },
+    {
+      "File": "function_medians.csv",
+      "Bytes": 2763,
+      "SHA256": "eeda068da9e20c18485190bd4476162d3acc358f2471f458e29473c876892bb8"
+    },
+    {
+      "File": "mean_ranks.csv",
+      "Bytes": 204,
+      "SHA256": "e5bb2a516a8c3b2bd0c1785d6bf972a1bf580d4f73d74eb1a648a745b47fe4c9"
+    },
+    {
+      "File": "mean_ranks.png",
+      "Bytes": 41706,
+      "SHA256": "fd49f60d7723e7effe3759103f5f6e2516a28dc5aaa47fbcf4ae12edae4dd7ca"
+    },
+    {
+      "File": "overall.json",
+      "Bytes": 2601,
+      "SHA256": "590736ec0e8351aa0c53f7119fbb600b06f1d136fc270b30b4904de8593c3bfe"
+    },
+    {
+      "File": "overall_comparisons.csv",
+      "Bytes": 388,
+      "SHA256": "cf1dd71c826db34ce6800e0c2ac4189b1c70162611dc4afb769e04e70620ffc5"
+    },
+    {
+      "File": "paper_mean_std.csv",
+      "Bytes": 3827,
+      "SHA256": "984851c24c096f842f879805ee62d7a7f58772662d846d4ae1914f4d40489095"
+    },
+    {
+      "File": "REPORT.md",
+      "Bytes": 1462,
+      "SHA256": "2da5a51d4c9d92f24dcceb0063c6c77034626d866ba3c512eb984d6da623d0cf"
+    },
+    {
+      "File": "runtime.csv",
+      "Bytes": 357,
+      "SHA256": "927c9c489b59c57a537e34c7ae0b92ca7d044f56695eda3940fc4a8659d817fd"
+    },
+    {
+      "File": "source_analysis_provenance.json",
+      "Bytes": 776,
+      "SHA256": "c912ae3b95685dceba3e05130d119a56c498ebd60df136108c534142fb09e10e"
+    },
+    {
+      "File": "statistics_protocol.json",
+      "Bytes": 693,
+      "SHA256": "011420d6b01cd17a0be65f365898b6ca569185981ac6a2be6fe754e940fbdcd0"
+    },
+    {
+      "File": "summary.csv",
+      "Bytes": 13696,
+      "SHA256": "6588f6e5e3d16f86a034d46b236a1f2e706bf7c0e7b10a40b691bc61727e908d"
+    }
+  ]
+}

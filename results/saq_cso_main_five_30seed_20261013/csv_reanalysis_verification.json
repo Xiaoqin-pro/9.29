@@ -1,0 +1,8 @@
+{
+  "Passed": true,
+  "QualityRecords": 4350,
+  "Methods": 5,
+  "PerFunctionTests": 116,
+  "Reproduced": "mean/std/median/rank/pairedWilcoxon/Holm",
+  "Scope": "Numeric tables only, independent source/MAT verification separately required"
+}
