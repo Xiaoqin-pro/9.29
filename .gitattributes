@@ -2,4 +2,5 @@
 data/cec2017/input_data/*_D50.txt -text -diff
 
 # Preserve the published result release exactly for its SHA256 file manifest.
-results/saq_cso_fiveway_30seed_20261013/** -text
+results/saq_cso_fiveway_30seed_20261013/** -text whitespace=cr-at-eol
+
