@@ -1,0 +1,4 @@
+Comparison,FunctionMeanWins,FunctionMeanLosses,PairedSeedWins,PairedSeedLosses,Ties
+Fixed-Restart vs Sparse-Base,1,7,27,40,13
+Random-Restart vs Sparse-Base,4,4,32,35,13
+Q-Restart vs Sparse-Base,4,4,37,43,0

@@ -31,7 +31,7 @@ fe=N; realPop=pop; personalBest=pop; personalBestCost=fitness; seekBuffer=zeros(
 Q=zeros(9,2); QVisits=zeros(9,2); actionCounts=zeros(1,2); decisionCount=0; qUpdates=0;
 nextDecisionFE=N; pending=false; previousState=1; previousAction=1; previousBest=Best.Cost;
 restartActive=false; lastImprovementFE=N; lastRestartFE=-inf; rounds=0; seekFE=0; traceFE=0; restartFE=0; restartSuccess=0;
-restartWindows=0; parentCoverage=0; decisionLog=zeros(ceil((budget-N)/episodeFE)+2,12);
+restartWindows=0; parentCoverage=0; restartCandidateDistance=0; restartCandidateCount=0; decisionLog=zeros(ceil((budget-N)/episodeFE)+2,12);
 windowRestartSuccess=0; windowRestartGain=0; windowRestartCount=0; restartParentSuccess=0;
 
 while fe<budget
@@ -87,7 +87,12 @@ while fe<budget
    traceCats=traceIds(selectTracing(traceBest,traceCenter,targetTrace)); traceCats=traceCats(randperm(numel(traceCats)));
  else, traceCats=zeros(0,1); end
  if restartActive && targetSeek>0 && ~isempty(seekIds)
-   [seekPlan,seekCats,restartRows]=makeRestartPlan(seekBuffer,seekIds,fitness,realPop,lb,ub,targetSeek,N,SMP,progress);
+   [seekBuffer,seekPlan,seekCats,restartRows]=makeRestartPlan(seekBuffer,seekIds,fitness,realPop,lb,ub,targetSeek,N,SMP,progress);
+   if ~isempty(restartRows)
+     restartParents=floor((restartRows-1)/SMP)+1;
+     restartCandidateDistance=restartCandidateDistance+sum(sqrt(sum((seekBuffer(restartRows,:)-realPop(restartParents,:)).^2,2)));
+     restartCandidateCount=restartCandidateCount+numel(restartRows);
+   end
  else
    [seekPlan,seekCats]=screenGeometry(seekBuffer,seekIds,roundBest,center,targetSeek,N,SMP); restartRows=[];
  end
@@ -131,7 +136,7 @@ end
 T=T(1:fe);
 info=struct('Algorithm',['SAQ-CSO-RestartQ-' policy],'Seed',seed,'Evaluations',fe,'Seconds',toc(started),...
  'SeekingEvaluations',seekFE,'TracingEvaluations',traceFE,'RestartEvaluations',restartFE,'RestartSuccesses',restartSuccess,...
- 'RestartWindows',restartWindows,'RestartParentSuccesses',restartParentSuccess,'MeanParentCoverage',parentCoverage/max(1,rounds),'QTable',Q,'QVisits',QVisits,...
+ 'RestartWindows',restartWindows,'RestartParentSuccesses',restartParentSuccess,'MeanRestartCandidateDistance',restartCandidateDistance/max(1,restartCandidateCount),'RestartCandidateCount',restartCandidateCount,'MeanParentCoverage',parentCoverage/max(1,rounds),'QTable',Q,'QVisits',QVisits,...
  'QUpdates',qUpdates,'ActionCounts',actionCounts,'DecisionLog',decisionLog(1:decisionCount,:),...
  'Alpha',alpha,'Gamma',gamma,'Epsilon',epsilon,'StagnationThreshold',stagnationThreshold,'DiversityThreshold',diversityThreshold,'RestartCooldown',restartCooldown);
 end
@@ -148,7 +153,7 @@ function cats=selectTracing(db,dc,count)
 for k=1:numel(raw),if ~any(cats(1:n)==raw(k)),n=n+1;cats(n)=raw(k);end;end
 for k=1:numel(db),if n==count,break;end;if ~any(cats(1:n)==k),n=n+1;cats(n)=k;end;end
 end
-function [plan,cats,restartRows]=makeRestartPlan(pool,ids,fitness,realPop,lb,ub,quota,N,SMP,progress)
+function [pool,plan,cats,restartRows]=makeRestartPlan(pool,ids,fitness,realPop,lb,ub,quota,N,SMP,progress)
 plan=cell(N,1);cats=zeros(0,1);restartRows=zeros(0,1);[~,ord]=sort(fitness(ids),'descend');candidateCount=min(ceil(.20*N),numel(ord));candidateParents=ids(ord(1:candidateCount));take=min(quota,numel(candidateParents));selected=candidateParents(1:take);counts=zeros(N,1);
 for q=1:numel(selected)
  i=selected(q);row=(i-1)*SMP+2;x=lb+rand(1,size(realPop,2)).*(ub-lb);pool(row,:)=x;plan{i}=row;cats(end+1,1)=i;restartRows(end+1,1)=row;counts(i)=1;

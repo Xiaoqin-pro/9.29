@@ -1,0 +1,5 @@
+Method,Runs,StatusOK,UniqueFunctions,UniqueSeeds,FEAll100000,MeanSeconds,MeanRestartEvaluations,MeanRestartParentSuccesses,MeanRestartCandidateDistance
+Sparse-Base,80,80,8,10,80,7.87164899375,0.0,0.0,0.0
+Fixed-Restart,80,80,8,10,80,7.92438633,396.0,0.0,443.7046223900942
+Random-Restart,80,80,8,10,80,7.945778710000001,382.5,0.0,443.9649008661701
+Q-Restart,80,80,8,10,80,7.942488335,413.25,0.0,433.6630731547686
