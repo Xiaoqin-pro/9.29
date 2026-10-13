@@ -1,0 +1,66 @@
+{
+  "DMSPaperSHA256": "907bfe7a3ccfb72502dae739f96bafeb5d9b5de212d32906b89ad11327313913",
+  "Items": [
+    {
+      "Item": "swarm size",
+      "Paper": "SIS p127/128: population30",
+      "Implementation": "N30",
+      "Status": "matched"
+    },
+    {
+      "Item": "subgroup size",
+      "Paper": "SIS p128: m3",
+      "Implementation": "10 groups of3",
+      "Status": "matched"
+    },
+    {
+      "Item": "regroup period",
+      "Paper": "SIS p128: R5",
+      "Implementation": "mod(generation,5)==0 during local phase",
+      "Status": "matched"
+    },
+    {
+      "Item": "local/global schedule",
+      "Paper": "SIS p126 Fig2: local first90% Max_gen then global",
+      "Implementation": "localLimit=floor(.9*nominal), then global",
+      "Status": "matched with exactFE adapter"
+    },
+    {
+      "Item": "inertia",
+      "Paper": "SIS p127: .9 down to.2",
+      "Implementation": "w=.9-.7*min(gen,G)/G",
+      "Status": "corrected and independently tested"
+    },
+    {
+      "Item": "velocity limit",
+      "Paper": "SIS p127:20% search range",
+      "Implementation": "mv=.2*(ub-lb)",
+      "Status": "matched"
+    },
+    {
+      "Item": "acceleration values",
+      "Paper": "Numerical c1/c2 not stated in full experimental setting",
+      "Implementation": "1.49445 each from related author code",
+      "Status": "explicit adaptation, not original-table exact claim"
+    },
+    {
+      "Item": "initial velocity",
+      "Paper": "Not fully specified",
+      "Implementation": "uniform \u00b120% range from related author code",
+      "Status": "explicit adaptation"
+    },
+    {
+      "Item": "domain enforcement",
+      "Paper": "No detailed operator given",
+      "Implementation": "skip outside movement evaluations from related author code",
+      "Status": "explicit adaptation"
+    },
+    {
+      "Item": "local solver/coordinate mask",
+      "Paper": "No Quasi-Newton or keep_d in base SIS Fig2",
+      "Implementation": "none",
+      "Status": "matched base identity; public file itself is DMS-L extension"
+    }
+  ],
+  "ExactPaperTableReproductionClaimed": false
+}

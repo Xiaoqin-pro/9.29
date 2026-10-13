@@ -1,0 +1,69 @@
+{
+  "RunsChecked": 6960,
+  "Passed": true,
+  "SharedInitialGroups": 870,
+  "RoundChecks": 8695650,
+  "QDecisionChecks": 870000,
+  "ObjectiveCalls": 696000000,
+  "PostRunRecheckCalls": 6960,
+  "Checks": "CSV/MAT/keys/FE/p0-prefix/bounds/final-best/nodes/Q states+gates+rewards+terminal replay",
+  "CachedSourceIdentity": [
+    {
+      "Path": "src/SAQ_CSO.m",
+      "SHA256NormalizedLF": "0d6a1757057132d69672e7d899cc5e745d34aea33edec215ebefc2254ded9958",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Candidate.m",
+      "SHA256NormalizedLF": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/ASE_CSO_QuotaQ_Compact.m",
+      "SHA256NormalizedLF": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/CLPSO_CEC_AuthorSource.m",
+      "SHA256NormalizedLF": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "archive/legacy/CSO_CEC.m",
+      "SHA256NormalizedLF": "f3240c34c5136909b9f2d792e7c933627676495eb677479b53f52c085d0da501",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "archive/legacy/CEC2017Function.m",
+      "SHA256NormalizedLF": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/HCLPSO_CEC_AuthorSource.m",
+      "SHA256NormalizedLF": "3fcc6cca59743420f83a9d2c3bdc588eb5ea05548024060c25c3919525d3a39c",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/HIDMS_PSO_CEC.m",
+      "SHA256NormalizedLF": "29d5648968972e010b5de4315f167242774534d23fdbce6752f20756ceaf2d87",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/HPSO_TVAC_CEC.m",
+      "SHA256NormalizedLF": "c1868d2877049d700067ee9857da538d38ef4f013a2c38a4cd197e317bfa2195",
+      "MatchesCurrent": true
+    },
+    {
+      "Path": "src/DMS_PSO_SIS_CEC.m",
+      "SHA256NormalizedLF": "f2dc954d81b4fb8e9abf3cf49ee670d5b62d46531e2dd697b9aca4e7ea34a5cb",
+      "MatchesCurrent": true
+    }
+  ],
+  "NoNewObjectiveChecksInPython": true,
+  "PriorHPSODMSNewOptimizationRuns": 1204,
+  "NewSPSOOptimizationRuns": 870,
+  "CachedHPSORuns": 536,
+  "NewSPSOObjectiveCalls": 87000000,
+  "SPSOOfficialNativeHashVerified": true,
+  "AllCachedBaselineSourceHashesVerified": true
+}

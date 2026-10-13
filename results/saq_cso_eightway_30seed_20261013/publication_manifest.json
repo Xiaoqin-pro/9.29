@@ -1,0 +1,188 @@
+{
+  "Dataset": "CEC2017 D50 100k 29 functions 30 seeds 8 methods",
+  "NewSPSOOptimizationRuns": 870,
+  "PriorQualityRuns": 6090,
+  "Files": [
+    {
+      "File": "all29_convergence.png",
+      "Bytes": 1046999,
+      "SHA256": "0c63bc6ecd70466d19fa535f8109f513465b946c90e071b3546f1fce47b703f8"
+    },
+    {
+      "File": "all29_error_ratios.png",
+      "Bytes": 191829,
+      "SHA256": "b2c7fcec08a3f887ed16d596d03a02b8dab58b081a3e5cb638b74f011550d4d8"
+    },
+    {
+      "File": "all_quality_runs.csv",
+      "Bytes": 2282413,
+      "SHA256": "3ba9f922d2ae1c6a101cfad473891e7b80475c5d25df48dd43a1d60816a316e4"
+    },
+    {
+      "File": "convergence_nodes.csv",
+      "Bytes": 675140,
+      "SHA256": "43fd446c2b45a504c9e30fbc17fb0850a0fd6e787f094849e54ae91ddcd4283c"
+    },
+    {
+      "File": "csv_reanalysis_verification.json",
+      "Bytes": 274,
+      "SHA256": "bc0abea5aff2069ab74e6540e77310522e0c461e1dc88aff901c1ecd822505dc"
+    },
+    {
+      "File": "error_ratios.csv",
+      "Bytes": 4107,
+      "SHA256": "f07028dab979ae4e901e6b3ecbcac54b7d367fa6e936767d543db099f5f823a3"
+    },
+    {
+      "File": "function_comparison.csv",
+      "Bytes": 40857,
+      "SHA256": "03e13fffc054f1cad159acf6ca968e313ab90bccca4daee8bc4c5bdd7bd56411"
+    },
+    {
+      "File": "function_means.csv",
+      "Bytes": 4519,
+      "SHA256": "6718797b211c46f74cb2a7037144076eff416eecf2926f2db7edcd9705af7e87"
+    },
+    {
+      "File": "function_medians.csv",
+      "Bytes": 4363,
+      "SHA256": "5cdff9c4d2112dd20557cbc268f92fdf20e6c756953dac96b469b5350a0f8a15"
+    },
+    {
+      "File": "historical_hclpso_reference_runs.csv",
+      "Bytes": 200552,
+      "SHA256": "81e630d08c83c0d81013a412100ad0fdd59ad4081ebd4f673589d3808ecb0620"
+    },
+    {
+      "File": "historical_superseded_dms_runs.csv",
+      "Bytes": 180242,
+      "SHA256": "33c6da574b5a90a9f22e19a320d1ec5449a6573f943640ae8c47bcf820593393"
+    },
+    {
+      "File": "hpso_dms_paper_parameter_audit.json",
+      "Bytes": 2152,
+      "SHA256": "cdf182a5768e81d4c0db864fcc1ed0d260427a7ea80a4c23485f4a0251ef3749"
+    },
+    {
+      "File": "hpso_dms_preflight.json",
+      "Bytes": 691,
+      "SHA256": "5a408721c45ed3514a3ab7b51067a44d36ebba0da734e50daea5cb6297b4afcd"
+    },
+    {
+      "File": "hpso_dms_source_provenance.json",
+      "Bytes": 621,
+      "SHA256": "2191b6a14b7bd2440631ce271a0bdeb1678abedc5409d7a25d32d6393803a362"
+    },
+    {
+      "File": "independent_artifact_checks.json",
+      "Bytes": 2467,
+      "SHA256": "8d4d02b1b1536aede7a5abc9764202e0d235615016640c9b6ac4abd472a6baad"
+    },
+    {
+      "File": "independent_best_rechecks.csv",
+      "Bytes": 1143503,
+      "SHA256": "c6e7f11133af954fefc1ed93066a7efe7db5212fe60fa7802f6abf566f305e1a"
+    },
+    {
+      "File": "independent_matlab_recheck.json",
+      "Bytes": 149,
+      "SHA256": "9d919a724e5887a31685cf459829b63e26b372a4558e7dfefb89dbd46e7ea452"
+    },
+    {
+      "File": "mean_ranks.csv",
+      "Bytes": 321,
+      "SHA256": "02eebae7791ab984b46b0181786f6352aef330c7a596e6a9e402e2ca917f8f9c"
+    },
+    {
+      "File": "mean_ranks.png",
+      "Bytes": 56984,
+      "SHA256": "7051d9cb2eca999c1b95482a2b8c319f4d2862144c4e74e960f5602272630399"
+    },
+    {
+      "File": "node_function_wins.csv",
+      "Bytes": 972,
+      "SHA256": "377171241db3b91943461a9b49b84b1207e66b9aa37eaa8ebde56a464330066d"
+    },
+    {
+      "File": "overall.json",
+      "Bytes": 4375,
+      "SHA256": "ffa867a883e4b01c927382346f06339fc4acf2cf6b5293e600bef153bbca54d9"
+    },
+    {
+      "File": "overall_comparisons.csv",
+      "Bytes": 574,
+      "SHA256": "40231bd9c4e4062e55c41418619bf4a51ef06f67033fb0d8c470dd66a161c5b8"
+    },
+    {
+      "File": "paper_mean_std.csv",
+      "Bytes": 6063,
+      "SHA256": "6754917d354d6dfe238bd701a0288c5d47d93127606af4961ba1839dbae7dff6"
+    },
+    {
+      "File": "q_behavior.csv",
+      "Bytes": 92768,
+      "SHA256": "8cacadcfed379a571c49199f64707515b5eaab886f95a1eddee7d4b4002fbb73"
+    },
+    {
+      "File": "q_tables.csv",
+      "Bytes": 258195,
+      "SHA256": "b50a09a625a0febcaef8a16a6643e5d4806c383bf05f25127dc31fa780ecaa07"
+    },
+    {
+      "File": "REPORT.md",
+      "Bytes": 4788,
+      "SHA256": "99d6612eb76b7d9226b78d4a880ad8ee2c0dd088cd3d2fa91ea6a8884876c51e"
+    },
+    {
+      "File": "runtime.csv",
+      "Bytes": 566,
+      "SHA256": "fb702899de2e235e2787d788244aefff134354d5f4941a1f87d4c8093943d73f"
+    },
+    {
+      "File": "source_manifest.json",
+      "Bytes": 29674,
+      "SHA256": "3c49f703a7a9383dc0f4601aafcbd2058d84f27b590d0f2e5b6778082da9cf80"
+    },
+    {
+      "File": "spso2011_build_reproduction_check.json",
+      "Bytes": 209,
+      "SHA256": "caf72a0979a614e213451a9e849de2992f34d9117f7ea8865fd07b30d5ab3082"
+    },
+    {
+      "File": "spso2011_native_build_manifest.json",
+      "Bytes": 1239,
+      "SHA256": "3665c256d92dbb2a5c2102f5dc42a9ed93a51c91f98a0c26d6c05fa6f51c999d"
+    },
+    {
+      "File": "spso2011_preflight.json",
+      "Bytes": 509,
+      "SHA256": "a60825401af16275401a648ec34fa2889f6d625877b82c34e0368f345b2f6baf"
+    },
+    {
+      "File": "spso2011_source_provenance.json",
+      "Bytes": 3546,
+      "SHA256": "70ec826074793e2906a80ba38b7ef8fba551d329a14484b5079027f6ab52a8cd"
+    },
+    {
+      "File": "spso2011_standard_parameter_audit.json",
+      "Bytes": 2036,
+      "SHA256": "414d3492b183020118f417fab3b2ca1c2619d777b3bdab1b44b45203cb0c9ca9"
+    },
+    {
+      "File": "statistics_protocol.json",
+      "Bytes": 453,
+      "SHA256": "baa992622157dc6449c19a3507d6f08441ce6fb5684420a20bb81e1a7ee5f59b"
+    },
+    {
+      "File": "summary.csv",
+      "Bytes": 34820,
+      "SHA256": "97ec7d965e84e572252ec71612f858a89687fb37c2fb03ee0f6c5b42d98fbeae"
+    },
+    {
+      "File": "superseded_batch_record.json",
+      "Bytes": 463,
+      "SHA256": "99fa8b604308acd7af8e898a8320720b6b4106ab539c71ec4a9b85836b013696"
+    }
+  ],
+  "MATAndNativeArchives": "Retained locally; primary source builder and numeric CSV reanalysis published"
+}

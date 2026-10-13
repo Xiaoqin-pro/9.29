@@ -1,0 +1,707 @@
+[
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "archive\\legacy\\CEC2017Function.m",
+    "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "archive\\legacy\\CSO_CEC.m",
+    "SHA256": "86d253986a511f36b45d9b61da4681ec4dfb1518752027fa9ef1512cf36633b2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "author_original.m",
+    "SHA256": "429629ef9e96b096508598e9dfdae0f7748d081c8ce1d6df1e1a35acd2ee00a2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "author_provenance.json",
+    "SHA256": "c3a33856d7281093175bf3aed246c4d8136058c31e8ee14f3886c0614a0cb68d"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "docs\\HCLPSO_AUTHOR_CORRECTION_20261013.md",
+    "SHA256": "2cd29c1faf6fe601d21a7568d0a44f81892cb9c13b53f7fe97d96f464a4b8e9c"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "experiments\\run_hclpso_author_30seed.m",
+    "SHA256": "4ea59e8f6d5c531b24ccfc94199281155235b3707830d509fb52bc831d0670c0"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "HCLPSO_AuthorOracle.m",
+    "SHA256": "ad579e6396233fef038e10d975791daff2f2f599334e5182bef4a22a3c96518b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "preflight.json",
+    "SHA256": "039156986cd9ec20609dbffa46dbc221431803d4936d9ece5f92c7ab0a47bf24"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "reference_hclpso.py",
+    "SHA256": "6a42c855850ffd69ea905ca8e150b0b1ad65b416e25dd3a72288435c4b89e84c"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "reference_hclpso.rst",
+    "SHA256": "b7efbaed4d0cc49352ee6ab0df61d906c15892a90b9648dc63a186cb9d3357f7"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "src\\ASE_CSO_QuotaQ_Candidate.m",
+    "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "src\\ASE_CSO_QuotaQ_Compact.m",
+    "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "src\\CLPSO_CEC_AuthorSource.m",
+    "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "src\\HCLPSO_CEC_AuthorSource.m",
+    "SHA256": "957f7459b8970817b947381c516144179ed8fb765fac409175d2763d54bae342"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hclpso_author_30seed_study_20261013_100621",
+    "Path": "src\\SAQ_CSO.m",
+    "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "archive\\legacy\\CEC2017Function.m",
+    "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "archive\\legacy\\CSO_CEC.m",
+    "SHA256": "86d253986a511f36b45d9b61da4681ec4dfb1518752027fa9ef1512cf36633b2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "author_original.m",
+    "SHA256": "4138eec48fbec88706cf578db769f86858f338c9dd66afac78f630f927bfdbcf"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "author_provenance.json",
+    "SHA256": "046d0c6cb5b8ef7a560709e49ea8a9483186690c86d2fab346f8ff8298f0e9de"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "docs\\HIDMS_PSO_PROTOCOL_20261013.md",
+    "SHA256": "bdf3ea3f98defb2d87043a022be68e8038bfd045f9b0442c0433e62f937cde14"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "experiments\\run_hidms_pso_30seed.m",
+    "SHA256": "f63e5fdae136965d06edace21d16e23a1efe2ad740e411bc7ea9cbbaf4b17aef"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "HIDMS_SourceOracle.m",
+    "SHA256": "5c9b6273d4c90e8512ee850c64128481ea94aff7c1beb919dee545dd8fca285d"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "preflight.json",
+    "SHA256": "67e27be318213e5bfb174a82c06d4cce5584cef8845892e182b28f97424c3f43"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "src\\ASE_CSO_QuotaQ_Candidate.m",
+    "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "src\\ASE_CSO_QuotaQ_Compact.m",
+    "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "src\\CLPSO_CEC_AuthorSource.m",
+    "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "src\\HIDMS_PSO_CEC.m",
+    "SHA256": "6b282a3957d1b5eff55f9ff05f4fbac05e3dc8b67bfcac304a9ab9f36f7bca23"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hidms_pso_30seed_study_20261013_102120",
+    "Path": "src\\SAQ_CSO.m",
+    "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "archive\\legacy\\CEC2017Function.m",
+    "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "archive\\legacy\\CSO_CEC.m",
+    "SHA256": "86d253986a511f36b45d9b61da4681ec4dfb1518752027fa9ef1512cf36633b2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "DMS_original_local_search_extension.m",
+    "SHA256": "c6bc734dbaa799be0ed9f8b9c8aa06849924d5917fe94924108d9ac959399efb"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "DMS_PaperCoreOracle.m",
+    "SHA256": "74ca332ba505f4b324129d9cea534d5fbc699da47bda1f28a4b00e018a136527"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "docs\\HPSO_DMS_PROTOCOL_20261013.md",
+    "SHA256": "0a10b90eb9a48943d812c427748aebdd627898adec418a3515248d565d04a342"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "experiments\\run_hpso_dms_30seed.m",
+    "SHA256": "9c5c741a80cc7a15d2deff51334352bb14bc1eaeb1634100840ada3268a89012"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "HPSO_original.m",
+    "SHA256": "b6a376dde1330e37effb4b4a28dd7e0e888fb04dec0d7f8f0a966ab163ca6601"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "HPSO_ReferenceOracle.m",
+    "SHA256": "98ae780e1dd4856fbc9d680ff4b4b542efbf07ee49a5755b8b991c469dc3300d"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "preflight.json",
+    "SHA256": "5a408721c45ed3514a3ab7b51067a44d36ebba0da734e50daea5cb6297b4afcd"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "source_provenance.json",
+    "SHA256": "2191b6a14b7bd2440631ce271a0bdeb1678abedc5409d7a25d32d6393803a362"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\ASE_CSO_QuotaQ_Candidate.m",
+    "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\ASE_CSO_QuotaQ_Compact.m",
+    "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\CLPSO_CEC_AuthorSource.m",
+    "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\DMS_PSO_SIS_CEC.m",
+    "SHA256": "a5ce43e57f1777ce345b27535e71d0ece5618c840f8b64e226332caed7fd9f3d"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\HPSO_TVAC_CEC.m",
+    "SHA256": "3073f6c24861959e51803b649b2be44f668256ec2ab182a9ea36d70afa4e475c"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\SAQ_CSO.m",
+    "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "src\\SourceFileSHA256.m",
+    "SHA256": "d8ca4e21e18a54ddee126f0fe8dc64160fe2a84d0964a8089d9e28806819d464"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\hpso_dms_30seed_study_20261013_112142",
+    "Path": "test_HPSO_DMS_baselines.m",
+    "SHA256": "c05052b7d2073f0070b1d98c408b770024ae0f7731a84c32e984f1d0989411bb"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "archive\\legacy\\CEC2017Function.m",
+    "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "archive\\legacy\\CSO_CEC.m",
+    "SHA256": "86d253986a511f36b45d9b61da4681ec4dfb1518752027fa9ef1512cf36633b2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "docs\\SAQ_CSO_FORMAL_COMPARISON_PROTOCOL_20261013.md",
+    "SHA256": "bac14d7c34ed0e5a06e99c898a50b5563cf092e4b1e69a3329746e96a14b2bdd"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "experiments\\run_saq_cso_formal_100k_30seed.m",
+    "SHA256": "9f63c7a3bcdede4f40dceff4f3badf6382947f2f3ad935e8e9768190e5d70d92"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "reference_hclpso.py",
+    "SHA256": "6a42c855850ffd69ea905ca8e150b0b1ad65b416e25dd3a72288435c4b89e84c"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "reference_hclpso.rst",
+    "SHA256": "b7efbaed4d0cc49352ee6ab0df61d906c15892a90b9648dc63a186cb9d3357f7"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "src\\ASE_CSO_QuotaQ_Candidate.m",
+    "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "src\\ASE_CSO_QuotaQ_Compact.m",
+    "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "src\\CLPSO_CEC_AuthorSource.m",
+    "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "src\\HCLPSO_CEC_Reference.m",
+    "SHA256": "d2e37f5c09975cefc989dd9f2106b4757515f5971757d8d4a790c2d4ff5533fa"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_cso_formal_100k_30seed_study_20261013_083541",
+    "Path": "src\\SAQ_CSO.m",
+    "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "archive\\legacy\\CEC2017Function.m",
+    "SHA256": "866511184bb4f001447b2fdb914286781c265cc8e4b05bb3a42f04cd8125f14f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "archive\\legacy\\CSO_CEC.m",
+    "SHA256": "86d253986a511f36b45d9b61da4681ec4dfb1518752027fa9ef1512cf36633b2"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "docs\\SPSO2011_PROTOCOL_20261013.md",
+    "SHA256": "61b92c8071af27def5a7c72a6a244bfc7c2b354033893c6fc7658095b755dfa4"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "experiments\\run_spso2011_30seed.m",
+    "SHA256": "79c5354ee0fb7060b37976869ea39c8bc8e800dac7e1ccef5f7c5946c8dfd44b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\alea_adapted.c",
+    "SHA256": "c6c2fe6e2144ab566d8a4c0cb6ee15121ddc861a6d08a74c1a24068656c97402"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\KISS.c",
+    "SHA256": "2b7786208db980eae382ea7727c016345336fb64d498834757697300d5d33da4"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\main.h",
+    "SHA256": "96f631aaeb45344c804571c28fc4f67739b356fb6a9d65d01d7a45058d1afc95"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\PSO_adapted.c",
+    "SHA256": "18e7a68178a4ead4341ceb2d4bc4302fd899edfe9563e3d3f770b9cf3f4ce82b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\SPSO2011_native.c",
+    "SHA256": "3a1d53a2e0466262d0e1bc00f8f929bfeda7982cda4ec5f87a22488cc7b7955b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\SPSO2011_native.mexw64",
+    "SHA256": "58eff4b8039dbf136f3ae8133112b01dc95b66b2d9c7667024f04b654058e606"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "native_build\\tools.c",
+    "SHA256": "067580c44540f0fb5eddf6d77266c0334beff1259383b0b850fbf81109a5a1cb"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "official_PSO.c",
+    "SHA256": "ef09488e3eb7eacd3c152d8cfdf8a5f26cdf6b6032469925475f0eba6b20161f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "official_ReadMe.txt",
+    "SHA256": "1ade0e51251eea4c188b047b605cd4eae3f28f5491a1eb629b7b25912de0996f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "preflight.json",
+    "SHA256": "a60825401af16275401a648ec34fa2889f6d625877b82c34e0368f345b2f6baf"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "source_provenance.json",
+    "SHA256": "064d79a4399cc988d655ccefc0ae310345c278934f45254fe67608527894b94f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "SPSO2011_MatlabOracle.m",
+    "SHA256": "24468e7a2b257122f35877197cb1c0141fb555d5bb0006e033aac75d5e4ae6d1"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\ASE_CSO_QuotaQ_Candidate.m",
+    "SHA256": "c848963e60172ef791ca873cf95a6d18943b01b0e95d12d99e9e8aab048fa60a"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\ASE_CSO_QuotaQ_Compact.m",
+    "SHA256": "c048655c00f815f64cee56970d0e95b83b94cc11c02d956b97ae64287182bb3b"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\CLPSO_CEC_AuthorSource.m",
+    "SHA256": "72f78fb839b9c164aaa9d7560037925be161ba0408e83e8d82b58506bd4a06b5"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\SAQ_CSO.m",
+    "SHA256": "99dcd468fd4c9f7b6c482f0283deab108e56406a9286d08459842dfc1f2fac68"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\SourceFileSHA256.m",
+    "SHA256": "d8ca4e21e18a54ddee126f0fe8dc64160fe2a84d0964a8089d9e28806819d464"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "src\\SPSO2011_CEC.m",
+    "SHA256": "243cf733c39a9e88114bf10263095d85fda7df8b1eefaa9e197603df5c1bc66f"
+  },
+  {
+    "RunDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\spso2011_30seed_study_20261013_130252",
+    "Path": "test_SPSO2011_reference.m",
+    "SHA256": "f018e8ee565b4e8fbcc20d26e7cc2c1cd0eedb91dff2666f9dfcf68c009537e1"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_10_D50.txt",
+    "SHA256": "02e6f14d81b82503fdafbf03eb17da9fdd51b8c58801444fd41ed3f405f6121c"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_11_D50.txt",
+    "SHA256": "dcb15777c8a789598405cfa8460fbeb4c51ff0131151c5d1fa3f6f4b7a905628"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_12_D50.txt",
+    "SHA256": "4ed400d885548fbae1ff029fdb217806861811ef2bbe8f7959326c342b0ff9d5"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_13_D50.txt",
+    "SHA256": "e85e6c9c036bcf33d299d3de69a734b4e83a1b98074aac1429d69f1e25315fb3"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_14_D50.txt",
+    "SHA256": "ad83ef2b8c4cc2be208bb7525541f1a10cf37c1be5669d5b715e9682c45c3088"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_15_D50.txt",
+    "SHA256": "57fdceb6cc3b4460571f15a8abb3c342e63df26ab69c676238ce9d38f3b9aed6"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_16_D50.txt",
+    "SHA256": "13993964890d04ffdcf8947b136f80137e87af98448f0e364d84a3e5daff2db9"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_17_D50.txt",
+    "SHA256": "9fe7907dc4bd5be774351aafaea452610569598a562e9e0b09fc02c5f06bb6e3"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_18_D50.txt",
+    "SHA256": "7a5111c97d8d6b929075c5428f07a32d33b30018262b9c5c0d058574b0410d25"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_19_D50.txt",
+    "SHA256": "c972008f7b5d30182ceb8eac223f5a65b0f30831268ee43fa26657342943b292"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_1_D50.txt",
+    "SHA256": "c709185cf9ef36ad17651addfb02aa0d904e735ed769dda31e2accbb2bed80c9"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_20_D50.txt",
+    "SHA256": "702fe53d2896a150e7829a6c221456aca9d717fc869b89c863e7abe79d6f4ae5"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_21_D50.txt",
+    "SHA256": "d0fa1a06b8d9aeea0fe2f40206494c6bde81abc81740eed4624511584f87bcb9"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_22_D50.txt",
+    "SHA256": "782b33e2e533e0fd70ef039ad58e0ee763d6bab0dce5d74f6158310897280042"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_23_D50.txt",
+    "SHA256": "63fc82c09a19677b21e632b776ca606c0802111b41912f9b0feaf9514692468a"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_24_D50.txt",
+    "SHA256": "a4e2bb08894d5eb569221dd22e145b1d77ad1593182e115388676159bba877d0"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_25_D50.txt",
+    "SHA256": "d2f370dd4ba89c7a5c0ff944ed14f1e78a13e6fe057f6670a16004fa4f067835"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_26_D50.txt",
+    "SHA256": "223252e1ea9a004639b5cfb5a5db14b7b8ccfd7eca872acd2891310a515730a6"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_27_D50.txt",
+    "SHA256": "7cbb309fc5152feb4610727b65dd1653eb647f9051da15e5fcdd575de0b0d854"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_28_D50.txt",
+    "SHA256": "129144b599a02488ecbc18057767565046d72719808a9782ef6509d8e9727d7a"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_29_D50.txt",
+    "SHA256": "58012ef2fac73d4210e1fcc0a6f68e75ac2f7bd03f4c9255c368eb0ed508fdab"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_2_D50.txt",
+    "SHA256": "0db985af2151c9b3c174b6f65cdb87ddf671619712d2189334fa4ec03fe4eaba"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_30_D50.txt",
+    "SHA256": "e7cc2bbc0780f87ab3ae741038aa7c90abf2d994752b9254c71b506bdc3600c2"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_3_D50.txt",
+    "SHA256": "1e57e3f5e29b9a7e7f25cb6e3dd3794a3594880186890844fe3ddf8a98ddfe9b"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_4_D50.txt",
+    "SHA256": "c27f2bf78cca3c620069a8891dd6f5ecfe193348362458435879ec9370afcdd2"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_5_D50.txt",
+    "SHA256": "28a1208da1fad847b82c5ff651b17d90c7f69a6b0741b6b76574566d551667fe"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_6_D50.txt",
+    "SHA256": "162223217836e135b9ce59f45ba199595c8b7fa200b710d8a08dd0132c7ee690"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_7_D50.txt",
+    "SHA256": "2ff94634ccc069a7c9a810bb683ca4a2541ddcd984fa842d4a10b5fdd198bbe6"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_8_D50.txt",
+    "SHA256": "4a7906f2a6eb8df7f7a256731956eb163afb5f24c5253ed97eaa2f32d5f89dd0"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "M_9_D50.txt",
+    "SHA256": "0ab46b866d3f07d278bfaea08e12a6a8e357ba5c140be61526a2199aa710572c"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_10_D50.txt",
+    "SHA256": "c06a93bb70b2a8ba3769e2d69048224728182d2b8df7f1350c9b694ed3fc7ddf"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_11_D50.txt",
+    "SHA256": "cd91b0a7b3fceb2239227b484c71bf8658795f77856f61ed8a5f35b272f1561f"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_12_D50.txt",
+    "SHA256": "5779ea06bc6a53e71edc1e89e8a737d8ebb444678e0d9fe745aaf8fc3eb23fd5"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_13_D50.txt",
+    "SHA256": "d35cdddf630e04edd1cf93610350b2d741931096a7f8d1eb1ff618bc5f2a7d17"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_14_D50.txt",
+    "SHA256": "6a3b921dde430359f29b302282d25cec3abdc1db39990b34b4f06e7e07b5a3e8"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_15_D50.txt",
+    "SHA256": "453579a613204d9874d70d97770fe921e567dbc044b09384716cd853b16d7f67"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_16_D50.txt",
+    "SHA256": "58da687823e26bd100e886e8cbe1021b8becedf0ff32193457f0f71bcec07a08"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_17_D50.txt",
+    "SHA256": "7893cdff925ecfa099303bce114163376f3cba04383878296269032c54ad5397"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_18_D50.txt",
+    "SHA256": "6080090390869648453607aa1fdac4ef9332fe180166e29014049292adc14962"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_19_D50.txt",
+    "SHA256": "e7660fc4e67f1be6ffa380842e080f6c92c2268ea32e5e50acd750dc995d3f8a"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_1_D50.txt",
+    "SHA256": "cf0ba179911bd7d3b29acd3855bcd4da8e12a9450c800a92f4709f6a29bc910c"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_20_D50.txt",
+    "SHA256": "747933e6a5f6517ba6654c77648425758f14a6ee886edfe6411c24016f597d6e"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_21_D50.txt",
+    "SHA256": "7e2871cacd61a0a79dce809c8f9b53d17f20012e58478374d2b8141c2d27ba75"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_22_D50.txt",
+    "SHA256": "7bac30ed33fa35de985ce64e0e951575150d31939fa0f3ed2e421b574ce113f2"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_23_D50.txt",
+    "SHA256": "b09b5c7a1cf13e4fbdcd75ed407e39aab6b92baf73e13ddfe8a9b29c82bffc56"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_24_D50.txt",
+    "SHA256": "b32a5751526b4d0c895d22eb0bf08ca401a2056d486203ace1d7ae899dda517f"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_25_D50.txt",
+    "SHA256": "1ea21fea4ea35ca6d7d99458a7c74b8120a294bd052bb0b7a273ae06d9f63d5b"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_26_D50.txt",
+    "SHA256": "222227b5ff643ae99ca779db556deb4790d0ca4fab755a379b311518ce8fe412"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_27_D50.txt",
+    "SHA256": "8e62b760c56fcb0af838995c26f855c1685fa7b6fac5054bcd8cebef2aa79663"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_28_D50.txt",
+    "SHA256": "7894860ef8e599247e9c75ff9035235ef33e319ff6982f48acaef8668474ef65"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_29_D50.txt",
+    "SHA256": "ecfa2a70516ec661346e49789e214c17d640e1b1ca57252869c68853bce20cce"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_2_D50.txt",
+    "SHA256": "fc9f1a284c0c594f3bae54acdd9ffc13c20faaf6bc559e773e8a73fca9d6cd8e"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_30_D50.txt",
+    "SHA256": "3733cf9b62c063ff55aac2abfaebd10c6772c10409df7278f564e636ba2a7c5e"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_3_D50.txt",
+    "SHA256": "64ad6b6182f981f27abc7046fc639abc39fe24240eca8c4ec7d321c908b2acac"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_4_D50.txt",
+    "SHA256": "cb7a754f18d55e158028fd11020e3b6864eff26ee3a234e0de5e118cfcfcc91f"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_5_D50.txt",
+    "SHA256": "9160ca02d4d3d93f0656e08de604ea28551ea8ac349fef8fb18dd633aef18de4"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_6_D50.txt",
+    "SHA256": "77626a01dc979a95d65fd3c88bc0f7b685ddd9b50e07792a72c6365cfcea3f0b"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_7_D50.txt",
+    "SHA256": "15ff3de1b91d70ce3c6cce8ebc395e05ecf8e5808d53c08d146116c2e8b5e3d3"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_8_D50.txt",
+    "SHA256": "cce1744900ec402fa62f2f45de4f15058a6386c95853332fa222be5786e2b837"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "shuffle_data_9_D50.txt",
+    "SHA256": "07e3b1eb4c8a798ae2f7613c513b3107fd052f1ec95113eb09470d6b55497343"
+  },
+  {
+    "RunDirectory": "common-data",
+    "Path": "cec17_func.mexw64",
+    "SHA256": "5395fc0c62ca028116c51161faa4ac200402c275307bfcb300bfb0ab50ef35c9"
+  }
+]

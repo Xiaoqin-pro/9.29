@@ -1,0 +1,61 @@
+{
+  "StandardPDFSHA256": "1da08c4a8bba7aacba7fb0210fcf3341a1d4ff007f4e07729d1c435e5e41d7d9",
+  "Items": [
+    {
+      "Item": "S40",
+      "Evidence": "standard descriptions sec3.1 and main.c Smean40",
+      "Chosen": 40
+    },
+    {
+      "Item": "Parameters",
+      "Evidence": "main.c param.w/c and formal eq3.8",
+      "Chosen": "w1/(2ln2),c.5+ln2"
+    },
+    {
+      "Item": "Topology",
+      "Evidence": "main.c p=1-pow(1-1/S,K);PSO.c default Bernoulli links, self mandatory",
+      "Chosen": "K3,Bernoulli p.073140625, self; redraw after no global improvement"
+    },
+    {
+      "Item": "Sphere",
+      "Evidence": "main.c distrib0 and formal sec3.4.2",
+      "Chosen": "uniform radius U, not U^(1/D)"
+    },
+    {
+      "Item": "Confinement",
+      "Evidence": "PSO.c confin0/formal sec3.5",
+      "Chosen": "clip X,-.5V"
+    },
+    {
+      "Item": "Tie/updates",
+      "Evidence": "PSO.c strict < pbest; donor first-strict-min; within-particle immediate update",
+      "Chosen": "preserve C async strict profile"
+    },
+    {
+      "Item": "Initialization",
+      "Evidence": "formal eq3.4, PSO.c X and V draws interleaved",
+      "Chosen": "shared p0 injected after X draw; V=U(lb-X,ub-X)"
+    },
+    {
+      "Item": "RNG",
+      "Evidence": "main.c BW2=0/KISS.c unsigned-long32 on Windows",
+      "Chosen": "KISS32; crosslanguage5state identical"
+    },
+    {
+      "Item": "Options",
+      "Evidence": "official ReadMe BW extras explicitly not part of standard",
+      "Chosen": "all BW0, no local search/quantisation/normalisation/quasi"
+    },
+    {
+      "Item": "Capacity",
+      "Evidence": "original main.h DMax42 versus requested D50",
+      "Chosen": "capacity128 only, source snapshots preserve original"
+    },
+    {
+      "Item": "Fixed budget",
+      "Evidence": "existing benchmark100k protocol",
+      "Chosen": "no epsilon early exit, budget includes initialization, terminal partial stop"
+    }
+  ],
+  "AllPureDefaultsVerifiedBeforeLaunch": true
+}

@@ -1,0 +1,16 @@
+{
+  "Repository": "https://github.com/P-N-Suganthan/CODES",
+  "Commit": "4d7ce681d5121e5af1cffb21c5b79ce9df7de5b1",
+  "Archives": [
+    {
+      "File": "2017-ASOC-EPSO.zip",
+      "SHA256": "005bc1f101d221dd590dabb8e1965ce59efe93eccab3e3d9515f52ffc14bd4e7"
+    },
+    {
+      "File": "2005-IEEE-SIS-DMS_PSO_func.zip",
+      "SHA256": "bec1bb6ecb7c40f9e80c92d40c4b776803d640dd61b10ba24f68aa6257480fcd"
+    }
+  ],
+  "DMSVersion": "SIS2005 base, paper reconstruction; public file implements DMS-L-PSO extension",
+  "HPSOVersion": "2017 baseline standalone implementation with explicitly added position clip"
+}

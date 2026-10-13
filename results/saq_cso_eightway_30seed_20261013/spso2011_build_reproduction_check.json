@@ -1,0 +1,7 @@
+{
+  "Passed": true,
+  "Case": "D50/Sphere/600FE/seed56",
+  "IndependentPreparationScriptRebuild": true,
+  "ReturnedVectorCostTraceAndFinalPRNGIdentical": true,
+  "OriginalRunBinaryWasNotModified": true
+}

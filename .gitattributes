@@ -6,3 +6,7 @@ results/saq_cso_fiveway_30seed_20261013/** -text whitespace=cr-at-eol
 
 # Preserve seven-way result release hashes exactly.
 results/saq_cso_sevenway_30seed_20261013/** -text whitespace=cr-at-eol
+
+# Preserve SPSO wrapper and eight-way release hashes exactly.
+src/SPSO2011_CEC.m -text whitespace=cr-at-eol
+results/saq_cso_eightway_30seed_20261013/** -text whitespace=cr-at-eol

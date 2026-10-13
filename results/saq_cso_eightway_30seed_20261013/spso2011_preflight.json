@@ -1,0 +1,16 @@
+{
+  "CrossLanguageOraclePairs": 34,
+  "Full100kNativeRepeatPairs": 2,
+  "D50FiniteFunctions": 29,
+  "GravitySelfBranchWitness": true,
+  "RadiusLawWitness": true,
+  "ConfinementVelocityWitness": true,
+  "StrictTieTopologyWitness": true,
+  "MaxPositionTolerance": 1E-8,
+  "PureStandardDefault": true,
+  "SourceHashes": {
+    "Wrapper": "243cf733c39a9e88114bf10263095d85fda7df8b1eefaa9e197603df5c1bc66f",
+    "NativeMex": "58eff4b8039dbf136f3ae8133112b01dc95b66b2d9c7667024f04b654058e606"
+  },
+  "Passed": true
+}

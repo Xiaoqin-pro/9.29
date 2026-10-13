@@ -1,0 +1,9 @@
+{
+  "FriedmanStatistic": 129.66666666666663,
+  "FriedmanP": 7.3785034169458105e-25,
+  "FriedmanBlocks": "29 function means",
+  "PerFunctionTest": "two-sided paired Wilcoxon, normal approximation with tie correction and continuity correction, raw errors",
+  "HolmFamily": "all 203 SAQ-vs-control per-function tests; within-control Holm also reported",
+  "PairedSeedCountPerFunction": 30,
+  "PooledSeedsAreNotIndependentFunctionReplicates": true
+}

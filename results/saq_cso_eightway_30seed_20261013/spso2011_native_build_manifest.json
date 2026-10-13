@@ -1,0 +1,42 @@
+{
+  "Files": [
+    {
+      "File": "alea_adapted.c",
+      "Bytes": 8367,
+      "SHA256": "c6c2fe6e2144ab566d8a4c0cb6ee15121ddc861a6d08a74c1a24068656c97402"
+    },
+    {
+      "File": "KISS.c",
+      "Bytes": 1368,
+      "SHA256": "2b7786208db980eae382ea7727c016345336fb64d498834757697300d5d33da4"
+    },
+    {
+      "File": "main.h",
+      "Bytes": 6435,
+      "SHA256": "96f631aaeb45344c804571c28fc4f67739b356fb6a9d65d01d7a45058d1afc95"
+    },
+    {
+      "File": "PSO_adapted.c",
+      "Bytes": 11921,
+      "SHA256": "18e7a68178a4ead4341ceb2d4bc4302fd899edfe9563e3d3f770b9cf3f4ce82b"
+    },
+    {
+      "File": "SPSO2011_native.c",
+      "Bytes": 3226,
+      "SHA256": "3a1d53a2e0466262d0e1bc00f8f929bfeda7982cda4ec5f87a22488cc7b7955b"
+    },
+    {
+      "File": "SPSO2011_native.mexw64",
+      "Bytes": 79836,
+      "SHA256": "58eff4b8039dbf136f3ae8133112b01dc95b66b2d9c7667024f04b654058e606"
+    },
+    {
+      "File": "tools.c",
+      "Bytes": 1640,
+      "SHA256": "067580c44540f0fb5eddf6d77266c0334beff1259383b0b850fbf81109a5a1cb"
+    }
+  ],
+  "Compiler": "gcc (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0",
+  "CapacityDMax": 128,
+  "ScalarObjectiveCallback": "MATLAB feval"
+}

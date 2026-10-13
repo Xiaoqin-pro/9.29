@@ -1,0 +1,108 @@
+{
+  "OfficialPrograms": "https://www.particleswarm.info/Programs.html",
+  "ArchiveURL": "https://www.particleswarm.info/standard_pso_2011_c.zip",
+  "DescriptionURL": "http://clerc.maurice.free.fr/pso/SPSO_descriptions.pdf",
+  "Archives": [
+    {
+      "File": "standard_pso_2011_c.zip",
+      "SHA256": "11692f658158b18aafd97d667eeebdc7527cf21147d530d73d4c7eb795af0557"
+    },
+    {
+      "File": "SPSO2011_matlab.zip",
+      "SHA256": "0b9644ef4741df85553d162e56f0db45a3c56ceb2a6e76ea646caa81092eda5b"
+    },
+    {
+      "File": "SPSO_descriptions.pdf",
+      "SHA256": "1da08c4a8bba7aacba7fb0210fcf3341a1d4ff007f4e07729d1c435e5e41d7d9"
+    }
+  ],
+  "CodeProfile": "pure defaults in official C, BW=0, KISS, radial uniform, confinement0",
+  "CapacityOnly": "DMax42 to128",
+  "NativeController": true,
+  "OriginalFiles": [
+    {
+      "File": "alea.c",
+      "SHA256": "a993fe63812f69de96798a871d39686baf4b22b4cd39ad3851dbeb1aad1d39ef"
+    },
+    {
+      "File": "cec2005.c",
+      "SHA256": "fa9be5854f0f6a4e669ff132475778d0242022b418e60ed1c730949d3bb787f5"
+    },
+    {
+      "File": "cec2005data.c",
+      "SHA256": "99009bcd9581c1fbbd9f6f2fddd9bba3ae8749f0e145396331d9bd1119460da8"
+    },
+    {
+      "File": "cec2005pb.c",
+      "SHA256": "b6bf837dd0db0c5d66df4745fe923c10d95f2e42599efc461eb34aaf4e5113f4"
+    },
+    {
+      "File": "cellular_phone.c",
+      "SHA256": "54e2fefeaa95d7c7916d18cdac37df130f39217907e8b45c39a58be130487738"
+    },
+    {
+      "File": "f_run.txt",
+      "SHA256": "c125ac033018fafef61bfebd0b14579794ca7d8636afa550e6c1b18eaf615e8c"
+    },
+    {
+      "File": "f_synth.txt",
+      "SHA256": "4bc39b407f7bdb8cb2eb16219ba6a68e12466d71af21badba74bbbce6d48f470"
+    },
+    {
+      "File": "f_trace.txt",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "File": "KISS.c",
+      "SHA256": "2b7786208db980eae382ea7727c016345336fb64d498834757697300d5d33da4"
+    },
+    {
+      "File": "lennard_jones.c",
+      "SHA256": "7ddab4fb48e8071ffb1ce8c4676bf96085fe3b7fc4c7cd1b8e0090b73ee0edc3"
+    },
+    {
+      "File": "main.c",
+      "SHA256": "94ac8a6ac467a48f9971d8dccae3273e68279a6b973207e3537ef1a32d548939"
+    },
+    {
+      "File": "main.h",
+      "SHA256": "c22cec953537ada0bad6561cc303ccf2ec1413cda515cbd98ae260e00784d8d8"
+    },
+    {
+      "File": "mersenne.c",
+      "SHA256": "c263597709b900b97312416d55dacfdfec6b375c10164b4d386a68fa73faa15d"
+    },
+    {
+      "File": "perf.c",
+      "SHA256": "aca0c45b4a87bfa88cee789f6a8f32a255a101078a5d5d10fd259840940a8e41"
+    },
+    {
+      "File": "perf_pressure_vessel.c",
+      "SHA256": "105e3d793eb28ebe75b0406e2ef94e2cfd477c6ccb8d1a0404e4da040ab8a1a5"
+    },
+    {
+      "File": "pressure_vessel.c",
+      "SHA256": "55a6a41716f8f18e9167eb641f2b379e3a09cb693e7479f82fc04476f8ccedec"
+    },
+    {
+      "File": "problemDef.c",
+      "SHA256": "35f1eec90990d891217c0b7c6b19d2b9c21f277d36479b9bc5c77a0550f6e770"
+    },
+    {
+      "File": "PSO.c",
+      "SHA256": "ef09488e3eb7eacd3c152d8cfdf8a5f26cdf6b6032469925475f0eba6b20161f"
+    },
+    {
+      "File": "ReadMe.txt",
+      "SHA256": "1ade0e51251eea4c188b047b605cd4eae3f28f5491a1eb629b7b25912de0996f"
+    },
+    {
+      "File": "repulsion.c",
+      "SHA256": "81c06003d6ea3a6682fcbeacedbb33c186a126e9c187b3f6bddca42d0d8affff"
+    },
+    {
+      "File": "tools.c",
+      "SHA256": "b183040a4605db8759352c3746c9ec3d4329683659744be24cef73ff80a48d9d"
+    }
+  ]
+}
