@@ -1,0 +1,8 @@
+{
+  "Python": "3.13.7",
+  "NumPy": "2.4.4",
+  "pandas": "2.3.2",
+  "SciPy": "1.17.1",
+  "Matplotlib": "3.10.8",
+  "MATLAB": "R2025b"
+}

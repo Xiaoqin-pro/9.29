@@ -1,0 +1,17 @@
+Check,Passed
+Fixed6-pointwise-budget-50,1
+Fixed6-pointwise-budget-51,1
+Fixed6-pointwise-budget-52,1
+Fixed6-pointwise-budget-55,1
+Fixed6-pointwise-budget-59,1
+Fixed6-pointwise-budget-61,1
+Fixed6-pointwise-budget-1250,1
+Masked-Q-and-independent-policy-RNG,1
+Failed-worse-probe-writes-real-pbest-and-resets-velocity,1
+Greedy-control-rejects-failed-probes,1
+Forced-probe-partial-budget-boundaries,1
+Only-Q-learns-feasible-actions-terminal-bootstrap-zero,1
+Gate-invariant-to-objective-shift-and-positive-scale,1
+CEC-F1-D50-pointwise-Fixed6,1
+CEC-F6-D50-pointwise-Fixed6,1
+CEC-F9-D50-pointwise-Fixed6,1

@@ -1,0 +1,62 @@
+{
+  "Date": "2026-10-14",
+  "RawDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_strong_confirmation_29f_10seed_20261014_092429",
+  "NewRuns": 580,
+  "NewOptimizationCalls": 58000000,
+  "CachedRuns": 1740,
+  "TotalComparisonRows": 2320,
+  "CacheAuditCallsOutsideBudget": 77140,
+  "Functions": 29,
+  "Seeds": [
+    3001,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006,
+    3007,
+    3008,
+    3009,
+    3010
+  ],
+  "Methods": [
+    "ELS-Q",
+    "ELS-Replace",
+    "SAQ-CSO",
+    "HIDMS-PSO-IndexCorrected",
+    "DMS-PSO-SIS2005",
+    "HCLPSO-AuthorSource",
+    "HPSO-TVAC-CEC",
+    "SPSO-2011-OfficialC"
+  ],
+  "CorrectedTestFamily": "Q vs seven methods on 29 functions = 203 paired Wilcoxon tests, one Holm family",
+  "BestControlChoice": "Posthoc minimum final mean among five PSO controls; descriptive stage diagnosis only",
+  "PlotFloor": 1e-12,
+  "FriedmanStatistic": 79.08045977011489,
+  "FriedmanP": 2.120971605351015e-14,
+  "SmallestObservedWilcoxonP": 0.001953125,
+  "FirstHolmThreshold": 0.00024630541871921186,
+  "TenSeedTwoSidedExactMinimumP": 0.001953125,
+  "Inputs": [
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_strong_confirmation_29f_10seed_20261014_092429\\raw_runs.csv",
+      "SHA256": "23afc6d39bed2f4bc1d7513ca68bc81d37c55ad321942b0ce4880c6b61eae3b3"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_strong_confirmation_29f_10seed_20261014_092429\\cache\\cached_runs.csv",
+      "SHA256": "879f3e579638f9a1ced5cce58dfdc9309795db672dccbf720b0aaac7ade85749"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_strong_confirmation_29f_10seed_20261014_092429\\cache\\cache_matlab_validation.json",
+      "SHA256": "7d3d6d7630810b921130b630b60459230d5c395698dc6e6540a0861bf221df82"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_strong_confirmation_29f_10seed_20261014_092429\\prelaunch_hashes.csv",
+      "SHA256": "5c439ae72b20b531e0d4df61b53110edb206c6338829f2ea9688e3c303ce39bb"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\experiments\\analyze_saq_strong_confirmation.py",
+      "SHA256": "618cfdfd74816caa88e9bf47677e87d05e457675498abd3ca037a6da5ec1c9d0"
+    }
+  ]
+}

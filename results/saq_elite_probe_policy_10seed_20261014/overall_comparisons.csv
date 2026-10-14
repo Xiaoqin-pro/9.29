@@ -1,0 +1,4 @@
+Method,MeanFunctionWins,MeanFunctionLosses,FunctionTies,MedianFunctionMeanErrorRatio,HealthyNotWorse,AnyHealthyRegressionOver20Percent,PassesPrespecifiedDevelopmentGate,SeedWins,SeedLosses,SeedTies,ProbeEvaluations,ProbeParentSuccesses,ProbeGlobalSuccesses,ProbeWritebacks
+ELS-Q,7,1,0,0.9491449791091868,2,False,True,53,27,0,9289,5690,516,9289
+ELS-Random,6,2,0,0.9581072287066352,2,False,False,46,34,0,8895,5417,449,8895
+ELS-Replace,7,1,0,0.9425508497358961,3,False,True,57,23,0,14822,8188,624,14822

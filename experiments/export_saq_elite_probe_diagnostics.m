@@ -1,0 +1,55 @@
+function export_saq_elite_probe_diagnostics(outDir)
+% Derive probe/window diagnostics from saved immutable run artifacts.
+raw=readtable(fullfile(outDir,'raw_runs.csv'),'TextType','string');assert(all(raw.Status=="ok"));
+runRows=cell(height(raw),1);probeRows=cell(0,1);curveRows=cell(0,1);stateRows=cell(0,1);
+for j=1:height(raw)
+ r=raw(j,:);s=load(fullfile(outDir,'runs',char(r.Artifact)),'T','info','record');I=s.info;T=s.T;
+ w=I.WindowLog;p=I.ProbeLog;
+ if isempty(w),low=0;feasible=0;d0=NaN;dend=NaN;tailEta=NaN;normalRate=NaN;
+ else
+  low=sum(w(:,7));feasible=sum(w(:,8));d0=w(1,20);dend=w(end,21);
+  tail=w(w(:,1)>=.8*double(r.Budget),5);tail=tail(isfinite(tail));tailEta=median(tail);
+  normalRate=sum(w(:,23))/max(1,sum(w(:,17:18),'all')-sum(w(:,19)));
+ end
+ firstProbe=NaN;meanDistance=NaN;meanCostRatio=NaN;worse=0;if ~isempty(p)
+  firstProbe=p(1,1);meanDistance=mean(sqrt(sum((I.ProbePoints-I.ProbeOldReal).^2,2)));
+  meanCostRatio=median((p(:,7)-100*double(r.FunctionID))./max(p(:,6)-100*double(r.FunctionID),realmin));
+  worse=sum(p(:,7)>p(:,6));
+ end
+ runRows{j}=struct('JobID',double(r.JobID),'FunctionID',double(r.FunctionID),'Seed',double(r.Seed),...
+  'Method',char(r.Method),'Windows',size(w,1),'LowProgressWindows',low,'ProbeFeasibleWindows',feasible,...
+  'ProbeEvaluations',size(p,1),'FirstProbeFE',firstProbe,'WorseThanParentProbes',worse,...
+  'MeanProbeDistance',meanDistance,'MedianProbeOverParentError',meanCostRatio,...
+  'RealDiversityStart',d0,'RealDiversityEnd',dend,'MedianTailProgressRatio',tailEta,'NormalParentSuccessRate',normalRate);
+ for k=1:size(p,1)
+  fe=p(k,1);fe100=min(numel(T),fe+100);fe500=min(numel(T),fe+500);fe1000=min(numel(T),fe+1000);
+  changed=sum(I.ProbePoints(k,:)~=I.ProbeOldReal(k,:));
+  probeRows{end+1}=struct('JobID',double(r.JobID),'FunctionID',double(r.FunctionID),'Seed',double(r.Seed),'Method',char(r.Method),...
+   'ProbeFE',fe,'Window',p(k,2),'Parent',p(k,3),'Dimension',p(k,4),'Sigma',p(k,5),...
+   'ParentCostBefore',p(k,6),'CandidateCost',p(k,7),'BestBefore',p(k,8),'BestAfter',p(k,9),...
+   'ParentSuccess',p(k,10),'GlobalSuccess',p(k,11),'Writeback',p(k,12),...
+   'GlobalGain100AfterProbe',T(fe)-T(fe100),'GlobalGain500AfterProbe',T(fe)-T(fe500),...
+   'GlobalGain1000AfterProbe',T(fe)-T(fe1000),'ObservedHorizon100',fe100-fe,'ObservedHorizon500',fe500-fe,...
+   'ObservedHorizon1000',fe1000-fe,'ChangedFromParentDimensions',changed); %#ok<AGROW>
+ end
+ for stateId=1:6
+  rows=w(w(:,3)==stateId,:);eligible=rows(:,8)>0;normal=eligible & rows(:,10)==1;probe=eligible & rows(:,10)==2;
+  stateRows{end+1}=struct('JobID',double(r.JobID),'FunctionID',double(r.FunctionID),'Seed',double(r.Seed),'Method',char(r.Method),...
+   'State',stateId,'Phase',ceil(stateId/2),'LowProgress',double(mod(stateId,2)==0),'Windows',size(rows,1),...
+   'FeasibleWindows',sum(eligible),'NormalChoicesWhenFeasible',sum(normal),'ProbeChoicesWhenFeasible',sum(probe),...
+   'ProbeRateWhenFeasible',sum(probe)/max(1,sum(eligible)),'NormalRewardMean',mean(rows(normal,16)),...
+   'ProbeRewardMean',mean(rows(probe,16)),'NormalQ',I.QTable(stateId,1),'ProbeQ',I.QTable(stateId,2),...
+   'NormalQVisits',I.QVisits(stateId,1),'ProbeQVisits',I.QVisits(stateId,2)); %#ok<AGROW>
+ end
+ nodes=unique([50 round(linspace(1000,numel(T),101)) 10000 20000 40000 60000 80000 100000]);nodes=nodes(nodes<=numel(T));
+ for n=nodes
+  curveRows{end+1}=struct('JobID',double(r.JobID),'FunctionID',double(r.FunctionID),'Seed',double(r.Seed),...
+   'Method',char(r.Method),'FE',n,'BestError',T(n)-100*double(r.FunctionID)); %#ok<AGROW>
+ end
+end
+writetable(struct2table([stateRows{:}]),fullfile(outDir,'policy_state_diagnostics.csv'));
+writetable(struct2table([curveRows{:}]),fullfile(outDir,'convergence_nodes.csv'));
+writetable(struct2table([runRows{:}]),fullfile(outDir,'run_diagnostics.csv'));
+if ~isempty(probeRows),writetable(struct2table([probeRows{:}]),fullfile(outDir,'probe_diagnostics.csv'));end
+fprintf('Exported diagnostics for %d runs, %d probes.%c',height(raw),numel(probeRows),10);
+end

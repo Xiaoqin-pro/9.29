@@ -1,0 +1,29 @@
+{
+  "ELS-Q": {
+    "MeanFunctionWins": 7,
+    "MeanFunctionLosses": 1,
+    "FunctionTies": 0,
+    "MedianFunctionMeanErrorRatio": 0.9491449791091868,
+    "HealthyNotWorse": 2,
+    "AnyHealthyRegressionOver20Percent": false,
+    "PassesPrespecifiedDevelopmentGate": true
+  },
+  "ELS-Random": {
+    "MeanFunctionWins": 6,
+    "MeanFunctionLosses": 2,
+    "FunctionTies": 0,
+    "MedianFunctionMeanErrorRatio": 0.9581072287066352,
+    "HealthyNotWorse": 2,
+    "AnyHealthyRegressionOver20Percent": false,
+    "PassesPrespecifiedDevelopmentGate": false
+  },
+  "ELS-Replace": {
+    "MeanFunctionWins": 7,
+    "MeanFunctionLosses": 1,
+    "FunctionTies": 0,
+    "MedianFunctionMeanErrorRatio": 0.9425508497358961,
+    "HealthyNotWorse": 3,
+    "AnyHealthyRegressionOver20Percent": false,
+    "PassesPrespecifiedDevelopmentGate": true
+  }
+}

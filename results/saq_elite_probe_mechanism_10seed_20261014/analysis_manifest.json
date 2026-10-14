@@ -1,0 +1,45 @@
+{
+  "Date": "2026-10-14",
+  "RawDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_elite_probe_mechanism_20261014_084049",
+  "ParentDirectory": null,
+  "NewPerformanceRuns": 240,
+  "NewOptimizationCalls": 24000000,
+  "Seeds": [
+    8101,
+    8102,
+    8103,
+    8104,
+    8105,
+    8106,
+    8107,
+    8108,
+    8109,
+    8110
+  ],
+  "Scope": "Development pilot; not the final 29-function confirmation",
+  "GatePrespecifiedBeforeResults": true,
+  "PValues": "Paired Wilcoxon; Holm across all function-method contrasts in this report",
+  "PostProbeGains": "Descriptive subsequent-search gains, not isolated causal effects of a single probe",
+  "Inputs": [
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_elite_probe_mechanism_20261014_084049\\raw_runs.csv",
+      "SHA256": "f7779ce1aaf505077f807946906de69544b66a1a518b119479530587c6222af4"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_elite_probe_mechanism_20261014_084049\\config.json",
+      "SHA256": "b317bab26d9123eecc60da8d8e75dee1c7ebf5a0c1728c592bfb5919814c4b71"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\saq_elite_probe_mechanism_20261014_084049\\prelaunch_hashes.csv",
+      "SHA256": "c9382548e9d8df4bbc8d75b9f8cff592fc1ca9c2e1605f6d59ab1c0dd6e8f387"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\experiments\\summarize_saq_elite_probe.py",
+      "SHA256": "e070679dd3e9d629305fd376272a5430c7205a57fa4625a59ca3dabab9943636"
+    },
+    {
+      "Path": "D:\\111\\Desktop\\噜噜\\9.29\\experiments\\export_saq_elite_probe_diagnostics.m",
+      "SHA256": "ac5fea31b2a510342c1eb4b4be91cd1de3cb91eb1d5bf505bcf58c2bcd0646a4"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "Passed": true,
+  "Rows": 2320,
+  "Methods": 8,
+  "Functions": 29,
+  "Seeds": 10,
+  "PairedFunctionTests": 203,
+  "Checks": "Raw-key/FE/pairing/mean/std/ranks/paired-Wilcoxon/Holm/phase-node reanalysis using released CSV only",
+  "RequiresLocalMAT": false,
+  "NewObjectiveCalls": 0
+}

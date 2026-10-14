@@ -1,0 +1,4 @@
+Reference,Method,MeanWins,MeanLosses,MeanTies,MedianFunctionMeanRatio,SeedWins,SeedLosses,SeedTies
+ELS-Replace,ELS-Random,2,6,0,1.0183009625605242,33,47,0
+ELS-Replace,ELS-Q,6,2,0,0.9812980040395658,44,36,0
+ELS-Random,ELS-Q,6,2,0,0.973652870901858,49,31,0
