@@ -1,0 +1,5 @@
+Method,Reference,MeanWins,MeanLosses,MeanTies,MedianMeanRatio,SeedWins,SeedLosses,SeedTies
+Anchor-Rule,Geometry-Rule,2,6,0,1.1024306585369983,35,45,0
+Anchor-Rule,Age-Rule,0,8,0,1.0744769538708878,30,50,0
+Anchor-Rule,Fixed6,4,4,0,0.9985815810930612,38,42,0
+Age-Rule,Geometry-Rule,3,5,0,1.0485161052166987,38,42,0

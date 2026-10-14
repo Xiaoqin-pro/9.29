@@ -1,0 +1,5 @@
+Check,Passed
+Geometry-exact-old-rule-equivalence,1
+Mode-anchor-budget-bounds-parentcap-and-memory,1
+Mode-age-budget-bounds-parentcap-and-memory,1
+Anchor-flat-probe-writeback-reset,1

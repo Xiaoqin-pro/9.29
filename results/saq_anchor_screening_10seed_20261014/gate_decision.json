@@ -1,0 +1,36 @@
+{
+  "Passed": false,
+  "AnchorVsGeometry": {
+    "MeanWins": 2.0,
+    "MeanLosses": 6.0,
+    "MeanTies": 0.0,
+    "MedianMeanRatio": 1.1024306585369983,
+    "SeedWins": 35.0,
+    "SeedLosses": 45.0,
+    "SeedTies": 0.0
+  },
+  "AnchorVsAge": {
+    "MeanWins": 0.0,
+    "MeanLosses": 8.0,
+    "MeanTies": 0.0,
+    "MedianMeanRatio": 1.0744769538708878,
+    "SeedWins": 30.0,
+    "SeedLosses": 50.0,
+    "SeedTies": 0.0
+  },
+  "F6F9Ratios": {
+    "6": 1.5743757018420788,
+    "9": 1.7273614433674322
+  },
+  "HealthyRatios": {
+    "1": 0.4033366128542636,
+    "13": 0.7036849466985261,
+    "30": 1.0438529469530504
+  },
+  "FreshRuns": 160,
+  "CachedRuns": 160,
+  "FreshOptimizationCalls": 16000000,
+  "AuditCalls": 46627,
+  "IndependentConfirmation": false,
+  "Note": "Development pilot; cached Fixed6/Geometry results share seeds and search streams."
+}

@@ -1,0 +1,7 @@
+{
+  "AllPassed": true,
+  "Checks": 4,
+  "EngineSHA256": "27925c92a25d5938131da449063172c4e3fa701391126cc41602136a8061ba19",
+  "ReferenceSHA256": "290e1aa70b5d71af0d9e0d59e33f27e9c3d21f69e1446238cd1a992cc69748a7",
+  "MATLABVersion": "25.2.0.2998904 (R2025b)"
+}
