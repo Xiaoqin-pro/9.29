@@ -1,0 +1,56 @@
+{
+  "PreflightOptimizationCalls": 1250,
+  "PreflightAuditCalls": 112,
+  "Passed": false,
+  "Fixed6Gate": true,
+  "RuleAndRandomGate": false,
+  "HealthyGate": true,
+  "FreshRuns": 80,
+  "CachedRuns": 320,
+  "OptimizationCallsFresh": 8000000,
+  "AuditCallsFresh": 21864,
+  "QReplayPassed": 80,
+  "IndependentConfirmation": false,
+  "Comparisons": [
+    {
+      "Reference": "Fixed6",
+      "MeanWins": 6,
+      "MeanLosses": 2,
+      "MeanTies": 0,
+      "MedianFunctionMeanRatio": 0.9063922275496432,
+      "SeedWins": 52,
+      "SeedLosses": 28,
+      "SeedTies": 0
+    },
+    {
+      "Reference": "ELS-Replace",
+      "MeanWins": 3,
+      "MeanLosses": 5,
+      "MeanTies": 0,
+      "MedianFunctionMeanRatio": 1.0012664220795067,
+      "SeedWins": 37,
+      "SeedLosses": 40,
+      "SeedTies": 3
+    },
+    {
+      "Reference": "ELS-Random",
+      "MeanWins": 6,
+      "MeanLosses": 2,
+      "MeanTies": 0,
+      "MedianFunctionMeanRatio": 0.9847453979811455,
+      "SeedWins": 44,
+      "SeedLosses": 36,
+      "SeedTies": 0
+    },
+    {
+      "Reference": "ELS-Q",
+      "MeanWins": 2,
+      "MeanLosses": 6,
+      "MeanTies": 0,
+      "MedianFunctionMeanRatio": 1.0113616323392922,
+      "SeedWins": 39,
+      "SeedLosses": 41,
+      "SeedTies": 0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Check,Passed
+Legacy-exact-equivalence-base,1
+Legacy-exact-equivalence-rule,1
+Legacy-exact-equivalence-random,1
+Legacy-exact-equivalence-q,1
+Teacher-nonlearning-search-unchanged-base,1
+Teacher-nonlearning-search-unchanged-rule,1
+Teacher-nonlearning-search-unchanged-random,1
+Flat-probes-rewarded-only-if-executed-and-low-progress,1
+Teacher-Q-independent-replay-and-terminal-bootstrap,1
+Teacher-partial-round-budget-boundaries,1
+Infeasible-probe-cannot-earn-shaping-reward,1

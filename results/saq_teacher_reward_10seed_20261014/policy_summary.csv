@@ -1,0 +1,6 @@
+Method,NormalChoicesWhenFeasible,ProbeChoicesWhenFeasible,FeasibleWindows,ProbeFractionWhenFeasible
+ELS-Q,7400,9289,16689,0.5565941638204805
+ELS-Random,8896,8895,17791,0.4999718959024226
+ELS-Replace,0,14822,14822,1.0
+ELS-TeacherQ,1108,13784,14892,0.9255976363147999
+Fixed6,29519,0,29519,0.0
