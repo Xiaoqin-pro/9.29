@@ -1,0 +1,11 @@
+{
+  "Passed": true,
+  "Rows": 320,
+  "MeansRecomputed": 32,
+  "ComparisonFamilies": 3,
+  "HolmTestsRecomputed": 24,
+  "FinalTraceNodesChecked": 320,
+  "GateRecomputed": true,
+  "UsesPrivateMAT": false,
+  "Limitation": "This verifies public numerical consistency; private engine/Q/state checks are recorded by the separate full audit."
+}

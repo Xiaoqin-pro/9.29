@@ -1,0 +1,4 @@
+Reference,MeanWins,MeanLosses,MeanTies,MedianMeanRatio,SeedWins,SeedLosses,SeedTies
+FO-Base,3,5,0,1.1510408983054257,33,47,0
+FO-Rule,4,4,0,1.0518070619157571,32,48,0
+FO-Random,4,4,0,0.9675284897085128,44,36,0

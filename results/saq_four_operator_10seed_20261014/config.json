@@ -1,0 +1,50 @@
+{
+  "Stage": "four_operator",
+  "Date": "2026-10-14",
+  "FunctionIDs": [
+    1,
+    6,
+    9,
+    13,
+    21,
+    22,
+    27,
+    30
+  ],
+  "Seeds": [
+    8101,
+    8102,
+    8103,
+    8104,
+    8105,
+    8106,
+    8107,
+    8108,
+    8109,
+    8110
+  ],
+  "Dimension": 50,
+  "Population": 50,
+  "Budget": 100000,
+  "LowerBound": -100,
+  "UpperBound": 100,
+  "WorkerCount": 4,
+  "BatchSize": 4,
+  "ProgressWindowFE": 1000,
+  "ProgressThreshold": 0.0001,
+  "EpisodeFE": 100,
+  "SeedBase": 2.0301014E+7,
+  "ParentRun": "",
+  "Acceptance": "greedy",
+  "MATLABVersion": "25.2.0.2998904 (R2025b)",
+  "RewardScheme": "teacher",
+  "CachedControls": "results/saq_elite_probe_policy_10seed_20261014",
+  "Methods": [
+    "FO-Base",
+    "FO-Rule",
+    "FO-Random",
+    "FO-Q"
+  ],
+  "Runs": 320,
+  "OptimizationFETotal": 3.2E+7
+}

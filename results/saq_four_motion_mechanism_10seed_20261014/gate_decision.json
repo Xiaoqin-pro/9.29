@@ -1,0 +1,33 @@
+{
+  "Passed": false,
+  "BaseGate": false,
+  "OldRuleGate": true,
+  "HealthyGate": false,
+  "FreshRuns": 80,
+  "CachedRuns": 160,
+  "FreshOptimizationCalls": 8000000,
+  "AuditCalls": 2720425,
+  "PreflightOptimizationCalls": 1250,
+  "PreflightAuditCalls": 541,
+  "Comparisons": [
+    {
+      "Reference": "FO-Base",
+      "MeanWins": 3,
+      "MeanLosses": 5,
+      "MedianMeanRatio": 1.0416572649688525,
+      "SeedWins": 32,
+      "SeedLosses": 48,
+      "SeedTies": 0
+    },
+    {
+      "Reference": "FO-Rule",
+      "MeanWins": 5,
+      "MeanLosses": 3,
+      "MedianMeanRatio": 0.9657493333623238,
+      "SeedWins": 41,
+      "SeedLosses": 39,
+      "SeedTies": 0
+    }
+  ],
+  "IndependentConfirmation": false
+}
