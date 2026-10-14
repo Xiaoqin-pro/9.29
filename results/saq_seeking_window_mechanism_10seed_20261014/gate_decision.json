@@ -1,0 +1,26 @@
+{
+  "Passed": false,
+  "Stage": "mechanism",
+  "BaseGate": false,
+  "HealthyGate": true,
+  "PolicyGate": null,
+  "FreshRuns": 160,
+  "FreshOptimizationCalls": 16000000,
+  "AuditCalls": 107680,
+  "PreflightOptimizationCalls": 1250,
+  "PreflightAuditCalls": 541,
+  "ExactBaseCacheChecks": 80,
+  "IndependentConfirmation": false,
+  "Comparisons": [
+    {
+      "Reference": "SW-Base",
+      "MeanWins": 4,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "MedianMeanRatio": 0.9639684221530669,
+      "SeedWins": 44,
+      "SeedLosses": 36,
+      "SeedTies": 0
+    }
+  ]
+}

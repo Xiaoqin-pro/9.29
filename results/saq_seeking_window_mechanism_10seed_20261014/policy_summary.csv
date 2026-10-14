@@ -1,0 +1,3 @@
+Method,NormalChoicesWhenFeasible,ProbeChoicesWhenFeasible,FeasibleWindows,EscapeActionFraction
+SW-Base,29519,0,29519,0.0
+SW-Rule,0,2288,2288,1.0

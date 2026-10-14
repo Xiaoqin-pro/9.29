@@ -1,0 +1,9 @@
+Check,Passed
+Base-pointwise-identical-to-Fixed6-including-tail-budgets,1
+Window-generation-reward-counting-and-memory-rule,1
+Window-generation-reward-counting-and-memory-random,1
+Window-generation-reward-counting-and-memory-q,1
+Escape-partial-budget-boundaries,1
+Real-and-personal-best-fitness-consistent,1
+Masked-escape-and-independent-RNG,1
+Zero-width-domain-has-no-escape-action,1
