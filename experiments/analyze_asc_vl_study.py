@@ -89,8 +89,11 @@ for split, funcs in [("primary", PRIMARY), ("cross", CROSS), ("all", PRIMARY + C
     sub = means.loc[funcs]
     for method, ref in PAIRS:
         ratio = sub[method] / sub[ref]
-        b = raw[raw.Method.eq(ref)].set_index(["FunctionID", "Seed"]).FinalError
-        a = raw[raw.Method.eq(method)].set_index(["FunctionID", "Seed"]).FinalError.reindex(b.index)
+        # paired seed counts must use the same function subset as the ratio
+        sel = raw.FunctionID.isin(funcs)
+        b = raw[sel & raw.Method.eq(ref)].set_index(["FunctionID", "Seed"]).FinalError
+        a = raw[sel & raw.Method.eq(method)].set_index(
+            ["FunctionID", "Seed"]).FinalError.reindex(b.index)
         delta = a - b
         comp.append(dict(Split=split, Method=method, Reference=ref,
                          MeanWins=int((ratio < 1).sum()), MeanLosses=int((ratio > 1).sum()),

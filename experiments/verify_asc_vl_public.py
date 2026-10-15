@@ -56,8 +56,10 @@ assert len(detail) == 36 and len(comp) == 9
 for row in comp.itertuples():
     funcs = PRIMARY if row.Split == "primary" else (CROSS if row.Split == "cross" else PRIMARY + CROSS)
     sub = means.loc[funcs]
-    b = raw[raw.Method.eq(row.Reference)].set_index(["FunctionID", "Seed"]).FinalError
-    a = raw[raw.Method.eq(row.Method)].set_index(["FunctionID", "Seed"]).FinalError.reindex(b.index)
+    sel = raw.FunctionID.isin(funcs)
+    b = raw[sel & raw.Method.eq(row.Reference)].set_index(["FunctionID", "Seed"]).FinalError
+    a = raw[sel & raw.Method.eq(row.Method)].set_index(
+        ["FunctionID", "Seed"]).FinalError.reindex(b.index)
     delta = a - b
     ratio = sub[row.Method] / sub[row.Reference]
     assert row.MeanWins == int((ratio < 1).sum()) and row.MeanLosses == int((ratio > 1).sum())
