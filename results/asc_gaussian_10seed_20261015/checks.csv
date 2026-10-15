@@ -1,0 +1,13 @@
+Check,Passed
+A0-pointwise-original-Best-T-global-RNG-and-round-log,1
+Actual-call-count-and-protected-probe-tail-budgets-A1,1
+Actual-call-count-and-protected-probe-tail-budgets-A2,1
+Actual-call-count-and-protected-probe-tail-budgets-A3,1
+Failed-probe-does-not-overwrite-position-or-historical-memory,1
+First-probe-at-FE100-and-seeded-repeatability,1
+Disabled-probe-seed-cannot-change-original-trajectory,1
+Independent-operator-and-probe-stream-replay-A1,1
+Independent-operator-and-probe-stream-replay-A2,1
+Independent-operator-and-probe-stream-replay-A3,1
+Eight-CEC-functions-all-four-modes-budget-bounds-Best,1
+Full100k-A0-original-pointwise-and-RNG-equivalence,1

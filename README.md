@@ -64,6 +64,20 @@ Formal jobs require checksum-bound preflight. The complete SAQ results are
 reused only after source/population/trajectory checks; five new variants require
 4350 new runs. The completed batch and all rawMAT files are under the timestamped local `results/cec/saq_sparse_ablation_30seed_*` folder.
 
+## ASC elite-probe development screening
+
+A separate development line evaluates `ASC_NoFarness` with a small number of
+protected elite probes under the same 100k real-evaluation budget. The frozen
+10-seed A0–A3 screen used eight CEC2017 functions and 320 fresh runs. The
+multi-elite Gaussian candidate did not pass the pre-specified gate: it did not
+beat the original ASC overall or the variance-matched uniform control, with
+clear regressions on F6 and F9. The original ASC remains the development
+baseline; the negative result is retained in full rather than tuned away.
+
+- [Result diagnosis](results/asc_gaussian_10seed_20261015/DIAGNOSIS.md)
+- [Frozen screening protocol](docs/ASC_ELITE_GAUSSIAN_PROTOCOL_20261015.md)
+- [Public result folder](results/asc_gaussian_10seed_20261015/REPORT.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored

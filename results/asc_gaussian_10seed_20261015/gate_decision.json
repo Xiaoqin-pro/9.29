@@ -1,0 +1,81 @@
+{
+  "Passed": false,
+  "GateChecks": {
+    "A3VsA0": false,
+    "A3VsA1": false,
+    "A3VsA2": true,
+    "F6F9F24F27Guard": false,
+    "AllFunctionsGuard": false
+  },
+  "FreshRuns": 320,
+  "OptimizationCalls": 32000000,
+  "AuditCalls": 480080,
+  "FullBudgetParityCalls": 100000,
+  "FullBudgetParityRechecks": 1,
+  "ValidationObjectiveCalls": 270763,
+  "ValidationRechecks": 32,
+  "PriorFailedPreflightCalls": 100000,
+  "NewSeedReplicates": true,
+  "UnseenFunctions": false,
+  "SeedRange": [
+    6001,
+    6010
+  ],
+  "Comparisons": [
+    {
+      "Method": "A1",
+      "Reference": "A0",
+      "MeanWins": 4,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "MedianMeanRatio": 1.0196842737283396,
+      "SeedWins": 32,
+      "SeedLosses": 48,
+      "SeedTies": 0
+    },
+    {
+      "Method": "A2",
+      "Reference": "A0",
+      "MeanWins": 3,
+      "MeanLosses": 5,
+      "MeanTies": 0,
+      "MedianMeanRatio": 1.148736241105747,
+      "SeedWins": 34,
+      "SeedLosses": 46,
+      "SeedTies": 0
+    },
+    {
+      "Method": "A3",
+      "Reference": "A0",
+      "MeanWins": 4,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "MedianMeanRatio": 1.0667310069914355,
+      "SeedWins": 29,
+      "SeedLosses": 51,
+      "SeedTies": 0
+    },
+    {
+      "Method": "A3",
+      "Reference": "A1",
+      "MeanWins": 3,
+      "MeanLosses": 5,
+      "MeanTies": 0,
+      "MedianMeanRatio": 1.0457037639447377,
+      "SeedWins": 38,
+      "SeedLosses": 42,
+      "SeedTies": 0
+    },
+    {
+      "Method": "A3",
+      "Reference": "A2",
+      "MeanWins": 5,
+      "MeanLosses": 3,
+      "MeanTies": 0,
+      "MedianMeanRatio": 0.9319564433600185,
+      "SeedWins": 35,
+      "SeedLosses": 45,
+      "SeedTies": 0
+    }
+  ]
+}

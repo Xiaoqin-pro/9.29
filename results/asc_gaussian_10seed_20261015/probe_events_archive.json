@@ -1,0 +1,8 @@
+{
+  "Archive": "probe_events.csv.gz",
+  "Format": "gzip-compressed UTF-8 CSV",
+  "Rows": 479760,
+  "UncompressedBytes": 69967738,
+  "UncompressedSHA256": "20d13c5791ed0c7993700e9e62cd1ff5fe07e47dffcb667d9df7a7a2c628f6ae",
+  "LosslessRoundTripVerified": true
+}

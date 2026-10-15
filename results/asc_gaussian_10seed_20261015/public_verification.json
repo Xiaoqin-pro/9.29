@@ -1,0 +1,12 @@
+{
+  "Passed": true,
+  "Rows": 320,
+  "FunctionMeansChecked": 32,
+  "PairedTestsRecomputed": 40,
+  "HolmTestsRecomputed": 40,
+  "ProbeRowsChecked": 479760,
+  "GateRecomputed": true,
+  "PrivateMATRequired": false,
+  "ProbeArchiveSHA256Verified": true,
+  "SourceSnapshotsVerified": true
+}
