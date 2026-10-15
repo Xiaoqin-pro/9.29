@@ -1,0 +1,6 @@
+{
+  "Passed": true,
+  "FullBudgetReferenceParity": true,
+  "ObjectiveCalls": 100000,
+  "RecheckCalls": 1
+}

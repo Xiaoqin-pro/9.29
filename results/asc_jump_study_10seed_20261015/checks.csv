@@ -1,0 +1,12 @@
+Check,Passed
+Explicit-original-parameters-identical-to-default,1
+Condition-1-tail-budgets-bounds-observed-best,1
+Condition-2-tail-budgets-bounds-observed-best,1
+Condition-3-tail-budgets-bounds-observed-best,1
+Same-first-1050-points-and-correct-Jump-trigger,1
+Jump-disabled-makes-jumpFraction-behaviourally-neutral,1
+Light-Jump-repeatability,1
+CEC-F1-all-three-budget-and-best-recheck,1
+CEC-F6-all-three-budget-and-best-recheck,1
+CEC-F9-all-three-budget-and-best-recheck,1
+CEC-F27-all-three-budget-and-best-recheck,1

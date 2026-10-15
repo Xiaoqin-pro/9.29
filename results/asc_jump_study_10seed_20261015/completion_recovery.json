@@ -1,0 +1,8 @@
+{
+  "Passed": true,
+  "Reason": "MATLAB post-run readtable did not expose Path column; no optimizer or budget error.",
+  "FrozenHashesChecked": 36,
+  "SavedRunArtifactsChecked": 240,
+  "OptimizationRunsRepeated": 0,
+  "FrozenSourcesModified": false
+}

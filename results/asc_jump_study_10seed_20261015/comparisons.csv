@@ -1,0 +1,4 @@
+Method,Reference,MeanWins,MeanLosses,MeanTies,MedianMeanRatio,SeedWins,SeedLosses,SeedTies
+NoJump,Original,3,5,0,1.020903844837887,36,44,0
+LightJump,Original,6,2,0,0.9586498568929835,45,35,0
+LightJump,NoJump,8,0,0,0.9354726248777621,52,28,0

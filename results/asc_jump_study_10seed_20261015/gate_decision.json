@@ -1,0 +1,53 @@
+{
+  "Passed": false,
+  "SelectedForIndependentConfirmation": null,
+  "Candidates": {
+    "NoJump": {
+      "Passed": false,
+      "MeanWins": 3,
+      "MedianMeanRatio": 1.020903844837887,
+      "NoFunctionOver20PercentRegression": false,
+      "F6F9Within10Percent": false,
+      "WorstFunctionRatio": 2.226256754439395
+    },
+    "LightJump": {
+      "Passed": false,
+      "MeanWins": 6,
+      "MedianMeanRatio": 0.9586498568929835,
+      "NoFunctionOver20PercentRegression": false,
+      "F6F9Within10Percent": false,
+      "WorstFunctionRatio": 2.175511216640821
+    }
+  },
+  "FreshRuns": 240,
+  "CachedRuns": 0,
+  "FreshOptimizationCalls": 24000000,
+  "FreshBestRecheckCalls": 240,
+  "FullBudgetParityObjectiveCalls": 100000,
+  "FullBudgetParityRecheckCalls": 1,
+  "ValidationObjectiveCalls": 45799,
+  "ValidationBestRechecks": 12,
+  "IndependentFunctionValidation": false,
+  "Seeds": [
+    5001,
+    5002,
+    5003,
+    5004,
+    5005,
+    5006,
+    5007,
+    5008,
+    5009,
+    5010
+  ],
+  "Functions": [
+    1,
+    6,
+    9,
+    13,
+    21,
+    22,
+    27,
+    30
+  ]
+}

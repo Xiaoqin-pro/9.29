@@ -1,0 +1,41 @@
+{
+  "Date": "2026-10-15",
+  "Timezone": "America/New_York",
+  "Dimension": 50,
+  "Population": 50,
+  "Budget": 100000,
+  "Functions": [
+    1,
+    6,
+    9,
+    13,
+    21,
+    22,
+    27,
+    30
+  ],
+  "Seeds": [
+    5001,
+    5002,
+    5003,
+    5004,
+    5005,
+    5006,
+    5007,
+    5008,
+    5009,
+    5010
+  ],
+  "Methods": [
+    "Original",
+    "NoJump",
+    "LightJump"
+  ],
+  "Workers": 4,
+  "FreshRuns": 240,
+  "OptimizationCalls": 24000000,
+  "ReferenceArtifact": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\asc_rank_30seed_20261015_143445\\runs\\run_0001_F01_seed3001_ASC-NoFarness.mat",
+  "OriginalSHA256": "0c7f64eb0b22f0358dfe0ecdcf1801aa6a78927421a0e40f5a884e23737ef285",
+  "OriginalSourceUnchanged": true,
+  "UnseenFunctions": false
+}

@@ -1,0 +1,8 @@
+{
+  "Passed": true,
+  "Checks": 11,
+  "EngineSHA256": "0c7f64eb0b22f0358dfe0ecdcf1801aa6a78927421a0e40f5a884e23737ef285",
+  "ValidationObjectiveCalls": 45799,
+  "ValidationBestRechecks": 12,
+  "MATLAB": "25.2.0.2998904 (R2025b)"
+}

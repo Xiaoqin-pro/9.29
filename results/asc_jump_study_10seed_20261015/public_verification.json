@@ -1,0 +1,9 @@
+{
+  "Passed": true,
+  "Rows": 240,
+  "FunctionMeansChecked": 24,
+  "PairedTestsRecomputed": 24,
+  "HolmFamily": 24,
+  "GateRecomputed": true,
+  "UsesPrivateMAT": false
+}
