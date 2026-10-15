@@ -1,0 +1,9 @@
+{
+  "Passed": true,
+  "Runs": 5220,
+  "RebuiltInitialPopulations": 5220,
+  "AuditObjectiveCalls": 240120,
+  "MaxInitialDiff": 0,
+  "MaxBestDiff": 0,
+  "NewOptimizationRuns": 0
+}

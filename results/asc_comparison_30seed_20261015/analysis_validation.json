@@ -1,0 +1,24 @@
+{
+  "Passed": true,
+  "Rows": 6960,
+  "FreshRuns": 1740,
+  "CachedRuns": 5220,
+  "ObjectiveCallsFresh": 174000000,
+  "CacheAuditCalls": 240120,
+  "MainHolmTests": 377,
+  "MechanismHolmTests": 29,
+  "FriedmanStatistic": 72.59770114942523,
+  "FriedmanP": 4.404148807798767e-13,
+  "Methods": [
+    "ASC-NoFarness",
+    "ASC-PositionRank",
+    "SAQ-CSO",
+    "CLPSO-AuthorSource",
+    "HCLPSO-AuthorSource",
+    "HPSO-TVAC-CEC",
+    "SPSO-2011-OfficialC",
+    "DMS-PSO-SIS2005"
+  ],
+  "UnseenFunctions": false,
+  "RawDirectory": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\asc_rank_30seed_20261015_143445"
+}

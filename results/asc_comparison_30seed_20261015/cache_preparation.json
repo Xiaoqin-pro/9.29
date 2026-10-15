@@ -1,0 +1,15 @@
+{
+  "Passed": true,
+  "Runs": 5220,
+  "SourcesMatch": true,
+  "CecDataManifestMatch": true,
+  "CachedMethods": [
+    "SAQ-CSO",
+    "CLPSO-AuthorSource",
+    "HCLPSO-AuthorSource",
+    "HPSO-TVAC-CEC",
+    "SPSO-2011-OfficialC",
+    "DMS-PSO-SIS2005"
+  ],
+  "NativeSPSOVerified": true
+}

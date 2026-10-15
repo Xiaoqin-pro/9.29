@@ -1,0 +1,11 @@
+{
+  "Passed": true,
+  "Rows": 6960,
+  "FreshRuns": 1740,
+  "CachedRuns": 5220,
+  "MeansChecked": 232,
+  "MainHolmTestsRecomputed": 377,
+  "MechanismHolmTestsRecomputed": 29,
+  "RankAndFriedmanRecomputed": true,
+  "PrivateMATRequired": false
+}
