@@ -78,6 +78,32 @@ baseline; the negative result is retained in full rather than tuned away.
 - [Frozen screening protocol](docs/ASC_ELITE_GAUSSIAN_PROTOCOL_20261015.md)
 - [Public result folder](results/asc_gaussian_10seed_20261015/REPORT.md)
 
+## ASC verified-exemplar learning screening
+
+A second development line on the frozen `ASC_NoFarness` core replaces the
+Tracing social direction with a dual verified-exemplar direction: the particle's
+own evaluated personal best plus an evaluated elite. B1 uses that split for the
+whole swarm, B2 additionally lets a fixed 30% of the particles compose their
+social direction dimension by dimension from several evaluated elites. Both
+modes keep the sparse geometry screening, the Seeking model, the adaptive
+probability/radius control, Jump and the 100k budget unchanged, and B0 is
+pointwise identical to the original algorithm.
+
+The frozen screen used 12 CEC2017 functions (8 previously developed plus 4
+cross-check functions), 10 new seeds and 360 fresh runs. It **did not pass the
+pre-specified gate**: the dual direction improved 6/8 functions on the developed
+set (median error ratio 0.573, F1 error falling from 5.59e6 to 2.97e3) but
+regressed on all 4 cross-check functions (median 1.277) and on F27 by 38.9%.
+The diagnostics show the mechanism clearly — Tracing evaluations improved the
+particle's own record 2.1x more often — while the advantage decays after the
+mid-run and the largest gap between two evaluations of the same particle grows
+from 94 to 811 rounds. The original ASC remains the development baseline; the
+negative result is retained in full and the coefficients were not re-tuned.
+
+- [Mechanism diagnosis](results/asc_verified_learning_10seed_20261015/DIAGNOSIS.md)
+- [Run report](results/asc_verified_learning_10seed_20261015/REPORT.md)
+- [Frozen screening protocol](docs/ASC_VERIFIED_LEARNING_PROTOCOL_20261015.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored

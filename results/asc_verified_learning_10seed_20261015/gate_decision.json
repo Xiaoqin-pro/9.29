@@ -1,0 +1,165 @@
+{
+  "Passed": false,
+  "Advance": {
+    "B1": false,
+    "B2": false
+  },
+  "GateChecks": {
+    "B1VsB0Primary": false,
+    "B1VsB0Cross": false,
+    "B2VsB0Primary": false,
+    "B2VsB0Cross": false,
+    "B2VsB1ExtraValuePrimary": false,
+    "B2VsB1ExtraValueCross": false
+  },
+  "PrimaryFunctions": [
+    1,
+    6,
+    9,
+    12,
+    13,
+    21,
+    24,
+    27
+  ],
+  "CrossFunctions": [
+    3,
+    4,
+    17,
+    29
+  ],
+  "FreshRuns": 360,
+  "OptimizationCalls": 36000000,
+  "AuditCalls": 360,
+  "ValidationObjectiveCalls": 245014,
+  "PreflightObjectiveCalls": 100000,
+  "NewSeedReplicates": true,
+  "UnseenFunctions": false,
+  "SeedRange": [
+    6101,
+    6110
+  ],
+  "F6F9Guard": true,
+  "MinPossibleP": 0.001953125,
+  "HolmFirstCutoff": 0.001388888888888889,
+  "SignificantFunctionTests": 0,
+  "Comparisons": [
+    {
+      "Split": "primary",
+      "Method": "B1",
+      "Reference": "B0",
+      "MeanWins": 6,
+      "MeanLosses": 2,
+      "MeanTies": 0,
+      "SeedWins": 68,
+      "SeedLosses": 52,
+      "SeedTies": 0,
+      "MedianMeanRatio": 0.5730273319832365,
+      "GeometricMeanRatio": 0.3008318908549673
+    },
+    {
+      "Split": "primary",
+      "Method": "B2",
+      "Reference": "B0",
+      "MeanWins": 6,
+      "MeanLosses": 2,
+      "MeanTies": 0,
+      "SeedWins": 65,
+      "SeedLosses": 55,
+      "SeedTies": 0,
+      "MedianMeanRatio": 0.7702487936231472,
+      "GeometricMeanRatio": 0.31984950289282515
+    },
+    {
+      "Split": "primary",
+      "Method": "B2",
+      "Reference": "B1",
+      "MeanWins": 4,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "SeedWins": 58,
+      "SeedLosses": 62,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.011781411534196,
+      "GeometricMeanRatio": 1.0632167420276142
+    },
+    {
+      "Split": "cross",
+      "Method": "B1",
+      "Reference": "B0",
+      "MeanWins": 0,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "SeedWins": 68,
+      "SeedLosses": 52,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.2774357710206072,
+      "GeometricMeanRatio": 1.2489444965077934
+    },
+    {
+      "Split": "cross",
+      "Method": "B2",
+      "Reference": "B0",
+      "MeanWins": 0,
+      "MeanLosses": 4,
+      "MeanTies": 0,
+      "SeedWins": 65,
+      "SeedLosses": 55,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.208578084929135,
+      "GeometricMeanRatio": 1.2116212584178638
+    },
+    {
+      "Split": "cross",
+      "Method": "B2",
+      "Reference": "B1",
+      "MeanWins": 1,
+      "MeanLosses": 3,
+      "MeanTies": 0,
+      "SeedWins": 58,
+      "SeedLosses": 62,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.0243468614901174,
+      "GeometricMeanRatio": 0.9701161755431966
+    },
+    {
+      "Split": "all",
+      "Method": "B1",
+      "Reference": "B0",
+      "MeanWins": 6,
+      "MeanLosses": 6,
+      "MeanTies": 0,
+      "SeedWins": 68,
+      "SeedLosses": 52,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.0039561626386329,
+      "GeometricMeanRatio": 0.48350053818167793
+    },
+    {
+      "Split": "all",
+      "Method": "B2",
+      "Reference": "B0",
+      "MeanWins": 6,
+      "MeanLosses": 6,
+      "MeanTies": 0,
+      "SeedWins": 65,
+      "SeedLosses": 55,
+      "SeedTies": 0,
+      "MedianMeanRatio": 0.9830428314090387,
+      "GeometricMeanRatio": 0.4986005442858805
+    },
+    {
+      "Split": "all",
+      "Method": "B2",
+      "Reference": "B1",
+      "MeanWins": 5,
+      "MeanLosses": 7,
+      "MeanTies": 0,
+      "SeedWins": 58,
+      "SeedLosses": 62,
+      "SeedTies": 0,
+      "MedianMeanRatio": 1.0241168183905587,
+      "GeometricMeanRatio": 1.0312305879968404
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Date": "2026-10-15",
+  "Timezone": "America/New_York",
+  "Dimension": 50,
+  "Population": 50,
+  "Budget": 100000,
+  "PrimaryFunctions": [
+    1,
+    6,
+    9,
+    12,
+    13,
+    21,
+    24,
+    27
+  ],
+  "CrossFunctions": [
+    3,
+    4,
+    17,
+    29
+  ],
+  "Seeds": [
+    6101,
+    6102,
+    6103,
+    6104,
+    6105,
+    6106,
+    6107,
+    6108,
+    6109,
+    6110
+  ],
+  "Methods": [
+    "B0",
+    "B1",
+    "B2"
+  ],
+  "Workers": 4,
+  "FreshRuns": 360,
+  "OptimizationCalls": 36000000,
+  "ReferenceArtifact": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\asc_rank_30seed_20261015_143445\\runs\\run_0001_F01_seed3001_ASC-NoFarness.mat",
+  "OriginalSHA256": "0c7f64eb0b22f0358dfe0ecdcf1801aa6a78927421a0e40f5a884e23737ef285",
+  "EngineSHA256": "69a98da6ceeeebde30591dda6e3bdea90277dc23aa4738c13d5e54ae3a199c5b",
+  "OriginalSourceUnchanged": true,
+  "UnseenFunctions": false,
+  "CognitiveShare": 0.5,
+  "ExploreFraction": 0.3,
+  "Stage": "development",
+  "ConfirmOnlyIfGatePasses": true
+}

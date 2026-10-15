@@ -1,0 +1,10 @@
+Check,Passed
+B0-pointwise-original-including-RNG-and-round-log,1
+B0-odd-tail-budget-parity-and-exact-count,1
+B0-independent-of-cognitiveShare-and-exploreFraction,1
+Independent-Tracing-formula-replay-B0-B1-B2,1
+B1-B2-budget-bounds-monotone-trace-and-diagnostics,1
+B1-and-B2-change-the-search-path,1
+Grouped-path-evaluations-all-modes,1
+Eight-CEC-functions-all-three-modes,1
+Full100k-B0-original-pointwise-and-RNG-equivalence,1
