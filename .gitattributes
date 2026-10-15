@@ -27,3 +27,6 @@ results/asc_verified_learning_10seed_20261015/** -text whitespace=cr-at-eol
 
 # Preserve ASC stage-scheduled development source and release bytes.
 results/asc_stage_learning_10seed_20261015/** -text whitespace=cr-at-eol
+
+# Preserve ASC starvation-guard development source and release bytes.
+results/asc_starvation_guard_10seed_20261015/** -text whitespace=cr-at-eol

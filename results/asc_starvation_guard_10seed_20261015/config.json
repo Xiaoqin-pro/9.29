@@ -1,0 +1,73 @@
+{
+  "Date": "2026-10-15",
+  "Timezone": "America/New_York",
+  "Dimension": 50,
+  "Population": 50,
+  "Budget": 100000,
+  "PrimaryFunctions": [
+    1,
+    6,
+    9,
+    12,
+    13,
+    21,
+    24,
+    27
+  ],
+  "CrossFunctions": [
+    3,
+    4,
+    17,
+    29
+  ],
+  "Seeds": [
+    6301,
+    6302,
+    6303,
+    6304,
+    6305,
+    6306,
+    6307,
+    6308,
+    6309,
+    6310
+  ],
+  "Methods": [
+    "G00",
+    "G01",
+    "G10",
+    "G11"
+  ],
+  "MethodSpec": {
+    "G00": {
+      "GuardRounds": 0,
+      "LearnSchedule": "C00"
+    },
+    "G01": {
+      "GuardRounds": 0,
+      "LearnSchedule": "C11"
+    },
+    "G10": {
+      "GuardRounds": 100,
+      "LearnSchedule": "C00"
+    },
+    "G11": {
+      "GuardRounds": 100,
+      "LearnSchedule": "C11"
+    }
+  },
+  "GuardRounds": 100,
+  "SwitchProgress": 0.5,
+  "CognitiveShare": 0.5,
+  "CogSeedOffset": 7777777,
+  "Workers": 4,
+  "FreshRuns": 480,
+  "OptimizationCalls": 48000000,
+  "ReferenceArtifact": "D:\\111\\Desktop\\噜噜\\9.29\\results\\cec\\asc_rank_30seed_20261015_143445\\runs\\run_0001_F01_seed3001_ASC-NoFarness.mat",
+  "OriginalSHA256": "0c7f64eb0b22f0358dfe0ecdcf1801aa6a78927421a0e40f5a884e23737ef285",
+  "EngineSHA256": "e1aaadcc3343348ce8082d641c50f95e0796c45ec882c2cdebfcad4c4088c1ee",
+  "OriginalSourceUnchanged": true,
+  "UnseenFunctions": false,
+  "Stage": "development",
+  "ConfirmOnlyIfGatePasses": true
+}

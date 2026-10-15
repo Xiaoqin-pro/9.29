@@ -1,0 +1,9 @@
+Check,Passed
+Guard-off-C00-bit-identical-to-original,1
+Guard-off-C11-bit-identical-to-stage-scheduled-C11,1
+Guarded-odd-tail-budget-exact-count,1
+Guard-fires-only-when-starvation-exists,1
+Guarded-budget-accounting-and-diagnostics,1
+Grouped-guarded-path-evaluations,1
+Twelve-CEC-functions-four-guarded-conditions,1
+Full100k-unguarded-C00-original-pointwise-and-RNG-equivalence,1

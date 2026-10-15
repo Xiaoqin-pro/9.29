@@ -129,6 +129,33 @@ share of particles more than 100 rounds without a real evaluation rises from
 - [Run report](results/asc_stage_learning_10seed_20261015/REPORT.md)
 - [Frozen screening protocol](docs/ASC_STAGE_LEARNING_PROTOCOL_20261015.md)
 
+## ASC evaluation starvation guard screening
+
+The stage-scheduled screen showed that the cognitive direction also degrades how
+evenly real evaluations cover the population: particles waiting more than 100
+rounds rise from 0.001% to 2.41% and the largest evaluation gap from 94 to 842
+rounds. This 2x2 screen asks whether spending one of the existing ten
+evaluation slots on the longest-starved particle repairs that, and whether it
+changes performance. Method names read `G<guard><cognition>`, so G11 is
+cognitive learning plus a guard with K=100 rounds.
+
+The frozen screen used 12 CEC2017 functions, 10 new seeds and 480 fresh runs. The
+guard does exactly what it was designed to do — with the cognitive schedule the
+share of particles waiting more than 100 rounds falls from 2.36% to 0%, the
+largest gap from 802 to 101 rounds and the window coverage recovers to 99.999%
+from 97.60% — while spending only 0.132% of the evaluation budget. It also stays
+silent when coverage is healthy: against the baseline it fires 0.21 times per
+run and leaves 10 of 12 functions bit-identical. But **repairing coverage did not
+change performance**: G11 vs G01 is 4/4 function means on the developed set
+(median ratio 1.0004) and 0/4 on the cross-check set (1.0948). Guard evaluations
+improved a particle's own record 36.8% of the time and the global best never.
+The gate is not passed, K is not re-tuned, and no further evaluation-allocation
+mechanism is added to ASC.
+
+- [Mechanism diagnosis](results/asc_starvation_guard_10seed_20261015/DIAGNOSIS.md)
+- [Run report](results/asc_starvation_guard_10seed_20261015/REPORT.md)
+- [Frozen screening protocol](docs/ASC_STARVATION_GUARD_PROTOCOL_20261015.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored
