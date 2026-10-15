@@ -1,0 +1,12 @@
+Check,Passed
+Cognitive-stream-construction-and-use-leave-global-RNG-untouched,1
+C00-pointwise-original-including-RNG-and-round-log,1
+C00-odd-tail-budget-parity-and-exact-count,1
+C00-independent-of-switchProgress-and-cogSeedOffset,1
+C01-equals-C00-and-C10-equals-C11-up-to-the-switch,1
+Stage-switch-bookkeeping,1
+Independent-Tracing-formula-replay-social-and-cognitive,1
+All-four-schedules-budget-bounds-trace-and-diagnostics,1
+Grouped-path-evaluations-all-schedules,1
+Twelve-CEC-functions-all-four-schedules,1
+Full100k-C00-original-pointwise-and-RNG-equivalence,1

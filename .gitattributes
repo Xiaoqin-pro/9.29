@@ -24,3 +24,6 @@ results/asc_gaussian_10seed_20261015/** -text whitespace=cr-at-eol
 
 # Preserve ASC verified-exemplar development source and release bytes.
 results/asc_verified_learning_10seed_20261015/** -text whitespace=cr-at-eol
+
+# Preserve ASC stage-scheduled development source and release bytes.
+results/asc_stage_learning_10seed_20261015/** -text whitespace=cr-at-eol

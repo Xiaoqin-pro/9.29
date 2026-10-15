@@ -104,6 +104,31 @@ negative result is retained in full and the coefficients were not re-tuned.
 - [Run report](results/asc_verified_learning_10seed_20261015/REPORT.md)
 - [Frozen screening protocol](docs/ASC_VERIFIED_LEARNING_PROTOCOL_20261015.md)
 
+## ASC stage-scheduled learning screening
+
+A third development line asks *when* the verified cognitive direction should be
+active, rather than how strong it should be. C00 is the original social update,
+C11 is cognitive + social for the whole budget, C01 is social first and
+cognitive after 50% of the real-evaluation budget, C10 is the reverse. The
+cognitive coefficient is drawn from a dedicated RandStream while the social draw
+keeps the original global-stream position, so C01 is bit-identical to C00 before
+the switch and C10 is bit-identical to C11, which the audit test verifies.
+
+The frozen screen used 12 CEC2017 functions, 10 new seeds and 480 fresh runs. It
+**did not pass the pre-specified gate**, but it explains why a fixed schedule
+cannot: F27 only punishes *early* cognition (C11 1.460 and C10 1.453 against C01
+1.001), while F6 and F9 only gain from *late* cognition (C01 0.770 and 0.575
+against C11 1.228/1.292 and C10 1.355/1.614), and F3/F13/F29 prefer early
+cognition. No single switch point can satisfy both groups, so the protocol's
+stop rule applies and no further switch fractions were scanned. The new coverage
+diagnostics also show the cognitive direction degrades evaluation coverage: the
+share of particles more than 100 rounds without a real evaluation rises from
+0.001% to 2.41% and the largest evaluation gap from 94 to 842 rounds.
+
+- [Mechanism diagnosis](results/asc_stage_learning_10seed_20261015/DIAGNOSIS.md)
+- [Run report](results/asc_stage_learning_10seed_20261015/REPORT.md)
+- [Frozen screening protocol](docs/ASC_STAGE_LEARNING_PROTOCOL_20261015.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored
