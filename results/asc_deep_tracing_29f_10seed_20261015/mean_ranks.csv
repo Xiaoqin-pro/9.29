@@ -1,0 +1,8 @@
+Method,AverageRank,MedianRank,BestCount,Label
+ASC-NoFarness,3.6551724137931036,4.0,3,"R0: 1:1 quota, adaptive prob (original)"
+QB085,3.0344827586206895,3.0,4,"R1: 9:1 quota, adaptive prob (current best)"
+P20,2.7586206896551726,3.0,7,"T80: 9:1 quota, fixed Seeking 0.20"
+P10,2.6551724137931036,3.0,12,"T90: 9:1 quota, fixed Seeking 0.10"
+P05,3.9310344827586206,4.0,3,"T95: 9:1 quota, fixed Seeking 0.05"
+P02,5.241379310344827,6.0,0,"T98: 9:1 quota, fixed Seeking 0.02"
+V21,6.724137931034483,7.0,0,"Ctl: adaptive prob, no velocity reset"
