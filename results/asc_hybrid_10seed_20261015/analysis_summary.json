@@ -1,0 +1,7 @@
+{
+  "OptimizationCalls": 48000000,
+  "AuditCalls": 480,
+  "Runs": 480,
+  "ValidationObjectiveCalls": 285007,
+  "PreflightObjectiveCalls": 100000
+}

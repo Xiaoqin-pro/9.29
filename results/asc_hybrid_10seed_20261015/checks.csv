@@ -1,0 +1,9 @@
+Check,Passed
+M0-pointwise-original-including-RNG-and-round-log,1
+Each-mechanism-matches-its-earlier-screen,1
+Both-mechanisms-active-in-M3-and-off-in-M0,1
+Zero-refine-count-collapses-A2-onto-A0,1
+Budget-accounting-and-odd-tail-budget,1
+Grouped-path-evaluations,1
+Twelve-CEC-functions-four-hybrid-conditions,1
+Full100k-M0-original-pointwise-and-RNG-equivalence,1
