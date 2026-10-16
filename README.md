@@ -156,6 +156,33 @@ mechanism is added to ASC.
 - [Run report](results/asc_starvation_guard_10seed_20261015/REPORT.md)
 - [Frozen screening protocol](docs/ASC_STARVATION_GUARD_PROTOCOL_20261015.md)
 
+## ASC seeking-candidate screening
+
+The first three development lines all changed the Tracing learning rule and all
+traded a large gain on F1/F12/F13 for a regression on F27 and the cross-check
+functions. This screen moves the change to the Seeking side: each Seeking
+particle keeps its first two candidates and replaces the last two, either with an
+elite-guided displacement (A1), a perturbation centred on the particle's own
+verified `pbest` (A2), or both (A3). Tracing, Jump, screening, adaptive control
+and the budget are untouched, and A0 is pointwise identical to `ASC_NoFarness`.
+
+The frozen screen used 12 CEC2017 functions, 10 new seeds and 480 fresh runs. No
+variant passed the gate, but the candidate-level diagnostics explain why, and
+the screen produced the most useful lead of the five batches so far. The refined
+candidates really are better — they improve a particle's own record 2.0–2.7x
+more often and sit 25–50% closer to the current best — but they also crowd out
+the original candidates, and performance only improves where the particle's
+`pbest` already sits in a promising basin. F3 is the only function whose refined
+candidates average more than 0.1 of the search range from the global best, and
+it is A2's worst regression (1.332). A2 improves F6 (0.666), F9 (0.481), F24
+(0.912) and is the **first mechanism of any batch that does not degrade F27**
+(0.979), which makes it complementary to the cognitive direction rather than a
+variant of it.
+
+- [Mechanism diagnosis](results/asc_seeking_candidates_10seed_20261015/DIAGNOSIS.md)
+- [Run report](results/asc_seeking_candidates_10seed_20261015/REPORT.md)
+- [Frozen screening protocol](docs/ASC_SEEKING_CANDIDATES_PROTOCOL_20261015.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored

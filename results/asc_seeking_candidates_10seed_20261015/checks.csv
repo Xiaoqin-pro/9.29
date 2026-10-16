@@ -1,0 +1,8 @@
+Check,Passed
+A0-pointwise-original-including-RNG-and-round-log,1
+Zero-refine-count-collapses-A1-A2-A3-onto-A0,1
+Each-variant-evaluates-its-own-candidate-type,1
+Odd-tail-budget-exact-count,1
+Grouped-path-evaluations-all-variants,1
+Twelve-CEC-functions-four-variants,1
+Full100k-A0-original-pointwise-and-RNG-equivalence,1

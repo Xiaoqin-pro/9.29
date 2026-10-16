@@ -1,0 +1,14 @@
+{
+  "Passed": true,
+  "Rows": 480,
+  "FunctionMeansChecked": 48,
+  "PairedTestsRecomputed": 36,
+  "HolmTestsRecomputed": 36,
+  "DiagnosticsRecomputed": true,
+  "CandidateTypeAccountingRecomputed": true,
+  "GateRecomputed": true,
+  "ConvergenceNodesChecked": 3840,
+  "SourceSnapshotsVerified": true,
+  "PrivateMATRequired": false,
+  "SignificantFunctionTests": 0
+}
