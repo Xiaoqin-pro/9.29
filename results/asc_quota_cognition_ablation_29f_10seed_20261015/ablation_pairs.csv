@@ -1,0 +1,21 @@
+Proposed,Reference,FuncMeanWins,FuncMeanLosses,SeedWins,SeedLosses,MedianRatio,GeomeanRatio,HolmSignificant,WorstFunctionRatio
+"A0: base split, no cognition",A1: re-balanced split only,8,21,114,176,1.1273587637609785,1.2125296121690328,0,7.175982411666932
+"A0: base split, no cognition",A2: cognition only,10,19,97,193,1.0055556741771035,1.3027848735262166,0,1422.6734294627643
+"A0: base split, no cognition",A3: re-balanced split + cognition,13,16,112,178,1.0629087356881983,1.515283877441894,0,839.34611482379
+"A0: base split, no cognition",ASC-NoFarness (reference),0,0,0,0,1.0,1.0,0,1.0
+A1: re-balanced split only,"A0: base split, no cognition",21,8,176,114,0.8870290737474757,0.8247221263414348,0,1.1745236420635161
+A1: re-balanced split only,A2: cognition only,20,9,180,110,0.87388711816082,1.0744355110599988,0,1422.506515862209
+A1: re-balanced split only,A3: re-balanced split + cognition,11,18,111,179,1.0020857096735922,1.249688141414773,0,839.2476394609724
+A1: re-balanced split only,ASC-NoFarness (reference),21,8,176,114,0.8870290737474757,0.8247221263414348,0,1.1745236420635161
+A2: cognition only,"A0: base split, no cognition",19,10,193,97,0.9944750208071274,0.7675864375776208,0,1.7329105346852256
+A2: cognition only,A1: re-balanced split only,9,20,110,180,1.1443125538966599,0.930721285462202,0,3.030937256048331
+A2: cognition only,A3: re-balanced split + cognition,10,19,105,185,1.1058032038896088,1.1631113534044275,0,4.366999811777665
+A2: cognition only,ASC-NoFarness (reference),19,10,193,97,0.9944750208071274,0.7675864375776208,0,1.7329105346852256
+A3: re-balanced split + cognition,"A0: base split, no cognition",16,13,178,112,0.9408145463707502,0.6599423480227365,0,1.6641888563019591
+A3: re-balanced split + cognition,A1: re-balanced split only,18,11,179,111,0.9979186314569124,0.8001996393019296,0,1.8761378917053733
+A3: re-balanced split + cognition,A2: cognition only,19,10,185,105,0.904320042194261,0.8597629084033953,0,1.6949782745601154
+A3: re-balanced split + cognition,ASC-NoFarness (reference),16,13,178,112,0.9408145463707502,0.6599423480227365,0,1.6641888563019591
+ASC-NoFarness (reference),"A0: base split, no cognition",0,0,0,0,1.0,1.0,0,1.0
+ASC-NoFarness (reference),A1: re-balanced split only,8,21,114,176,1.1273587637609785,1.2125296121690328,0,7.175982411666932
+ASC-NoFarness (reference),A2: cognition only,10,19,97,193,1.0055556741771035,1.3027848735262166,0,1422.6734294627643
+ASC-NoFarness (reference),A3: re-balanced split + cognition,13,16,112,178,1.0629087356881983,1.515283877441894,0,839.34611482379
