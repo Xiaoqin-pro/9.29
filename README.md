@@ -201,6 +201,25 @@ then tested as the fix for the mixed-class failure and made things worse
 - [Why the screening gains did not transfer](results/asc_hybrid_formal_29f_30seed_20261015/DIAGNOSIS.md)
 - [Dimension-wise exemplar evaluation](results/asc_dimwise_formal_29f_30seed_20261015/REPORT.md)
 
+## ASC quota re-balance (main result)
+
+Branch-level diagnostics showed that the geometry screening spends half of every
+round\'s real evaluations on the far-centre phase, which converts only 0.40% of
+them into personal-best improvements, against 5.72% for the near-best phase. The
+variant therefore changes one number: the share of the ten evaluation slots given
+to the near-best phase, from 0.50 to 0.85. Nothing else changes — candidate
+generation, Tracing, Jump, adaptive control, elite pool, parent cap and budget are
+the frozen ASC-NoFarness code, and `nearShare = 0.5` reproduces it pointwise.
+
+On 29 CEC2017 functions with 10 paired seeds the average rank improves from
+**5.603 to 4.414** (8 algorithms), the proposed variant beats the baseline on
+**21 of 29 functions** with median error ratio 0.8870, and no function regresses
+by more than 17.5%. The gain is concentrated on unimodal and simple multimodal
+functions (F9 0.139, F6 0.331, F8 0.685, F14 0.709). Against the strongest
+baselines the gap narrows from 1.38/1.42 to 1.17/1.16 (HCLPSO/DMS-PSO).
+
+- [Formal comparison](results/asc_quota_balance_29f_10seed_20261015/REPORT.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored
