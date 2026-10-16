@@ -183,6 +183,24 @@ variant of it.
 - [Run report](results/asc_seeking_candidates_10seed_20261015/REPORT.md)
 - [Frozen screening protocol](docs/ASC_SEEKING_CANDIDATES_PROTOCOL_20261015.md)
 
+## ASC hybrid formal evaluation
+
+Two further development rounds combined the two mechanisms that turned out to
+improve different function families: the cognitive Tracing direction scheduled
+for the second half of the budget, plus Seeking candidates centred on the
+particle\'s own evaluated pbest. On 12 developed functions this reached 7/1
+function means; on the full 29-function benchmark with 30 paired seeds it **ties
+the baseline** (14 wins / 15 losses, median ratio 1.0087, average rank 4.345
+against 4.103). The F1 error falls from 5.67e6 to 6.42e3, which is a factor of
+883 and lands in the HCLPSO/DMS-PSO range, but mixed-class functions (F13-F15,
+F18-F20) regress and cancel the gain. A CLPSO-style dimension-wise exemplar was
+then tested as the fix for the mixed-class failure and made things worse
+(average rank 5.483), so that hypothesis is rejected.
+
+- [29-function formal comparison](results/asc_hybrid_formal_29f_30seed_20261015/REPORT.md)
+- [Why the screening gains did not transfer](results/asc_hybrid_formal_29f_30seed_20261015/DIAGNOSIS.md)
+- [Dimension-wise exemplar evaluation](results/asc_dimwise_formal_29f_30seed_20261015/REPORT.md)
+
 ## Historical entry
 
 [`src/ASE_CSO.m`](src/ASE_CSO.m) is the earlier frozen **Anchored
